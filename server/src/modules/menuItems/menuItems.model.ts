@@ -28,7 +28,15 @@ class MenuItemModel extends BaseModel {
    * @returns {Knex.QueryBuilder<MenuItem[]>}
    */
   static fetch(filters: Any, trx?: Knex.Transaction) {
-    return this.queryBuilder(trx).select('*').from({ mi: this.table }).where(filters);
+    return this.queryBuilder(trx)
+      .select('mi.*')
+      .select({
+        cafe_name: 'c.name',
+      })
+      .from({ mi: this.table })
+      .leftJoin({ c: dbTables.cafes }, 'c.id', 'mi.cafe_id')
+      .where(filters)
+      .then(data => data.map(this.mapToModel));
   }
 
   /**
@@ -64,6 +72,33 @@ class MenuItemModel extends BaseModel {
    */
   static deleteById(id: number, trx?: Knex.Transaction) {
     return this.queryBuilder(trx).table(this.table).where('id', id).del();
+  }
+
+  static mapToModel(item: Any): MenuItem {
+    const data = item.id && {
+      id: item.id,
+      cafeId: item.cafeId,
+      cafe: item.cafeId && {
+        id: item.cafeId,
+        name: item.cafeName,
+      },
+      categoryId: item.categoryId,
+      name: item.name,
+      description: item.description,
+      price: item.price,
+      maxOrder: item.maxOrder,
+      preparedTime: item.preparedTime,
+      availability: item.availability,
+      discount: item.discount,
+      isSpecial: item.isSpecial,
+      status: item.status,
+      createdAt: item.createdAt,
+      createdBy: item.createdBy,
+      updatedAt: item.updatedAt,
+      updatedBy: item.updatedBy,
+    };
+
+    return data as MenuItem;
   }
 }
 

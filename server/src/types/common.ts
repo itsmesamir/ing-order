@@ -109,7 +109,8 @@ export enum MenuItemStatusEnum {
 
 export interface MenuItem {
   id: number;
-  cafeId: number;
+  cafeId?: number;
+  cafe?: Cafe;
   categoryId: number;
   name: string;
   description: string;
