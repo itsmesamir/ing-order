@@ -6,11 +6,11 @@ import { Any, DefaultObject } from 'types/common';
 
 import queryKey from 'constants/queryKey';
 
-export const useMenusQuery = (params?: DefaultObject) => {
+export const useMenusQuery = (params?: DefaultObject, enabled?: boolean) => {
   const menusQuery = useQuery({
-    queryKey: [queryKey.menus],
+    queryKey: [queryKey.menus, params],
     queryFn: ({ signal }: Any) => fetchMenus(params, signal),
-    enabled: !!params,
+    enabled: enabled && !!params,
   });
 
   return menusQuery;

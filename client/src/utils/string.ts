@@ -1,4 +1,8 @@
+import { debounce } from 'lodash';
+
 import { Any } from 'types/common';
+
+import { INPUT_DEBOUNCE_TIME } from 'constants/common';
 
 /**
  * Build a Url removing multiple slashes and trailing slash.
@@ -31,4 +35,20 @@ export function buildUrl(...routes: Array<string | URL | number>): string {
  */
 export const joinStrings = (...strings: Any[]) => {
   return strings.join('');
+};
+
+/**
+ * Creates a debounced function that delays invoking the provided callback
+ * until after the specified delay in milliseconds has elapsed since the last
+ * time the debounced function was invoked.
+ *
+ * @param {Function} callback - The function to debounce.
+ * @param {number} [delay=300] - The number of milliseconds to delay.
+ * @returns {Function} - The new debounced function.
+ */
+export const debounceInput = (
+  callback: (...args: Any[]) => void,
+  delay: number = INPUT_DEBOUNCE_TIME
+): ((...args: Any[]) => void) => {
+  return debounce(callback, delay);
 };

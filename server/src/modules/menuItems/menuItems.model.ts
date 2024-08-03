@@ -52,10 +52,11 @@ class MenuItemModel extends BaseModel {
         cafe_name: 'c.name',
       })
       .from({ mi: this.table })
-      .leftJoin({ c: dbTables.cafes }, 'c.id', 'mi.cafe_id')
-      .where(filters);
+      .leftJoin({ c: dbTables.cafes }, 'c.id', 'mi.cafe_id');
 
-    this.injectFilter(query, trx);
+    this.injectFilter(query, filters);
+
+    console.log('dd', query.toString());
 
     return query.then(data => data.map(this.mapToModel));
   }
@@ -113,11 +114,14 @@ class MenuItemModel extends BaseModel {
       discount: item.discount,
       isSpecial: item.isSpecial,
       status: item.status,
+      imageUrl: item.imageUrl,
       createdAt: item.createdAt,
       createdBy: item.createdBy,
       updatedAt: item.updatedAt,
       updatedBy: item.updatedBy,
     };
+
+    console.log('data', item);
 
     return data as MenuItem;
   }

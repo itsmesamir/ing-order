@@ -24,6 +24,7 @@ import { useMenusQuery } from 'hooks/useMenusQuery';
 import { useMenuCategoriesQuery } from 'hooks/useMenuCategoriesQuery';
 
 import Order from './order/Order';
+import Search from './search/Search';
 
 function RightColumn() {
   const { data: menuItems, isLoading: isMenuItemLoading } = useMenusQuery({});
@@ -40,17 +41,7 @@ function RightColumn() {
     <div className="flex flex-col flex-1">
       <nav className="flex justify-between max-h-16 h-16  items-center px-6 sticky top-0 z-50 bg-white">
         <div className="flex items-center gap-x-5">
-          <div className="px-4 py-2 flex bg-gray-100 items-center gap-x-2 rounded-lg">
-            <FiSearch className="" size={16} />
-            <Input
-              name="searchItem"
-              value={searchItem}
-              label=""
-              placeholder=""
-              onChange={e => setSearchItem(e.target.value)}
-              className="border-none bg-gray-100 "
-            />
-          </div>
+          <Search searchItem={searchItem} setSearchItem={setSearchItem} />
 
           <Button colorScheme="orange">
             <MdSettings size={16} className="mr-2" /> Filter
