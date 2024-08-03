@@ -55,7 +55,7 @@
     "yarn": "^1.22.21"
   },
   "engines": {
-    "node": ">=20.11.0"
+    "node": ">=20.10.0"
   },
   "dependencies": {
     "@joi/date": "^2.1.1",

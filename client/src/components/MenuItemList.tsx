@@ -14,9 +14,10 @@ function MenuItemList({ menuItems }: { menuItems: MenuItem[] }) {
             key={item.id}
             name={item.name}
             price={item.price}
+            reviews={6}
             // TODO: susmita
             imageUrl="kk"
-            cafeName=""
+            cafeName="Bakery Cafe"
             rating={5}
           />
         ))}
