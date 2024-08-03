@@ -2,7 +2,7 @@ import { Knex } from 'knex';
 
 import BaseModel from '@/models/baseModel';
 
-import { Order, Any } from '@/types/common';
+import { Order, Any, OrderStatus, OrderItem } from '@/types/common';
 
 import db from '@/db';
 import dbTables from '@/constants/db';
@@ -110,7 +110,28 @@ class OrderModel extends BaseModel {
     return this.baseQuery(trx).where('o.id', orderId).first();
   }
 
-  // fetch order by userid
+  /**
+   * Insert data into order_status table.
+   *
+   * @param {Partial<OrderStatus>} data
+   * @param {Knex.Transaction} [trx]
+   * @returns {Knex.QueryBuilder<number[]>}
+   *
+   */
+  static insertOrderStatus(data: Partial<OrderStatus>, trx?: Knex.Transaction) {
+    return this.queryBuilder(trx).table('OrderStatus').insert(data);
+  }
+
+  /**
+   * Insert data into order_items table.
+   *
+   * @param {Partial<OrderItem>[]} data
+   * @param {Knex.Transaction} [trx]
+   * @returns {Knex.QueryBuilder<number[]>}
+   */
+  static insertOrderItems(data: Partial<OrderItem>[], trx?: Knex.Transaction) {
+    return this.queryBuilder(trx).table('OrderItems').insert(data);
+  }
 
   /**
    * Fetch list of orders by user ID.
