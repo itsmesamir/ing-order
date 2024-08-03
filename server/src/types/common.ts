@@ -115,6 +115,7 @@ export interface MenuItem {
   cafe?: Cafe;
   categoryId: number;
   name: string;
+  quantity?: number;
   description: string;
   price: number;
   maxOrder: number;
@@ -152,7 +153,7 @@ export enum PaymentStatusEnum {
 export interface Order {
   id: number;
   user: User;
-  transaction_id: string;
+  transaction_id?: string;
   order_date: string;
   status: string;
   created_by: number;

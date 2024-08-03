@@ -2,9 +2,11 @@ import { Knex } from 'knex';
 
 import OrderModel from '@/modules/orders/orders.model';
 
+import BaseModel from '@/models/baseModel';
+
 import logger from '@/services/logger';
 
-import { Any, Order } from '@/types/common';
+import { Any, Order, OrderStatusEnum } from '@/types/common';
 
 const log = logger.withNamespace('modules/orders.service');
 
@@ -72,11 +74,54 @@ export const fetchOrdersByUserId = async (
 export const createOrder = async (data: Partial<Order>, trx?: Knex.Transaction): Promise<Order> => {
   log.info('Creating new order');
 
-  const [id] = await OrderModel.insert(data, trx);
+  const {
+    user: { id: userId },
+    menu_items,
+  } = data;
 
-  const newOrder = await OrderModel.fetchById(id, {}, trx);
+  const totalPrice = menu_items.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  return newOrder;
+  const orderData = {
+    user_id: userId,
+    cafe_id: menu_items[0].cafeId,
+    total_price: totalPrice,
+    created_by: userId,
+  };
+
+  const orderItemsData = menu_items.map(item => ({
+    item_id: item.id,
+    quantity: item.quantity,
+    price: item.price,
+    discount: item.discount || 0.0,
+    created_by: userId,
+  }));
+
+  try {
+    const newOrder = await BaseModel.transaction(async trx => {
+      const [orderId] = await OrderModel.insert(orderData, trx);
+
+      const orderStatusData = {
+        status: OrderStatusEnum.Pending,
+        created_by: userId,
+        order_id: orderId,
+      };
+
+      await OrderModel.insertOrderStatus(orderStatusData, trx);
+
+      const orderItems = orderItemsData.map(item => ({
+        ...item,
+        order_id: orderId,
+      }));
+      await OrderModel.insertOrderItems(orderItems, trx);
+
+      return OrderModel.fetchById(orderId, {}, trx);
+    });
+
+    return newOrder;
+  } catch (error) {
+    log.error('Failed to create order:', error);
+    throw error;
+  }
 };
 
 /**
