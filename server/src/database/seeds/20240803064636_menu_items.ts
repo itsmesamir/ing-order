@@ -17,6 +17,9 @@ export async function seed(knex: Knex): Promise<void> {
       availability: true,
       discount: 0.0,
       is_special: false,
+      // attached a expresso image from other source than unsplash
+      image_url:
+        'https://e7.pngegg.com/pngimages/329/271/png-clipart-health-food-healthy-diet-meal-delivery-service-health-leaf-vegetable-food.png',
       status: 'Available',
       created_by: 1,
     },
@@ -31,6 +34,7 @@ export async function seed(knex: Knex): Promise<void> {
       availability: true,
       discount: 0.1,
       is_special: false,
+      image_url: 'https://source.unsplash.com/1600x900/?coffee',
       status: 'Available',
       created_by: 1,
     },
@@ -45,6 +49,10 @@ export async function seed(knex: Knex): Promise<void> {
       availability: true,
       discount: 0.2,
       is_special: true,
+
+      // chocolate cake image from other source than unsplash'
+      image_url:
+        'https://e7.pngegg.com/pngimages/329/271/png-clipart-health-food-healthy-diet-meal-delivery-service-health-leaf-vegetable-food.png',
       status: 'Available',
       created_by: 2,
     },
@@ -59,6 +67,7 @@ export async function seed(knex: Knex): Promise<void> {
       availability: true,
       discount: 0.0,
       is_special: false,
+      image_url: 'https://source.unsplash.com/1600x900/?coffee',
       status: 'Available',
       created_by: 2,
     },
@@ -73,6 +82,7 @@ export async function seed(knex: Knex): Promise<void> {
       availability: true,
       discount: 0.05,
       is_special: false,
+      image_url: 'https://source.unsplash.com/1600x900/?coffee',
       status: 'Available',
       created_by: 3,
     },
@@ -87,6 +97,7 @@ export async function seed(knex: Knex): Promise<void> {
       availability: true,
       discount: 0.0,
       is_special: false,
+      image_url: 'https://source.unsplash.com/1600x900/?coffee',
       status: 'Available',
       created_by: 3,
     },
