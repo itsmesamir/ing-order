@@ -7,31 +7,31 @@ import { Any, DefaultObject } from 'types/common';
 import api from 'constants/api';
 
 export const signUp = async (data: Partial<Any>) => {
-  const response = await http.post(api.auth.signUp, data);
+  const response = await http.post(api.signUp, data);
 
   return response.data;
 };
 
 export const signIn = async (data: { email: string; password: string }) => {
-  const response = await http.post(api.auth.signIn, data);
+  const response = await http.post(api.signIn, data);
 
   return response.data;
 };
 
 export const getCurrentUser = async () => {
-  const response = await http.get(buildUrl(api.baseUrl, api.auth.currentUser));
+  const response = await http.get(buildUrl(api.baseUrl, api.currentUser));
 
   return response.data;
 };
 
 export const logout = async () => {
-  const response = await http.get(buildUrl(api.baseUrl, api.auth.logout));
+  const response = await http.get(buildUrl(api.baseUrl, api.logout));
 
   return response?.data;
 };
 
 export const fetchUsers = async (params: DefaultObject = {}) => {
-  const response = await http.get(buildUrl(api.baseUrl, api.auth.users), { params });
+  const response = await http.get(buildUrl(api.baseUrl, api.users), { params });
 
   return response.data;
 };

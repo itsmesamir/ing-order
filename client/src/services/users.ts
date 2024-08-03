@@ -7,7 +7,7 @@ import { User } from 'types/User';
 import api from 'constants/api';
 
 export async function fetchUsers(params: Any, signal?: AbortSignal): Promise<User[]> {
-  const url = buildUrl(api.auth.users);
+  const url = buildUrl(api.users);
 
   const { data } = await http.get(url, { signal, params });
 
@@ -15,7 +15,7 @@ export async function fetchUsers(params: Any, signal?: AbortSignal): Promise<Use
 }
 
 export async function fetchUserById(id: number, params: Any, signal?: AbortSignal): Promise<User> {
-  const url = buildUrl(api.auth.users, id);
+  const url = buildUrl(api.users, id);
 
   const { data } = await http.get(url, { signal, params });
 
@@ -23,7 +23,7 @@ export async function fetchUserById(id: number, params: Any, signal?: AbortSigna
 }
 
 export async function updateUserById(id: number, body: Any, signal?: AbortSignal): Promise<User[]> {
-  const url = buildUrl(api.auth.users, id);
+  const url = buildUrl(api.users, id);
 
   const { data } = await http.put(url, body, { signal });
 
