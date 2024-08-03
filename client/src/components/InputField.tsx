@@ -12,6 +12,7 @@ interface InputFieldProps extends Omit<React.ComponentProps<'input'>, 'size'> {
   containerProps?: {
     className?: string;
   };
+  inputClassname?: string;
   labelProps?: {
     className?: string;
   };
@@ -28,6 +29,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>((props, r
     inputRef,
     placeholder,
     shrink = false,
+    inputClassname,
     ...rest
   } = props;
 
@@ -44,7 +46,8 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>((props, r
     {
       'w-full': !shrink,
       'border-red-600 focus-visible:outline-red-600': error,
-    }
+    },
+    inputClassname
   );
 
   return (
