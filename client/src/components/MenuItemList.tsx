@@ -7,7 +7,7 @@ import MenuItemCard from './MenuItemCard';
 function MenuItemList({ menuItems }: { menuItems: MenuItem[] }) {
   return (
     <Box p="4">
-      <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing="4">
+      <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing="16">
         {menuItems.map((item, index) => (
           <MenuItemCard
             id={item.id}
