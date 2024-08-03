@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Button,
   ButtonGroup,
@@ -10,7 +11,8 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import React from 'react';
+
+import Order from './order/Order';
 
 function RightColumn() {
   return (
@@ -67,7 +69,9 @@ function RightColumn() {
         </div>
 
         {/* Order */}
-        <div className="sticky top-[64px] bg-slate-200 right-0 w-80 h-[70vh]">cart</div>
+        <div className="sticky top-[64px] right-0 w-80 pr-6">
+          <Order />
+        </div>
       </div>
     </div>
   );
