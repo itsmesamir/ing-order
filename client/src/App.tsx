@@ -42,7 +42,6 @@ export function App() {
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
         <Router />
-        <h1>hello</h1>
         <Toast />
       </ChakraProvider>
     </QueryClientProvider>
