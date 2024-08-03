@@ -14,6 +14,8 @@ import {
 import { FiSearch } from 'react-icons/fi';
 import { MdSettings } from 'react-icons/md';
 
+import useCartStore from 'stores/useCartStore';
+
 import MenuItemList from 'components/MenuItemList';
 import InputField from 'components/InputField';
 import Input from 'components/common/input';
@@ -29,6 +31,8 @@ function RightColumn() {
   const { data: menuCateogries, isLoading: isMenuCategoriesLoading } = useMenuCategoriesQuery({});
 
   const [searchItem, setSearchItem] = useState('');
+
+  const { items: carts, addItem, removeItem, clearCart } = useCartStore();
 
   if (!menuItems || isMenuItemLoading) {
     return <>Loading...</>;
@@ -71,7 +75,7 @@ function RightColumn() {
 
         {/* Order */}
         <div className="sticky top-[64px] right-0 w-80 pr-6 h-[70vh]">
-          <Order />
+          <Order carts={carts} />
         </div>
       </div>
     </div>

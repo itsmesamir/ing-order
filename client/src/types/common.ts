@@ -130,11 +130,14 @@ export enum MenuItemStatusEnum {
 
 export interface MenuItem {
   id: number;
-  cafeId: number;
+  cafeId?: number;
+  cafe?: Cafe;
   categoryId: number;
   name: string;
   description: string;
   price: number;
+  rating: number;
+  imageUrl: string;
   maxOrder: number;
   preparedTime: number;
   availability: number;
@@ -189,16 +192,18 @@ export interface OrderStatus {
 
 export interface OrderItem {
   id: number;
-  orderId: number;
-  itemId: number;
+  itemId?: number;
+  item?: MenuItem;
   quantity: number;
   price: number;
   discount: number;
-  createdAt: string;
-  createdBy: number;
-  updatedAt: string;
-  updatedBy: number;
+  createdAt?: string;
+  createdBy?: number;
+  updatedAt?: string;
+  updatedBy?: number;
 }
+
+export type CartItem = Omit<OrderItem, 'id'>;
 
 export interface Payment {
   id: number;

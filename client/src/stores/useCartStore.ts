@@ -1,16 +1,16 @@
 import { create } from 'zustand';
 
-import { Any, OrderItem } from 'types/common';
+import { Any, CartItem } from 'types/common';
 
 interface TCartState {
-  items: OrderItem[];
+  items: CartItem[];
   loading: boolean;
   error: boolean;
   errorData: Any;
 }
 
 interface TCartStore extends TCartState {
-  addItem: (item: OrderItem) => void;
+  addItem: (item: CartItem) => void;
   removeItem: (id: number) => void;
   clearCart: () => void;
   loadCart: () => void;
@@ -28,10 +28,10 @@ const localStorageKey = 'cartState';
 const useCartStore = create<TCartStore>(set => ({
   ...initialCartState,
 
-  addItem: (item: OrderItem) =>
+  addItem: (item: CartItem) =>
     set(state => {
       const updatedItems = [...state.items];
-      const existingItemIndex = updatedItems.findIndex(i => i.id === item.id);
+      const existingItemIndex = updatedItems.findIndex(i => i.item?.id === item.item?.id);
 
       if (existingItemIndex !== -1) {
         updatedItems[existingItemIndex].quantity += item.quantity;
@@ -48,7 +48,7 @@ const useCartStore = create<TCartStore>(set => ({
 
   removeItem: (id: number) =>
     set(state => {
-      const updatedItems = state.items.filter(item => item.id !== id);
+      const updatedItems = state.items.filter(item => item.item?.id !== id);
 
       const newState = { ...state, items: updatedItems };
 

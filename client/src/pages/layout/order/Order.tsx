@@ -12,6 +12,8 @@ import {
   Tr,
 } from '@chakra-ui/react';
 
+import { CartItem } from 'types/common';
+
 import en from 'constants/en';
 
 const paymentSummary = [
@@ -29,41 +31,26 @@ const paymentSummary = [
   },
 ];
 
-const orderedItems = [
-  {
-    name: 'Item 1',
-    imageSrc:
-      'https://plus.unsplash.com/premium_photo-1675252369719-dd52bc69c3df?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    price: 100,
-  },
-  {
-    name: 'Item 2',
-    imageSrc:
-      'https://plus.unsplash.com/premium_photo-1675252369719-dd52bc69c3df?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    price: 100,
-  },
-];
-
-function Order() {
+function Order({ carts }: { carts: CartItem[] }) {
   return (
     <div className="p-6 bg-slate-200">
       {/* Ordered Items */}
 
       <div className="flex flex-col">
-        {orderedItems.map(item => (
+        {carts.map(cart => (
           <div className="flex border-b border-white first:pt-0 py-4">
             <Image
               boxSize="50px"
               objectFit="cover"
-              src={item.imageSrc}
+              src={cart.item?.imageUrl}
               alt="Dan Abramov"
               className="rounded-lg"
             />
             <div className="ml-4">
-              <p className="text-base font-semibold">{item.name}</p>
+              <p className="text-base font-semibold">{cart.item?.cafe?.name}</p>
               <p className="text-lg font-semibold">
                 {en.ORDER.CURRENTY}
-                {item.price}
+                {cart.price}
               </p>
             </div>
           </div>

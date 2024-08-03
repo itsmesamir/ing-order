@@ -10,17 +10,17 @@ import {
   Text,
 } from '@chakra-ui/react';
 
+import { CartItem, MenuItem } from 'types/common';
+
 interface MenuItemCardProps {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  cafeName: string;
-  rating: number;
+  item: MenuItem;
+  addItem: (item: CartItem) => void;
 }
 
 function MenuItemCard(props: MenuItemCardProps) {
-  const { id, name, price, imageUrl, cafeName, rating } = props;
+  const { item, addItem } = props;
+
+  const { id, name, price, imageUrl, cafe, rating } = item;
 
   return (
     <Card border="1px" borderColor="gray.200" borderRadius="md" overflow="hidden" boxShadow="md">
@@ -33,7 +33,7 @@ function MenuItemCard(props: MenuItemCardProps) {
           {price}
         </Text>
         <Text color="orange.500" fontSize="md">
-          {cafeName}
+          {cafe?.name}
         </Text>
         <HStack justify="center" spacing="1">
           {Array.from({ length: 5 }, (_, index) => (
@@ -46,7 +46,13 @@ function MenuItemCard(props: MenuItemCardProps) {
           <Button variant="solid" colorScheme="blue">
             Buy now
           </Button>
-          <Button variant="ghost" colorScheme="blue">
+          <Button
+            variant="ghost"
+            colorScheme="blue"
+            onClick={() => {
+              addItem({ item, quantity: 1, price: item.price, discount: item.discount });
+            }}
+          >
             Add to cart
           </Button>
         </ButtonGroup>
