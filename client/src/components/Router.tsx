@@ -20,7 +20,7 @@ function Router() {
 
       <AuthRoute path="/">
         <Route exact path={createRoute([paths.menus])} component={PageLayout} />
-        <Route path={createRoute([])} component={Home} />
+        <Route path={createRoute(['/'])} component={Home} />
       </AuthRoute>
     </BrowserRouter>
   );
