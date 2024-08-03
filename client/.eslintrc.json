@@ -23,6 +23,9 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
+  "ignorePatterns": [
+    "postcss.config.js" // Ignore specific files or patterns
+  ],
 
   "plugins": ["@typescript-eslint", "react", "import"],
   "rules": {
