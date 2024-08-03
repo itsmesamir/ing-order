@@ -1,14 +1,7 @@
 import { StarIcon } from '@chakra-ui/icons';
-import {
-  Button,
-  ButtonGroup,
-  Card,
-  CardBody,
-  CardFooter,
-  HStack,
-  Image,
-  Text,
-} from '@chakra-ui/react';
+import { Button, Card, CardBody, Flex, HStack, Image, Text, VStack } from '@chakra-ui/react';
+
+import ItemCounter from './ItemCounter';
 
 import { CartItem, MenuItem } from 'types/common';
 
@@ -20,43 +13,56 @@ interface MenuItemCardProps {
 function MenuItemCard(props: MenuItemCardProps) {
   const { item, addItem } = props;
 
-  const { id, name, price, imageUrl, cafe, rating } = item;
+  const { name, price, imageUrl, cafe, rating } = item;
 
   return (
-    <Card border="1px" borderColor="gray.200" borderRadius="md" overflow="hidden" boxShadow="md">
-      <Image src={imageUrl} alt={name} />
-      <CardBody textAlign="center">
-        <Text fontWeight="bold" fontSize="lg">
-          {name}
-        </Text>
-        <Text color="orange.500" fontSize="md">
-          {price}
-        </Text>
-        <Text color="orange.500" fontSize="md">
-          {cafe?.name}
-        </Text>
-        <HStack justify="center" spacing="1">
-          {Array.from({ length: 5 }, (_, index) => (
-            <StarIcon key={index} color={index < rating ? 'orange.500' : 'gray.300'} />
-          ))}
-        </HStack>
+    <Card
+      border="1px"
+      borderColor="gray.200"
+      borderRadius="md"
+      overflow="hidden"
+      boxShadow="md"
+      _hover={{ boxShadow: 'xl' }}
+      w="250px"
+    >
+      <Image src={imageUrl} alt={name} objectFit="cover" h="150px" w="full" />
+      <CardBody px="2" py="3">
+        <VStack spacing="1" align="start">
+          <Text fontWeight="500" fontSize="20px">
+            {name}
+          </Text>
+          <Text color="#A5A5A5" fontSize="xs">
+            {cafe?.name}
+          </Text>
+
+          <Flex align="baseline" justify="space-between" w="100%">
+            <HStack spacing="2" align="baseline">
+              <Text fontWeight="bold" color="#EE5733" fontSize="14px">
+                Rs
+              </Text>
+              <Text fontWeight="bold" color="#EE5733" fontSize="20px">
+                {price}
+              </Text>
+              <Text as="s" ml="2" color="gray.500" fontSize="10px" fontWeight="400">
+                Rs {price * 1.3}
+              </Text>
+            </HStack>
+            <HStack spacing="1" align="baseline">
+              <StarIcon color="yellow.400" boxSize="3" />
+              <Text fontSize="10px">{rating}</Text>
+              <Text fontSize="10px" fontWeight="400" color="#A5A5A5">
+                (50)
+              </Text>
+            </HStack>
+          </Flex>
+        </VStack>
+        <Flex justify="space-between" my="2">
+          <ItemCounter />
+          <Button background="#EE5733" color="#FFFFFF" fontSize="xs">
+            Add to Cart
+          </Button>
+        </Flex>
       </CardBody>
-      <CardFooter>
-        <ButtonGroup spacing="2">
-          <Button variant="solid" colorScheme="blue">
-            Buy now
-          </Button>
-          <Button
-            variant="ghost"
-            colorScheme="blue"
-            onClick={() => {
-              addItem({ item, quantity: 1, price: item.price, discount: item.discount });
-            }}
-          >
-            Add to cart
-          </Button>
-        </ButtonGroup>
-      </CardFooter>
     </Card>
   );
 }
