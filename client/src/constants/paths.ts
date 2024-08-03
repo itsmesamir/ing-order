@@ -16,4 +16,5 @@ export default {
   leaveTypes: 'leave-types',
   leaveRequests: 'leave-request',
   menuDetail: 'menu/details',
+  adminOrders: 'admin/orders',
 } as const;

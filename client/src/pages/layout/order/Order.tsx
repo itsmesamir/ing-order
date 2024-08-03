@@ -17,6 +17,7 @@ import useCartStore from 'stores/useCartStore';
 
 import en from 'constants/en';
 
+// TODO: susmita Use from the order
 const paymentSummary = [
   {
     title: 'Sub Total',
@@ -33,7 +34,7 @@ const paymentSummary = [
 ];
 
 function Order() {
-  const { items: carts, getSummary } = useCartStore();
+  const { items: carts, getSummary, clearCart } = useCartStore();
 
   const summary = useMemo(() => getSummary(carts), [carts]);
 
@@ -91,7 +92,13 @@ function Order() {
       </TableContainer>
 
       <div className="w-100 mt-6 center">
-        <Button colorScheme="orange" className="w-100">
+        <Button
+          colorScheme="orange"
+          className="w-100"
+          onClick={() => {
+            clearCart();
+          }}
+        >
           Place Order
         </Button>
       </div>

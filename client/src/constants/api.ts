@@ -21,6 +21,7 @@ const api = {
   updateLeave: '/leave/:id',
   menus: '/menus',
   menuCategories: '/menus/categories',
+  orders: '/orders',
 };
 
 export default api;

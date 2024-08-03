@@ -13,4 +13,5 @@ export default {
   leaveRequests: 'leaveRequests',
   menus: 'menus',
   menuCategories: 'menu-categories',
+  orders: 'orders',
 } as const;

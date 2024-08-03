@@ -3,6 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import SignIn from 'pages/signin/SignIn';
 import SignUp from 'pages/signup/SignUp';
 import PageLayout from 'pages/layout/PageLayout';
+import AdminOrders from 'pages/adminOrders/AdminOrders';
 
 import Home from 'components/Home';
 import AuthRoute from 'components/AuthRoute';
@@ -20,6 +21,9 @@ function Router() {
 
       <AuthRoute path="/">
         <Route exact path={createRoute([paths.menus])} component={PageLayout} />
+
+        <Route exact path={createRoute([paths.adminOrders])} component={AdminOrders} />
+
         <Route path={createRoute(['/'])} component={Home} />
       </AuthRoute>
     </BrowserRouter>
