@@ -23,10 +23,13 @@ import { useMenusQuery } from 'hooks/useMenusQuery';
 import Order from './order/Order';
 
 function RightColumn() {
-  const { data: menus } = useMenusQuery({});
+  const { data: menuItems, isLoading } = useMenusQuery({});
 
-  console.log(menus);
   const [searchItem, setSearchItem] = useState('');
+
+  if (!menuItems || isLoading) {
+    return 'Loading...';
+  }
 
   return (
     <div className="flex flex-col flex-1">
@@ -59,7 +62,7 @@ function RightColumn() {
       {/* body */}
       <div className="flex bg-gray-100 pt-6">
         <div className="flex flex-wrap gap-12 flex-1  justify-center px-6">
-          <MenuItemList />
+          <MenuItemList menuItems={menuItems} />
         </div>
 
         {/* Order */}

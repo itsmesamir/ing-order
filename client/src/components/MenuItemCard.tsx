@@ -13,7 +13,7 @@ import {
 interface MenuItemCardProps {
   id: number;
   name: string;
-  price: string;
+  price: number;
   imageUrl: string;
   cafeName: string;
   rating: number;

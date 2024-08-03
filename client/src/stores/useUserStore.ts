@@ -26,45 +26,19 @@ const initialState: TUserState = {
   data: null,
   errorData: null,
 };
-const user: User = {
-  id: 1,
-  name: 'Simon',
-  email: 'cimon@gmail.com',
-  country: 'Nepal',
-  countryId: 1,
-  department: 'string',
-  designationId: 1,
-  designation: {
-    id: 1,
-    name: 'string',
-  },
-  manager: {
-    id: 1,
-    name: 'Bibek',
-    email: 'bibek@gmail.com',
-  },
-  phone: '123',
-  roles: [
-    {
-      id: 2,
-      name: 'Admin',
-    },
-  ],
-};
 
 const useUserStore = create<TUserStore>()(set => ({
   ...initialState,
   fetchUser: async () => {
     set({ ...initialState, loading: true });
 
-    set({ ...initialState, success: true, loading: false, data: user });
-    // try {
-    //   const data = await getCurrentUser();
+    try {
+      const data = await getCurrentUser();
 
-    //   set({ ...initialState, success: true, loading: false, data });
-    // } catch (error: Any) {
-    //   set({ ...initialState, error: true, loading: false, errorData: error?.message });
-    // }
+      set({ ...initialState, success: true, loading: false, data });
+    } catch (error: unknown) {
+      set({ ...initialState, error: true, loading: false, errorData: (error as Any)?.message });
+    }
   },
 
   updateUser: (user: User) => {
