@@ -194,7 +194,7 @@ export interface OrderStatus {
 export interface OrderItem {
   id: number;
   itemId?: number;
-  item?: MenuItem;
+  menu?: MenuItem;
   quantity: number;
   price: number;
   discount: number;

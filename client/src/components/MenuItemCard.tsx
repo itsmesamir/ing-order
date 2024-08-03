@@ -63,7 +63,7 @@ function MenuItemCard(props: MenuItemCardProps) {
             color="#FFFFFF"
             fontSize="xs"
             onClick={() => {
-              addItem({ item, quantity: 1, price: item.price, discount: item.discount });
+              addItem({ menu: item, quantity: 1, price: item.price, discount: item.discount });
             }}
           >
             Add to Cart

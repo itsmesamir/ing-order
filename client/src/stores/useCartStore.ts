@@ -36,7 +36,7 @@ const useCartStore = create<TCartStore>(set => ({
   addItem: (item: CartItem) =>
     set(state => {
       const updatedItems = [...state.items];
-      const existingItemIndex = updatedItems.findIndex(i => i.item?.id === item.item?.id);
+      const existingItemIndex = updatedItems.findIndex(i => i.menu?.id === item.menu?.id);
 
       if (existingItemIndex !== -1) {
         updatedItems[existingItemIndex].quantity += item.quantity;
@@ -53,7 +53,7 @@ const useCartStore = create<TCartStore>(set => ({
 
   removeItem: (id: number) =>
     set(state => {
-      const updatedItems = state.items.filter(item => item.item?.id !== id);
+      const updatedItems = state.items.filter(item => item.menu?.id !== id);
 
       const newState = { ...state, items: updatedItems };
 

@@ -69,7 +69,7 @@ function AdminOrders() {
                         return null;
                       }
 
-                      return <MenuItemCard item={item.item as MenuItem} addItem={() => null} />;
+                      return <MenuItemCard item={item.menu as MenuItem} addItem={() => null} />;
                     })}
                   </SimpleGrid>
                 </Flex>

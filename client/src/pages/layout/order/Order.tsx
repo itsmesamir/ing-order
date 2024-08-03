@@ -48,12 +48,12 @@ function Order() {
             <Image
               boxSize="50px"
               objectFit="cover"
-              src={cart.item?.imageUrl}
+              src={cart.menu?.imageUrl}
               alt="Dan Abramov"
               className="rounded-lg"
             />
             <div className="ml-4">
-              <p className="text-base font-semibold">{cart.item?.name}</p>
+              <p className="text-base font-semibold">{cart.menu?.name}</p>
               <p className="text-lg font-semibold">
                 {en.ORDER.CURRENTY}
                 {cart.price}
