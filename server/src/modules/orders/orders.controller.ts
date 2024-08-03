@@ -35,6 +35,24 @@ export const fetchOrderById = async (req: Request, res: Response) => {
 };
 
 /**
+ * Get an order by ID.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {Promise<Response>}
+ */
+export const fetchOrdersByUserId = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  const order = await ordersService.fetchOrdersByUserId(Number(userId));
+
+  if (!order) {
+    return res.status(HttpStatus.NOT_FOUND).json({ error: 'Order for user not found' });
+  }
+
+  return res.status(HttpStatus.OK).json({ data: order });
+};
+
+/**
  * Create a new order.
  *
  * @param {Request} req
