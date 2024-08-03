@@ -123,6 +123,7 @@ export interface MenuItem {
   discount: number;
   isSpecial: boolean;
   status: MenuItemStatusEnum;
+  imageUrl: string;
   createdAt: string;
   createdBy: number;
   updatedAt: string;

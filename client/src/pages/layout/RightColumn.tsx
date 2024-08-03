@@ -29,8 +29,6 @@ import Search from './search/Search';
 function RightColumn() {
   const { data: menuItems, isLoading: isMenuItemLoading } = useMenusQuery({});
 
-  console.log('menuItems', menuItems);
-
   const { data: menuCateogries, isLoading: isMenuCategoriesLoading } = useMenuCategoriesQuery({});
 
   const [searchItem, setSearchItem] = useState('');
