@@ -1,6 +1,7 @@
 export default {
   home: '',
   signup: 'signup',
+  menus: 'menus',
   signin: 'signin',
   products: 'products',
   leave: 'leave',
