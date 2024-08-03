@@ -1,5 +1,5 @@
 export default {
-  home: '',
+  home: '/home',
   signup: 'signup',
   menus: 'menus',
   signin: 'signin',

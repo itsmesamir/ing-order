@@ -14,13 +14,12 @@ import paths from 'constants/paths';
 function Router() {
   return (
     <BrowserRouter>
-      <Route exact path={createRoute([paths.menus])} component={PageLayout} />
-
       <Route exact path={createRoute([paths.signin])} component={SignIn} />
 
       <Route exact path={createRoute([paths.signup])} component={SignUp} />
 
-      <AuthRoute path={paths.home}>
+      <AuthRoute path="/">
+        <Route exact path={createRoute([paths.menus])} component={PageLayout} />
         <Route path={createRoute([])} component={Home} />
       </AuthRoute>
     </BrowserRouter>
