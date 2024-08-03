@@ -28,7 +28,7 @@ function RightColumn() {
   const [searchItem, setSearchItem] = useState('');
 
   if (!menuItems || isLoading) {
-    return 'Loading...';
+    return <>Loading...</>;
   }
 
   return (
