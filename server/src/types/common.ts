@@ -1,3 +1,5 @@
+import { User } from './user';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type Any = any;
 
@@ -148,13 +150,17 @@ export enum PaymentStatusEnum {
 
 export interface Order {
   id: number;
-  userId: number;
-  cafeId: number;
-  totalPrice: number;
-  createdAt: string;
-  createdBy: number;
-  updatedAt: string;
-  updatedBy: number;
+  user: User;
+  transaction_id: string;
+  order_date: string;
+  status: string;
+  created_by: number;
+  created_at: string;
+  updated_by?: number;
+  updated_at?: string;
+  deleted_by?: number;
+  deleted_at?: string;
+  menu_items: MenuItem[];
 }
 
 export interface OrderStatus {

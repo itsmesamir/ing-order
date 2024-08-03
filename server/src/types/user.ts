@@ -9,16 +9,16 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  country: string;
+  country?: string;
   countryId?: number;
-  department: string;
+  department?: string;
   designationId?: number;
   designation?: Designation;
   managerId?: number;
   manager?: MinimalUser;
   phone: string;
   roleIds?: number[];
-  roles: Role[];
+  roles?: Role[];
 }
 
 export interface UserFilters {
