@@ -5,6 +5,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 import SignIn from 'pages/signin/SignIn';
 import SignUp from 'pages/signup/SignUp';
+import PageLayout from 'pages/layout/PageLayout';
 
 import useUserStore from 'stores/useUserStore';
 
@@ -40,7 +41,7 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
-        <Toast />
+        {/* <Toast />
         <BrowserRouter>
           <Route exact path={createRoute([paths.signin])} component={SignIn} />
 
@@ -49,7 +50,9 @@ export function App() {
           <AuthRoute path={paths.home}>
             <Route path={createRoute([])} component={Home} />
           </AuthRoute>
-        </BrowserRouter>
+        </BrowserRouter> */}
+
+        <PageLayout />
       </ChakraProvider>
     </QueryClientProvider>
   );
