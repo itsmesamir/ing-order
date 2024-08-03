@@ -9,11 +9,16 @@ interface TCartState {
   errorData: Any;
 }
 
+interface Summary {
+  total: number;
+}
+
 interface TCartStore extends TCartState {
   addItem: (item: CartItem) => void;
   removeItem: (id: number) => void;
   clearCart: () => void;
   loadCart: () => void;
+  getSummary: (items: CartItem[]) => Summary;
 }
 
 const initialCartState: TCartState = {
@@ -76,6 +81,12 @@ const useCartStore = create<TCartStore>(set => ({
 
       return initialCartState;
     }),
+
+  getSummary: items => {
+    const total = items.reduce((accTotal, item) => accTotal + item.price * item.quantity, 0);
+
+    return { total };
+  },
 }));
 
 // Automatically load the cart from local storage on initialization

@@ -11,8 +11,9 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
+import { useMemo } from 'react';
 
-import { CartItem } from 'types/common';
+import useCartStore from 'stores/useCartStore';
 
 import en from 'constants/en';
 
@@ -31,7 +32,11 @@ const paymentSummary = [
   },
 ];
 
-function Order({ carts }: { carts: CartItem[] }) {
+function Order() {
+  const { items: carts, getSummary } = useCartStore();
+
+  const summary = useMemo(() => getSummary(carts), [carts]);
+
   return (
     <div className="p-6 bg-slate-200">
       {/* Ordered Items */}
@@ -52,6 +57,7 @@ function Order({ carts }: { carts: CartItem[] }) {
                 {en.ORDER.CURRENTY}
                 {cart.price}
               </p>
+              <p>{cart.quantity}</p>
             </div>
           </div>
         ))}

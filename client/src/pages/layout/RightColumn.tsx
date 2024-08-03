@@ -32,8 +32,6 @@ function RightColumn() {
 
   const [searchItem, setSearchItem] = useState('');
 
-  const { items: carts, addItem, removeItem, clearCart } = useCartStore();
-
   if (!menuItems || isMenuItemLoading) {
     return <>Loading...</>;
   }
@@ -75,7 +73,7 @@ function RightColumn() {
 
         {/* Order */}
         <div className="sticky top-[64px] right-0 w-80 pr-6 h-[70vh]">
-          <Order carts={carts} />
+          <Order />
         </div>
       </div>
     </div>
