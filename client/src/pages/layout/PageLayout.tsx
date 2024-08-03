@@ -7,7 +7,6 @@ function PageLayout() {
   return (
     <div className="flex">
       <Sidebar />
-
       <RightColumn />
     </div>
   );

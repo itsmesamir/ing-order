@@ -14,8 +14,8 @@ import React from 'react';
 
 function RightColumn() {
   return (
-    <div className="flex flex-col  flex-1">
-      <nav className="flex justify-between max-h-16 h-16  items-center px-6 sticky top-0 z-50">
+    <div className="flex flex-col flex-1">
+      <nav className="flex justify-between max-h-16 h-16  items-center px-6 sticky top-0 z-50 bg-white">
         <div className="flex">
           <div>search</div>
           <div>filter</div>
