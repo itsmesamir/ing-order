@@ -9,6 +9,18 @@ const dbTables = {
   fiscalYears: 'fiscal_years',
   leaveRequests: 'leave_requests',
   notifications: 'notifications',
+  cafes: 'cafes',
+  menuCategories: 'menu_categories',
+  menuItems: 'menu_items',
+  orders: 'orders',
+  orderItems: 'order_items',
+  orderStatus: 'order_status',
+  payments: 'payments',
+  payment_status: 'payment_status',
+  reviews: 'reviews',
+  colleges: 'colleges',
+  groups: 'groups',
+  userGroups: 'user_groups',
 } as const;
 
 export default dbTables;
