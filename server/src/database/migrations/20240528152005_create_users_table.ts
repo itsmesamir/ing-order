@@ -12,8 +12,6 @@ export async function up(knex: Knex): Promise<void> {
 
     table.string('phone', 20).notNullable();
 
-    table.integer('country_id').unsigned().references('id').inTable('countries');
-
     table
       .specificType('designation_id', 'bigint(19)')
       .unsigned()
@@ -28,6 +26,7 @@ export async function up(knex: Knex): Promise<void> {
       .inTable('users');
 
     table.string('password', 100).notNullable();
+    table.boolean('is_active').defaultTo(true);
 
     table.timestamp('created_at').defaultTo(knex.fn.now());
 
@@ -60,5 +59,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema.dropTable('users');
+  await knex.schema.dropTableIfExists('Users');
 }

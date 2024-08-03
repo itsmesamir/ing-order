@@ -1,13 +1,80 @@
 import { Knex } from 'knex';
 
 export async function seed(knex: Knex): Promise<void> {
-  // Deletes ALL existing entries
   await knex('roles').del();
 
-  // Inserts seed entries
   await knex('roles').insert([
-    { id: 1, name: 'Admin', created_by: 1 },
-    { id: 2, name: 'User', created_by: 1 },
-    { id: 3, name: 'Manager', created_by: 1 },
+    {
+      name: 'Admin',
+      created_at: new Date(),
+      created_by: 1,
+      updated_at: null,
+      updated_by: null,
+      deleted_at: null,
+      deleted_by: null,
+    },
+    {
+      name: 'Manager',
+      created_at: new Date(),
+      created_by: 1,
+      updated_at: null,
+      updated_by: null,
+      deleted_at: null,
+      deleted_by: null,
+    },
+    {
+      name: 'College Admin',
+      created_at: new Date(),
+      created_by: 1,
+      updated_at: null,
+      updated_by: null,
+      deleted_at: null,
+      deleted_by: null,
+    },
+    {
+      name: 'College Manager',
+      created_at: new Date(),
+      created_by: 1,
+      updated_at: null,
+      updated_by: null,
+      deleted_at: null,
+      deleted_by: null,
+    },
+    {
+      name: 'Super Admin',
+      created_at: new Date(),
+      created_by: 1,
+      updated_at: null,
+      updated_by: null,
+      deleted_at: null,
+      deleted_by: null,
+    },
+    {
+      name: 'HR',
+      created_at: new Date(),
+      created_by: 1,
+      updated_at: null,
+      updated_by: null,
+      deleted_at: null,
+      deleted_by: null,
+    },
+    {
+      name: 'Cafe Manager',
+      created_at: new Date(),
+      created_by: 1,
+      updated_at: null,
+      updated_by: null,
+      deleted_at: null,
+      deleted_by: null,
+    },
+    {
+      name: 'Cafe Admin',
+      created_at: new Date(),
+      created_by: 1,
+      updated_at: null,
+      updated_by: null,
+      deleted_at: null,
+      deleted_by: null,
+    },
   ]);
 }
