@@ -1,7 +1,7 @@
 import { buildUrl } from 'utils/string';
 import http from 'utils/http';
 
-import { Any, Order, OrderItem } from 'types/common';
+import { Any, Order } from 'types/common';
 
 import api from 'constants/api';
 
