@@ -19,6 +19,7 @@ const api = {
   updateLeaveStatus: '/leave-requests/:id/status',
   leave: '/leave',
   updateLeave: '/leave/:id',
+  menus: '/menus',
 };
 
 export default api;

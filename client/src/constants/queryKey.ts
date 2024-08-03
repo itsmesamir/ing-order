@@ -11,4 +11,5 @@ export default {
   fiscalYears: 'fiscal-years',
   currentUser: 'currentuser',
   leaveRequests: 'leaveRequests',
+  menus: 'menus',
 } as const;

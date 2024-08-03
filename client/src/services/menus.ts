@@ -1,0 +1,38 @@
+import { buildUrl } from 'utils/string';
+import http from 'utils/http';
+
+import { Any, MenuItem } from 'types/common';
+
+import api from 'constants/api';
+
+export async function fetchMenus(params: Any, signal?: AbortSignal): Promise<MenuItem[]> {
+  const url = buildUrl(api.menus);
+
+  const { data } = await http.get(url, { signal, params });
+
+  return data;
+}
+
+export async function fetchMenuById(
+  id: number,
+  params: Any,
+  signal?: AbortSignal
+): Promise<MenuItem> {
+  const url = buildUrl(api.menus, id);
+
+  const { data } = await http.get(url, { signal, params });
+
+  return data;
+}
+
+export async function updateMenuById(
+  id: number,
+  body: Any,
+  signal?: AbortSignal
+): Promise<MenuItem[]> {
+  const url = buildUrl(api.menus, id);
+
+  const { data } = await http.put(url, body, { signal });
+
+  return data;
+}

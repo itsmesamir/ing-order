@@ -1,8 +1,14 @@
 import MenuItemList from 'components/MenuItemList';
 
+import { useMenusQuery } from 'hooks/useMenusQuery';
+
 import Order from './order/Order';
 
 function RightColumn() {
+  const { data: menus } = useMenusQuery({});
+
+  console.log(menus);
+
   return (
     <div className="flex flex-col flex-1">
       <nav className="flex justify-between max-h-16 h-16  items-center px-6 sticky top-0 z-50 bg-white">
