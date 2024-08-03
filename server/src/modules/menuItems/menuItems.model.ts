@@ -56,8 +56,6 @@ class MenuItemModel extends BaseModel {
 
     this.injectFilter(query, filters);
 
-    console.log('dd', query.toString());
-
     return query.then(data => data.map(this.mapToModel));
   }
 
@@ -70,7 +68,12 @@ class MenuItemModel extends BaseModel {
    * @returns {Knex.QueryBuilder<MenuItem>}
    */
   static fetchById(id: number, filters: Any, trx?: Knex.Transaction) {
-    return this.queryBuilder(trx).select('*').from({ mi: this.table }).where('id', id).first();
+    return this.queryBuilder(trx)
+      .select('*')
+      .from({ mi: this.table })
+      .where('id', id)
+      .first()
+      .then(this.mapToModel);
   }
 
   /**
