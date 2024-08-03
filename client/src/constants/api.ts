@@ -20,6 +20,7 @@ const api = {
   leave: '/leave',
   updateLeave: '/leave/:id',
   menus: '/menus',
+  menuCategories: '/menus/categories',
 };
 
 export default api;

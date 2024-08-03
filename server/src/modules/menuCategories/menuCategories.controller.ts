@@ -13,5 +13,7 @@ import * as menuCategoriesService from './menuCategories.service';
 export const fetchMenuCategories = async (req: Request, res: Response) => {
   const menuCategories = await menuCategoriesService.fetchMenuCategories({});
 
+  console.log({ menuCategories });
+
   return res.status(HttpStatus.OK).json({ data: menuCategories });
 };

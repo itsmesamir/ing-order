@@ -36,3 +36,11 @@ export async function updateMenuById(
 
   return data;
 }
+
+export async function fetchMenuCategories(params: Any, signal?: AbortSignal): Promise<MenuItem[]> {
+  const url = buildUrl(api.menuCategories);
+
+  const { data } = await http.get(url, { signal, params });
+
+  return data;
+}

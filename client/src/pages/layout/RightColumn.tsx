@@ -19,15 +19,18 @@ import InputField from 'components/InputField';
 import Input from 'components/common/input';
 
 import { useMenusQuery } from 'hooks/useMenusQuery';
+import { useMenuCategoriesQuery } from 'hooks/useMenuCategoriesQuery';
 
 import Order from './order/Order';
 
 function RightColumn() {
-  const { data: menuItems, isLoading } = useMenusQuery({});
+  const { data: menuItems, isLoading: isMenuItemLoading } = useMenusQuery({});
+
+  const { data: menuCateogries, isLoading: isMenuCategoriesLoading } = useMenuCategoriesQuery({});
 
   const [searchItem, setSearchItem] = useState('');
 
-  if (!menuItems || isLoading) {
+  if (!menuItems || isMenuItemLoading) {
     return <>Loading...</>;
   }
 
@@ -61,6 +64,7 @@ function RightColumn() {
 
       {/* body */}
       <div className="flex bg-gray-100 pt-6">
+        {/* TODO: susmita Add menu category list like in design */}
         <div className="flex flex-wrap gap-12 flex-1  justify-center px-6">
           <MenuItemList menuItems={menuItems} />
         </div>
