@@ -1,9 +1,9 @@
 import { StarIcon } from '@chakra-ui/icons';
 import { Button, Card, CardBody, Flex, HStack, Image, Text, VStack } from '@chakra-ui/react';
 
-import ItemCounter from './ItemCounter';
-
 import { CartItem, MenuItem } from 'types/common';
+
+import ItemCounter from './ItemCounter';
 
 interface MenuItemCardProps {
   item: MenuItem;
@@ -58,7 +58,14 @@ function MenuItemCard(props: MenuItemCardProps) {
         </VStack>
         <Flex justify="space-between" my="2">
           <ItemCounter />
-          <Button background="#EE5733" color="#FFFFFF" fontSize="xs">
+          <Button
+            background="#EE5733"
+            color="#FFFFFF"
+            fontSize="xs"
+            onClick={() => {
+              addItem({ item, quantity: 1, price: item.price, discount: item.discount });
+            }}
+          >
             Add to Cart
           </Button>
         </Flex>
