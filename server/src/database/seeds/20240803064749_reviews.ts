@@ -84,7 +84,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       user_id: 7,
       cafe_id: 7,
-      menu_item_id: 7,
+      menu_item_id: 6,
       rating: 4,
       comment: 'Nice brownie, but service was slow.',
       created_by: 7,
