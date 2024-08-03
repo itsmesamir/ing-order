@@ -15,4 +15,5 @@ export default {
   countries: 'countries',
   leaveTypes: 'leave-types',
   leaveRequests: 'leave-request',
+  menuDetail: 'menu/details',
 } as const;

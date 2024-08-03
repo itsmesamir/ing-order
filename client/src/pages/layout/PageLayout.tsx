@@ -1,12 +1,11 @@
-import React from 'react';
+import DashboardDrawer from 'pages/dashboard/components/DashboardDrawer';
 
-import Sidebar from './Sidebar';
 import RightColumn from './RightColumn';
 
 function PageLayout() {
   return (
     <div className="flex">
-      <Sidebar />
+      <DashboardDrawer />
       <RightColumn />
     </div>
   );
