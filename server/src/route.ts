@@ -10,6 +10,7 @@ import leaveRequestsRoute from '@/modules/leaveRequests/leaveRequest.route';
 import countriesRoute from '@/modules/countries/countries.route';
 import fiscalYearsRoute from '@/modules/fiscalYears/fiscalYears.route';
 import menuCategoriesRoute from '@/modules/menuCategories/menuCategories.route';
+import ordersRoute from '@/modules/orders/orders.route';
 import menuItemsRoute from '@/modules/menuItems/menuItems.route';
 
 import { addToStore } from '@/services/store';
@@ -54,6 +55,7 @@ router.use('/leave-requests', leaveRequestsRoute);
 router.use('/fiscal-years', fiscalYearsRoute);
 router.use('/menus/categories', menuCategoriesRoute);
 router.use('/menus', menuItemsRoute);
+router.use('/orders', ordersRoute);
 router.use('/fiscal-years', fiscalYearsRoute);
 router.use('/fiscal-years', fiscalYearsRoute);
 router.use('/fiscal-years', fiscalYearsRoute);

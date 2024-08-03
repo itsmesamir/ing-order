@@ -41,6 +41,27 @@ export const fetchOrderById = async (
   return order;
 };
 
+// fetch order by userid
+
+/**
+ * Fetch list of orders by user ID.
+ *
+ * @param {number} userId
+ * @param {Knex.Transaction} [trx]
+ * @returns {Promise<Order[]>}
+ */
+
+export const fetchOrdersByUserId = async (
+  userId: number,
+  trx?: Knex.Transaction
+): Promise<Order[]> => {
+  log.info(`Fetching orders for user with ID ${userId}`);
+
+  const orders = await OrderModel.fetchByUserId(userId, trx);
+
+  return orders;
+};
+
 /**
  * Create a new order.
  *
