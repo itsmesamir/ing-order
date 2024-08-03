@@ -47,7 +47,7 @@ function Order({ carts }: { carts: CartItem[] }) {
               className="rounded-lg"
             />
             <div className="ml-4">
-              <p className="text-base font-semibold">{cart.item?.cafe?.name}</p>
+              <p className="text-base font-semibold">{cart.item?.name}</p>
               <p className="text-lg font-semibold">
                 {en.ORDER.CURRENTY}
                 {cart.price}
