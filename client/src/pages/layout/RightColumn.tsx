@@ -17,11 +17,13 @@ import { MdSettings } from 'react-icons/md';
 import MenuItemList from 'components/MenuItemList';
 import InputField from 'components/InputField';
 import Input from 'components/common/input';
+import ImageCarousel from 'components/common/ImageCarousel/ImageCarousel';
 
 import { useMenusQuery } from 'hooks/useMenusQuery';
 import { useMenuCategoriesQuery } from 'hooks/useMenuCategoriesQuery';
 
 import Order from './order/Order';
+import Vendors from './vendors/Vendors';
 
 function RightColumn() {
   const { data: menuItems, isLoading: isMenuItemLoading } = useMenusQuery({});
@@ -64,9 +66,13 @@ function RightColumn() {
 
       {/* body */}
       <div className="flex bg-gray-100 pt-6">
-        {/* TODO: susmita Add menu category list like in design */}
-        <div className="flex flex-wrap gap-12 flex-1  justify-center px-6">
-          <MenuItemList menuItems={menuItems} />
+        <div className="flex-1">
+          <Vendors />
+
+          {/* TODO: susmita Add menu category list like in design */}
+          <div className="flex flex-wrap gap-12 justify-center">
+            <MenuItemList menuItems={menuItems} />
+          </div>
         </div>
 
         {/* Order */}
