@@ -28,15 +28,15 @@ const queryClient = new QueryClient({
 });
 
 export function App() {
-  // const { loading, fetchUser } = useUserStore();
+  const { loading, fetchUser } = useUserStore();
 
-  // useEffect(() => {
-  //   fetchUser();
-  // }, [fetchUser]);
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
