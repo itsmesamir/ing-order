@@ -11,7 +11,7 @@ import * as menuItemsService from './menuItems.service';
  * @returns {Promise<Response>}
  */
 export const fetchMenuItems = async (req: Request, res: Response) => {
-  const menuItems = await menuItemsService.fetchMenuItems({});
+  const menuItems = await menuItemsService.fetchMenuItems(req.query);
 
   return res.status(HttpStatus.OK).json({ data: menuItems });
 };

@@ -10,6 +10,24 @@ class MenuItemModel extends BaseModel {
   static table = dbTables.menuItems;
 
   /**
+   * Inject filter in query.
+   *
+   * @param {Knex.QueryBuilder} query
+   * @param {FilterMenuItemsParams} filters
+   */
+  static injectFilter(query: Knex.QueryBuilder, filters: Any) {
+    if (filters?.name) {
+      query.whereILike('mi.name', `%${filters.name}%`);
+    }
+
+    if (filters?.cafeName) {
+      query.whereILike('c.name', `${filters.cafeName}`);
+    }
+
+    return query;
+  }
+
+  /**
    * Insert data into menu items table.
    *
    * @param {Partial<MenuItem>} data
@@ -28,15 +46,18 @@ class MenuItemModel extends BaseModel {
    * @returns {Knex.QueryBuilder<MenuItem[]>}
    */
   static fetch(filters: Any, trx?: Knex.Transaction) {
-    return this.queryBuilder(trx)
+    const query = this.queryBuilder(trx)
       .select('mi.*')
       .select({
         cafe_name: 'c.name',
       })
       .from({ mi: this.table })
       .leftJoin({ c: dbTables.cafes }, 'c.id', 'mi.cafe_id')
-      .where(filters)
-      .then(data => data.map(this.mapToModel));
+      .where(filters);
+
+    this.injectFilter(query, trx);
+
+    return query.then(data => data.map(this.mapToModel));
   }
 
   /**
