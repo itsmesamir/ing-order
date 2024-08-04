@@ -1,14 +1,8 @@
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
+import Home from 'pages/home';
 import SignIn from 'pages/signin/SignIn';
 import SignUp from 'pages/signup/SignUp';
-import PageLayout from 'pages/layout/PageLayout';
-import UserOrders from 'pages/userOrders/UserOrders';
-import AdminOrders from 'pages/adminOrders/AdminOrders';
-import Home from 'pages/home';
-import Dashboard from 'pages/dashboard/Dashboard';
-import OrderHistory from 'pages/orderHistory/OrderHistory';
-import Feedback from 'pages/feedback/Feedback';
 
 import AuthRoute from 'components/AuthRoute';
 
@@ -20,22 +14,13 @@ function Router() {
   return (
     <BrowserRouter>
       <Switch>
-        <AuthRoute path={createRoute([paths.home])} component={Home} />
+        <AuthRoute path={createRoute([])} component={Home} />
 
         <Route exact path={createRoute([paths.signin])} component={SignIn} />
 
         <Route exact path={createRoute([paths.signup])} component={SignUp} />
 
-        <Route exact path={createRoute([paths.adminOrders])} component={AdminOrders} />
-
-        <Route exact path={createRoute([paths.dashboard])} component={Dashboard} />
-        <Route exact path={createRoute([paths.userOrders])} component={UserOrders} />
-
-        <Route exact path={createRoute([paths.orders])} component={OrderHistory} />
-
-        <Route exact path={createRoute([paths.feedbacks])} component={Feedback} />
-
-        <Redirect to={createRoute([paths.home])} />
+        <Redirect to={createRoute([])} />
       </Switch>
     </BrowserRouter>
   );

@@ -1,8 +1,12 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import DashboardDrawer from 'pages/dashboard/components/DashboardDrawer';
+import Feedback from 'pages/feedback/Feedback';
 import PageLayout from 'pages/layout/PageLayout';
+import Dashboard from 'pages/dashboard/Dashboard';
+import UserOrders from 'pages/userOrders/UserOrders';
+import AdminOrders from 'pages/adminOrders/AdminOrders';
+import OrderHistory from 'pages/orderHistory/OrderHistory';
 
 import useUserStore from 'stores/useUserStore';
 
@@ -21,13 +25,22 @@ function Home() {
 
   return (
     <div>
-      {/* <DashboardDrawer /> */}
       <Header currentUser={user} />
 
       <Switch>
-        <Route path={createRoute([paths.home, paths.menus])} component={PageLayout} />
+        <Route path={createRoute([paths.menus])} component={PageLayout} />
 
-        <Redirect to={createRoute([paths.home, paths.menus])} />
+        <Route exact path={createRoute([paths.adminOrders])} component={AdminOrders} />
+
+        <Route exact path={createRoute([paths.dashboard])} component={Dashboard} />
+
+        <Route exact path={createRoute([paths.userOrders])} component={UserOrders} />
+
+        <Route exact path={createRoute([paths.orders])} component={OrderHistory} />
+
+        <Route exact path={createRoute([paths.feedbacks])} component={Feedback} />
+
+        <Redirect to={createRoute([paths.menus])} />
       </Switch>
     </div>
   );
