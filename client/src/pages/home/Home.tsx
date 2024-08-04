@@ -11,6 +11,7 @@ import OrderHistory from 'pages/orderHistory/OrderHistory';
 import useUserStore from 'stores/useUserStore';
 
 import Header from 'components/common/header/Header';
+import DashboardLayout from 'components/DashboardLayout';
 
 import { createRoute } from 'utils/route';
 
@@ -24,9 +25,7 @@ function Home() {
   }
 
   return (
-    <div>
-      <Header currentUser={user} />
-
+    <DashboardLayout bgColor="white">
       <Switch>
         <Route path={createRoute([paths.menus])} component={PageLayout} />
 
@@ -42,7 +41,7 @@ function Home() {
 
         <Redirect to={createRoute([paths.menus])} />
       </Switch>
-    </div>
+    </DashboardLayout>
   );
 }
 

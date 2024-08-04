@@ -10,6 +10,8 @@ import { createRoute } from 'utils/route';
 
 import paths from 'constants/paths';
 
+import DashboardLayout from './DashboardLayout';
+
 function Router() {
   return (
     <BrowserRouter>
