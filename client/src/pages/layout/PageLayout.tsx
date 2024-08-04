@@ -36,43 +36,39 @@ function PageLayout() {
   }
 
   return (
-    <div className="flex">
-      <DashboardDrawer />
-
-      <Switch>
-        <Route
-          exact
-          path={createRoute([paths.menus, paths.list])}
-          render={() => (
-            <RightColumn>
-              {/* body */}
-              <div className="flex bg-gray-100 pt-6">
-                <div className="flex flex-wrap gap-12 flex-1  justify-center px-6">
-                  <MenuItemList menuItems={menuItems} />
-                </div>
-
-                {/* Order */}
-                <div className="sticky top-[64px] right-0 w-80 pr-6 h-[70vh]">
-                  <Order />
-                </div>
+    <Switch>
+      <Route
+        exact
+        path={createRoute([paths.menus, paths.list])}
+        render={() => (
+          <RightColumn>
+            {/* body */}
+            <div className="flex bg-gray-100 pt-6">
+              <div className="flex flex-wrap gap-12 flex-1  justify-center px-6">
+                <MenuItemList menuItems={menuItems} />
               </div>
-            </RightColumn>
-          )}
-        />
 
-        <Route
-          exact
-          path={createRoute([paths.menus, paths.id, paths.detail])}
-          render={() => (
-            <RightColumn>
-              <MenuDetail />
-            </RightColumn>
-          )}
-        />
+              {/* Order */}
+              <div className="sticky top-[64px] right-0 w-80 pr-6 h-[70vh]">
+                <Order />
+              </div>
+            </div>
+          </RightColumn>
+        )}
+      />
 
-        <Redirect to={createRoute([paths.menus, paths.list])} />
-      </Switch>
-    </div>
+      <Route
+        exact
+        path={createRoute([paths.menus, paths.id, paths.detail])}
+        render={() => (
+          <RightColumn>
+            <MenuDetail />
+          </RightColumn>
+        )}
+      />
+
+      <Redirect to={createRoute([paths.menus, paths.list])} />
+    </Switch>
   );
 }
 
