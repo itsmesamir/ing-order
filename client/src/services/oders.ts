@@ -36,3 +36,13 @@ export async function updateOrderById(
 
   return data;
 }
+
+// post order
+
+export async function createOrder(body: Any, signal?: AbortSignal): Promise<Order> {
+  const url = buildUrl(api.orders);
+
+  const { data } = await http.post(url, body, { signal });
+
+  return data;
+}

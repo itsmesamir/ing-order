@@ -11,9 +11,19 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+
+import * as orderServices from 'services/oders';
 
 import useCartStore from 'stores/useCartStore';
+import useUserStore from 'stores/useUserStore';
+
+import Loading from 'components/common/Loading';
+
+import * as toast from 'utils/toast';
+import { handleError } from 'utils/handleError';
+
+import { CartItem } from 'types/common';
 
 import en from 'constants/en';
 
@@ -34,9 +44,59 @@ const paymentSummary = [
 ];
 
 function Order() {
+  const { data: currentUser } = useUserStore();
+  const [submitting, setSubmitting] = useState(false);
+
   const { items: carts, getSummary, clearCart } = useCartStore();
 
+  const mapSummaryToPayload = (cart: CartItem[]) => {
+    return {
+      user: { id: currentUser?.id },
+      menu_items: cart.map(item => ({
+        id: item?.menu?.id,
+        cafeId: item.menu?.cafeId,
+        quantity: item.quantity,
+        price: Number(item.price),
+        discount: Number(item.discount),
+      })),
+    };
+  };
+  const payload = useMemo(() => mapSummaryToPayload(carts), [carts]);
+
   const summary = useMemo(() => getSummary(carts), [carts]);
+
+  const handlePlaceOrder = async () => {
+    if (carts.length === 0) {
+      toast.error({
+        title: 'Error',
+        message: 'Your cart is empty. Please add items to the cart before placing an order.',
+      });
+
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      // if (order) {
+      //   await orderServices.updateOrderById(order.id, payload);
+      // } else {
+      await orderServices.createOrder(payload);
+      // }
+
+      toast.success({
+        title: 'Success',
+        message: `Order created successfully.`,
+        // message: order ? `Order updated successfully.` : `Order created successfully.`,
+      });
+
+      clearCart();
+    } catch (err) {
+      handleError(err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="p-6 bg-slate-200">
@@ -92,14 +152,8 @@ function Order() {
       </TableContainer>
 
       <div className="w-100 mt-6 center">
-        <Button
-          colorScheme="orange"
-          className="w-100"
-          onClick={() => {
-            clearCart();
-          }}
-        >
-          Place Order
+        <Button colorScheme="orange" className="w-100" onClick={handlePlaceOrder}>
+          {submitting ? <Loading /> : 'Place Order'}
         </Button>
       </div>
     </div>
