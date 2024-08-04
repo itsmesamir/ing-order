@@ -199,6 +199,7 @@ export interface OrderItem {
   quantity: number;
   price: number;
   discount: number;
+  imageUrl?: string;
   createdAt?: string;
   createdBy?: number;
   updatedAt?: string;
