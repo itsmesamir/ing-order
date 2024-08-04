@@ -10,6 +10,23 @@ class MenuItemModel extends BaseModel {
   static table = dbTables.menuItems;
 
   /**
+   * Base query.
+   *
+   * @param {id} number
+   * @param {Knex.Transaction} trx
+   * @returns
+   */
+  static baseQuery(trx?: Knex.Transaction) {
+    return this.queryBuilder(trx)
+      .select('mi.*')
+      .select({
+        cafe_name: 'c.name',
+      })
+      .from({ mi: this.table })
+      .leftJoin({ c: dbTables.cafes }, 'c.id', 'mi.cafe_id');
+  }
+
+  /**
    * Inject filter in query.
    *
    * @param {Knex.QueryBuilder} query
@@ -46,13 +63,7 @@ class MenuItemModel extends BaseModel {
    * @returns {Knex.QueryBuilder<MenuItem[]>}
    */
   static fetch(filters: Any, trx?: Knex.Transaction) {
-    const query = this.queryBuilder(trx)
-      .select('mi.*')
-      .select({
-        cafe_name: 'c.name',
-      })
-      .from({ mi: this.table })
-      .leftJoin({ c: dbTables.cafes }, 'c.id', 'mi.cafe_id');
+    const query = this.baseQuery(trx);
 
     this.injectFilter(query, filters);
 
@@ -68,12 +79,7 @@ class MenuItemModel extends BaseModel {
    * @returns {Knex.QueryBuilder<MenuItem>}
    */
   static fetchById(id: number, filters: Any, trx?: Knex.Transaction) {
-    return this.queryBuilder(trx)
-      .select('*')
-      .from({ mi: this.table })
-      .where('id', id)
-      .first()
-      .then(this.mapToModel);
+    return this.baseQuery(trx).where('id', id).first().then(this.mapToModel);
   }
 
   /**

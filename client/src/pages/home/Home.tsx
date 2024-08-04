@@ -10,7 +10,6 @@ import OrderHistory from 'pages/orderHistory/OrderHistory';
 
 import useUserStore from 'stores/useUserStore';
 
-import Header from 'components/common/header/Header';
 import DashboardLayout from 'components/DashboardLayout';
 
 import { createRoute } from 'utils/route';
