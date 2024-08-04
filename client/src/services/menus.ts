@@ -1,5 +1,6 @@
 import { buildUrl } from 'utils/string';
 import http from 'utils/http';
+import { interpolate } from 'utils/interpolate';
 
 import { Any, MenuItem } from 'types/common';
 
@@ -13,14 +14,10 @@ export async function fetchMenus(params: Any, signal?: AbortSignal): Promise<Men
   return data;
 }
 
-export async function fetchMenuById(
-  id: number,
-  params: Any,
-  signal?: AbortSignal
-): Promise<MenuItem> {
-  const url = buildUrl(api.menus, id);
+export async function fetchMenuById(id: number, signal?: AbortSignal): Promise<MenuItem> {
+  const url = buildUrl(interpolate(api.menuItemById, { id }));
 
-  const { data } = await http.get(url, { signal, params });
+  const { data } = await http.get(url, { signal });
 
   return data;
 }

@@ -55,3 +55,12 @@ export function isDateBetween(
 ) {
   return moment(date).isBetween(startDate, endDate, granularity, inclusivity);
 }
+
+/**
+ * Converts an ISO 8601 timestamp to a relative time string.
+ * @param {string} timestamp - The ISO 8601 timestamp to be converted.
+ * @returns {string} - A relative time string (e.g., "a day ago", "2 hours ago").
+ */
+export function getRelativeTime(timestamp: string): string {
+  return moment(timestamp).fromNow();
+}

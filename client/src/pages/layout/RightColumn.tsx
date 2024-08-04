@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Children, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -26,7 +26,13 @@ import { useMenuCategoriesQuery } from 'hooks/useMenuCategoriesQuery';
 import Order from './order/Order';
 import Search from './search/Search';
 
-function RightColumn() {
+type RightColumnProps = {
+  children: React.ReactNode;
+};
+
+function RightColumn(props: RightColumnProps) {
+  const { children } = props;
+
   const { data: menuItems, isLoading: isMenuItemLoading } = useMenusQuery({});
 
   const { data: menuCateogries, isLoading: isMenuCategoriesLoading } = useMenuCategoriesQuery({});
@@ -55,18 +61,7 @@ function RightColumn() {
         </div>
       </nav>
 
-      {/* body */}
-      <div className="flex bg-gray-100 pt-6">
-        {/* TODO: susmita Add menu category list like in design */}
-        <div className="flex flex-wrap gap-12 flex-1  justify-center px-6">
-          <MenuItemList menuItems={menuItems} />
-        </div>
-
-        {/* Order */}
-        <div className="sticky top-[64px] right-0 w-80 pr-6 h-[70vh]">
-          <Order />
-        </div>
-      </div>
+      {children}
     </div>
   );
 }

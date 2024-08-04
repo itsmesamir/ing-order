@@ -1,4 +1,4 @@
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import SignIn from 'pages/signin/SignIn';
 import SignUp from 'pages/signup/SignUp';
@@ -15,17 +15,19 @@ import paths from 'constants/paths';
 function Router() {
   return (
     <BrowserRouter>
-      <Route exact path={createRoute([paths.signin])} component={SignIn} />
+      <Switch>
+        <Route exact path={createRoute([paths.signin])} component={SignIn} />
 
-      <Route exact path={createRoute([paths.signup])} component={SignUp} />
+        <Route exact path={createRoute([paths.signup])} component={SignUp} />
 
-      <AuthRoute path="/">
-        <Route exact path={createRoute([paths.menus])} component={PageLayout} />
+        <AuthRoute path="/">
+          <Route path={createRoute([paths.menus])} component={PageLayout} />
 
-        <Route exact path={createRoute([paths.adminOrders])} component={AdminOrders} />
+          <Route exact path={createRoute([paths.adminOrders])} component={AdminOrders} />
 
-        <Route path={createRoute(['/home'])} component={Home} />
-      </AuthRoute>
+          <Route path={createRoute(['/home'])} component={Home} />
+        </AuthRoute>
+      </Switch>
     </BrowserRouter>
   );
 }

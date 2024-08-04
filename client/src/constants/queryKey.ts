@@ -12,6 +12,7 @@ export default {
   currentUser: 'currentuser',
   leaveRequests: 'leaveRequests',
   menus: 'menus',
+  reviews: 'reviews',
   menuCategories: 'menu-categories',
   orders: 'orders',
 } as const;

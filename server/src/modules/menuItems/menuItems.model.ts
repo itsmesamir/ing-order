@@ -124,8 +124,6 @@ class MenuItemModel extends BaseModel {
       updatedBy: item.updatedBy,
     };
 
-    console.log('data', item);
-
     return data as MenuItem;
   }
 }

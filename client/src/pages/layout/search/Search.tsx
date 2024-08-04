@@ -32,14 +32,6 @@ function Search(props: SearchProps) {
     setSearchItem(event.target.value);
   };
 
-  // useEffect(() => {
-  //   console.log('useeffect', isOpen, inputRef?.current);
-  //   if (isOpen && inputRef?.current) {
-  //     console.log('inputRef', inputRef.current);
-  //     inputRef.current.focus();
-  //   }
-  // }, [isOpen]);
-
   return (
     <div className="">
       <div

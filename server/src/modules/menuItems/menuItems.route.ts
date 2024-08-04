@@ -10,7 +10,7 @@ const router = Router();
 router.get('/', menuItemsController.fetchMenuItems);
 
 // Authenticated routes for specific menu item operations
-router.get('/:id', requireAuth, menuItemsController.fetchMenuItemById);
+router.get('/:id', menuItemsController.fetchMenuItemById);
 router.post('/', requireAuth, menuItemsController.createMenuItem);
 router.put('/:id', requireAuth, menuItemsController.updateMenuItemById);
 router.delete('/:id', requireAuth, menuItemsController.deleteMenuItemById);
