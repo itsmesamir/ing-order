@@ -103,13 +103,15 @@ function Order() {
   return (
     <Box overflow="auto" height="100%">
       <div className="p-6 bg-white rounded-lg overflow-auto h-100">
-        <Text>My Orders</Text>
+        <Text size="sm" fontSize={24} fontWeight={500} mb={5}>
+          My Orders
+        </Text>
         <div className="flex flex-col">
           {carts.map((cart: CartItem) => {
             const menu = cart.menu as MenuItem;
 
             return (
-              <div key={menu.id} className="border-b border-white first:pt-0 py-4">
+              <div key={menu.id} className="border-b border-white first:pt-0 py-4 flex">
                 <Image
                   boxSize="50px"
                   objectFit="cover"

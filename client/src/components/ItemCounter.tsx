@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { HStack, IconButton, ResponsiveValue, Text } from '@chakra-ui/react';
 
