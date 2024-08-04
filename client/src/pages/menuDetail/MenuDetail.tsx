@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { Image, Progress, Stack } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 
+import Order from 'pages/layout/order/Order';
+
 import { useMenuByIdQuery } from 'hooks/useMenuByIdQuery';
 
 import RightMenuDetail from './rightMenuDetail/RightMenuDetail';
@@ -21,35 +23,42 @@ function MenuDetail() {
     <div className="flex bg-gray-100 pt-6 px-6">
       <div className="flex flex-1 mr-6">
         <div className="rounded-lg bg-white w-full p-4">
-          <p>{menuItem.name}</p>
-          <p>{menuItem.cafe?.name}</p>
+          <div className="flex gap-x-4">
+            <div className="flex gap-3 flex-col flex-1">
+              <Image
+                height="400px"
+                objectFit="cover"
+                src={menuItem?.imageUrl}
+                alt="Dan Abramov"
+                className="rounded-lg w-full"
+              />
 
-          <div className="flex gap-3">
-            <Image
-              height="400px"
-              objectFit="cover"
-              src={menuItem?.imageUrl}
-              alt="Dan Abramov"
-              className="rounded-lg w-full"
-            />
+              <Image
+                height="128px"
+                width="180px"
+                objectFit="cover"
+                src={menuItem?.imageUrl}
+                alt="Dan Abramov"
+                className="rounded-lg "
+              />
+            </div>
 
-            <Image
-              height="128px"
-              width="180px"
-              objectFit="cover"
-              src={menuItem?.imageUrl}
-              alt="Dan Abramov"
-              className="rounded-lg "
-            />
+            <RightMenuDetail menuItem={menuItem} />
           </div>
 
-          <p className="mt-3 text-xl text-gray-600">{menuItem.description}</p>
+          <p className="text-3xl font-medium mt-6">{menuItem.name}</p>
+
+          <p className="text-base text-gray-400 mt-3">{menuItem.cafe?.name}</p>
+
+          <p className="mt-4 text-xl text-gray-700">{menuItem.description}</p>
 
           <MenuReview menuId={Number(id)} />
         </div>
       </div>
 
-      <RightMenuDetail menuItem={menuItem} />
+      <div className="sticky top-[64px] right-0 w-80 pr-6 h-[70vh]">
+        <Order />
+      </div>
     </div>
   );
 }
