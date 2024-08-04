@@ -3,6 +3,7 @@ import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import SignIn from 'pages/signin/SignIn';
 import SignUp from 'pages/signup/SignUp';
 import PageLayout from 'pages/layout/PageLayout';
+import UserOrders from 'pages/userOrders/UserOrders';
 import AdminOrders from 'pages/adminOrders/AdminOrders';
 import Home from 'pages/home';
 import Dashboard from 'pages/dashboard/Dashboard';
@@ -28,6 +29,7 @@ function Router() {
         <Route exact path={createRoute([paths.adminOrders])} component={AdminOrders} />
 
         <Route exact path={createRoute([paths.dashboard])} component={Dashboard} />
+        <Route exact path={createRoute([paths.userOrders])} component={UserOrders} />
 
         <Route exact path={createRoute([paths.orders])} component={OrderHistory} />
 

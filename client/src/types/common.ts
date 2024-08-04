@@ -172,6 +172,7 @@ export enum PaymentStatusEnum {
 export interface Order {
   id: number;
   userId: number;
+  name?: string;
   cafeId: number;
   totalPrice: number;
   status: OrderStatusEnum;
@@ -238,4 +239,15 @@ export interface Review {
   createdBy: number;
   updatedAt: string;
   updatedBy: number;
+}
+
+export interface CellData {
+  name: string;
+  className?: string;
+  icon?: JSX.Element;
+  state: React.Dispatch<React.SetStateAction<unknown>>;
+}
+
+export interface RowData<T> {
+  row: { index: number; original: T };
 }
