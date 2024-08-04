@@ -83,7 +83,8 @@ function MenuItemCard(props: MenuItemCardProps) {
               background="#EE5733"
               color="#FFFFFF"
               fontSize="xs"
-              onClick={() => {
+              onClick={e => {
+                e.preventDefault();
                 addItem({
                   menu: item,
                   quantity: count,
