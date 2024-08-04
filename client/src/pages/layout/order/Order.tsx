@@ -109,7 +109,7 @@ function Order() {
             const menu = cart.menu as MenuItem;
 
             return (
-              <div className="border-b border-white first:pt-0 py-4">
+              <div key={menu.id} className="border-b border-white first:pt-0 py-4">
                 <Image
                   boxSize="50px"
                   objectFit="cover"

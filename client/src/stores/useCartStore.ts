@@ -109,9 +109,11 @@ const useCartStore = create<TCartStore>((set, get) => ({
       const storedState = localStorage.getItem(localStorageKey);
 
       if (storedState) {
-        const parsedState: TCartState = JSON.parse(storedState);
-        parsedState.summary = get()?.getSummary(parsedState.items || []);
-        return parsedState;
+        const items: CartItem[] = JSON.parse(storedState);
+
+        const summary = get()?.getSummary(items || []);
+
+        return { ...initialCartState, items, summary };
       }
 
       return initialCartState;
