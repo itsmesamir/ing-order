@@ -49,7 +49,7 @@ function Order() {
   const { data: currentUser } = useUserStore();
   const [submitting, setSubmitting] = useState(false);
 
-  const { items: carts, getSummary, addItem, updateItemCount, clearCart } = useCartStore();
+  const { items: carts, summary, updateItemCount, clearCart } = useCartStore();
 
   const mapSummaryToPayload = (cart: CartItem[]) => {
     return {
@@ -64,8 +64,6 @@ function Order() {
     };
   };
   const payload = useMemo(() => mapSummaryToPayload(carts), [carts]);
-
-  const summary = useMemo(() => getSummary(carts), [carts]);
 
   const [count, setCount] = useState(1);
 
@@ -139,7 +137,7 @@ function Order() {
 
         {/* Payment Summary */}
         <div>
-          <Text fontSize={{ base: '2xl', md: '3xl' }}>{en.ORDER.PAYMENT_SUMMARY}</Text>
+          <Text fontSize={{ base: 'lg', md: 'lg' }}>{en.ORDER.PAYMENT_SUMMARY}</Text>
         </div>
 
         <TableContainer>
@@ -152,14 +150,24 @@ function Order() {
           </Thead> */}
 
             <Tbody>
-              {paymentSummary.map(item => (
-                <Tr>
-                  <Td fontSize={{ base: 'large' }} fontWeight="semibold" className="mx-0 py-4">
-                    {item.title}
-                  </Td>
-                  <Td fontSize={{ base: 'large' }}>{item.value}</Td>
-                </Tr>
-              ))}
+              <Tr>
+                <Td fontSize={{ base: 'large' }} fontWeight="semibold" className="mx-0 py-4">
+                  Sub Total
+                </Td>
+                <Td fontSize={{ base: 'large' }}>{summary.subTotal}</Td>
+              </Tr>
+              <Tr>
+                <Td fontSize={{ base: 'large' }} fontWeight="semibold" className="mx-0 py-4">
+                  Tax
+                </Td>
+                <Td fontSize={{ base: 'large' }}>{summary.tax}</Td>
+              </Tr>
+              <Tr>
+                <Td fontSize={{ base: 'large' }} fontWeight="semibold" className="mx-0 py-4">
+                  Total
+                </Td>
+                <Td fontSize={{ base: 'large' }}>{summary.total}</Td>
+              </Tr>
             </Tbody>
           </Table>
         </TableContainer>
