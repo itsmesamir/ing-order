@@ -18,8 +18,11 @@ import { BiLogOut } from 'react-icons/bi';
 import { MdPayment } from 'react-icons/md';
 import { HiOutlineCalendar } from 'react-icons/hi';
 import { BsPerson, BsQuestionCircle } from 'react-icons/bs';
+import { FaComment, FaHistory, FaHome, FaSearch } from 'react-icons/fa';
 
 import useUserStore from 'stores/useUserStore';
+
+import { createRoute } from 'utils/route';
 
 import paths from 'constants/paths';
 
@@ -35,13 +38,20 @@ interface DrawerProps {
   onOpen: () => void;
 }
 
+const menuItems = [
+  { name: 'Dashboard', icon: <FaHome />, path: paths.dashboard },
+  { name: 'Menu', icon: <FaSearch />, path: createRoute([paths.menus, paths.list]) },
+  { name: 'Order History', icon: <FaHistory />, path: createRoute([paths.user, paths.orders]) },
+  { name: 'Feedback', icon: <FaComment />, path: paths.feedbacks },
+];
+
 function DashboardDrawerItems({ onOpen }: DrawerProps) {
   return (
     <Stack w="100%">
       <Flex p={4} justifyContent="space-between" alignItems="center">
         <Flex flexDir="column">
-          <Heading size="md">Zendenta</Heading>
-          <Text>Patient Management App</Text>
+          <Heading size="md">Ing Order</Heading>
+          <Text>Food App</Text>
         </Flex>
         {/* <IconButton
           aria-label="Main Drawer"
@@ -50,16 +60,9 @@ function DashboardDrawerItems({ onOpen }: DrawerProps) {
         /> */}
       </Flex>
 
-      {/* <NavItem icon={<BsQuestionCircle />} label="Overview" link={paths.home} />
-      <NavItem icon={<HiOutlineCalendar />} label="Calender" link={paths.home} />
-      <NavItem icon={<BsPerson />} label="Patient" link={paths.patient} />
-      <NavItem icon={<BsPerson />} label="Appointment" link={paths.appointment} />
-      <NavItem icon={<BsPerson />} label="Drugs" link={paths.drug} />
-      <NavItem icon={<BsPerson />} label="Prescription" link={paths.prescription} /> */}
-
-      <NavItem icon={<AiOutlineMessage />} label="Messages" link={paths.home} />
-      <NavItem icon={<MdPayment />} label="Payment Information" link={paths.home} />
-      <NavItem icon={<AiOutlineSetting />} label="Settings" link={paths.home} />
+      {menuItems.map(item => (
+        <NavItem key={item.name} icon={item.icon} label={item.name} link={item.path} />
+      ))}
 
       <Divider color="gray.300" />
       <NavItem

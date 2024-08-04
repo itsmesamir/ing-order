@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Flex } from '@chakra-ui/layout';
+import { useLocation } from 'react-router-dom';
 
 import { Any } from 'types/common';
 
@@ -13,9 +14,12 @@ type NavItemData = {
 };
 
 function NavItem({ icon, label, link, onClick }: NavItemData) {
+  const location = useLocation();
+  const isActive = location.pathname === link;
+
   return (
     <Link
-      href={link}
+      to={link}
       onClick={onClick}
       display="flex"
       alignItems="center"
@@ -23,7 +27,8 @@ function NavItem({ icon, label, link, onClick }: NavItemData) {
       pr={2}
       pl={4}
       mt={0}
-      color="gray.700"
+      bg={isActive ? 'orange.100' : 'transparent'}
+      color={isActive ? 'orange.500' : 'inherit'}
       _hover={{
         backgroundColor: 'gray.100',
       }}

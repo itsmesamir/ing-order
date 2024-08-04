@@ -34,7 +34,6 @@ function DashboardDrawer() {
 
   const handleMenuItemClick = (name: string, path: string) => {
     setActiveItem(name);
-    console.log(createRoute([path]));
     history.push(createRoute([path]));
     onClose();
   };
