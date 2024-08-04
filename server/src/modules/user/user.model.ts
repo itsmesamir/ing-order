@@ -50,7 +50,8 @@ class UserModel extends BaseModel {
         'd.name as designation_name',
         'roles.roles as roles',
         'm.id as manager_id',
-        'm.name as manager_name'
+        'm.name as manager_name',
+        'u.image_url as image_url'
       )
       .from('users as u')
       .leftJoin(rolesQuery.as('roles'), 'u.id', 'roles.user_id')
@@ -160,6 +161,7 @@ class UserModel extends BaseModel {
         name: user.managerName,
       },
       roles: user.roles,
+      imageUrl: user.imageUrl,
     };
 
     return data as User;

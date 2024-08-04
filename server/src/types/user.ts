@@ -19,6 +19,7 @@ export interface User {
   phone: string;
   roleIds?: number[];
   roles?: Role[];
+  imageUrl: string;
 }
 
 export interface UserFilters {
