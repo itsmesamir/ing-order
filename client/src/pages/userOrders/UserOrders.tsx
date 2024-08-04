@@ -85,7 +85,7 @@ function UserOrders() {
             return (
               <Link
                 passHref
-                to={`/${paths.userOrders}`}
+                to={`/${paths.adminOrders}`}
                 borderBottom="1px solid"
                 borderColor="gray.200"
                 _hover={{ bg: 'gray.50' }}
@@ -100,16 +100,17 @@ function UserOrders() {
                 >
                   <Flex justifyContent="space-between">
                     <Flex flexDir="column">
-                      <Heading size="md">Orders #{order.id}</Heading>
-                      <Text fontSize={['sm', 'md']}>
+                      <Heading size="sm" fontSize={20} mb={1}>
+                        Order #{order.id}
+                      </Heading>
+                      <Text fontSize={['sm', 'md']} color="#757575" mb={3}>
                         {getFormattedDate(order.createdAt, MMMM_DD_YYYY_H_MM_A)}
                       </Text>
                     </Flex>
                   </Flex>
-
                   <Flex>
                     <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing="4">
-                      {order.items.map(item => {
+                      {order.items.map((item, index) => {
                         if (!item || !item?.menu) {
                           return null;
                         }
@@ -117,43 +118,55 @@ function UserOrders() {
                         const { name, imageUrl } = item?.menu as MenuItem;
 
                         return (
-                          <Flex key={item.id} flexDir="row" m={2}>
+                          <Flex key={item.id} flexDir="row" m={2} align="center">
                             <Image
                               src={imageUrl || defaultImageUrl}
                               alt={name}
                               objectFit="cover"
-                              h="40px"
-                              w="40px"
+                              h="34px"
+                              w="44px"
+                              mr="10px"
                             />
-
-                            <Flex flexDir="column">
-                              <Heading size="md">{name}</Heading>
-                              <Flex>
-                                <Text>x{item.quantity}</Text>
-                                <Flex> Rs {item.price}</Flex>
+                            <Flex flexDir="column" flex="1">
+                              <Heading size="sm">{name}</Heading>
+                              <Flex gap={10}>
+                                <Text fontSize="sm" fontWeight="500">
+                                  x{item.quantity}
+                                </Text>
+                                <Text fontSize="sm" fontWeight="700">
+                                  Rs {item.price}
+                                </Text>
                               </Flex>
                             </Flex>
+                            {index < order.items.length - 1 && (
+                              <Box borderLeft="1px" borderColor="gray.200" height="34px" ml={34} />
+                            )}
                           </Flex>
                         );
                       })}
                     </SimpleGrid>
                   </Flex>
 
-                  <Flex justifyContent="space-between" w="full" bgColor="orange.300" p="2">
+                  <Flex justifyContent="space-between" w="full" bgColor="#F6E7E3" p="2">
                     <Flex alignItems="center">
-                      <Box>Dilevery Time:</Box>
+                      <Box>Delivery Time:</Box>
                       <Heading size="sm" ml={2}>
                         25 min
                       </Heading>
                     </Flex>
                     <Flex alignItems="center">
-                      <Flex>x{totalItems} items</Flex>
+                      <Box>Distance:</Box>
                       <Heading size="sm" ml={2}>
+                        3 km
+                      </Heading>
+                    </Flex>
+                    <Flex alignItems="center">
+                      <Flex>x{totalItems} items</Flex>
+                      <Heading size="md" ml={2}>
                         Rs {order.totalPrice}
                       </Heading>
                     </Flex>
                   </Flex>
-
                   <Flex flexDir="row" my={2} justifyContent="flex-end">
                     <StatusButton status={order.status} />
                   </Flex>
