@@ -174,6 +174,7 @@ export interface Order {
   userId: number;
   cafeId: number;
   totalPrice: number;
+  status: OrderStatusEnum;
   items: OrderItem[];
   createdAt: string;
   createdBy: number;

@@ -24,7 +24,7 @@ function Router() {
 
         <Route exact path={createRoute([paths.adminOrders])} component={AdminOrders} />
 
-        <Route path={createRoute(['/'])} component={Home} />
+        <Route path={createRoute(['/home'])} component={Home} />
       </AuthRoute>
     </BrowserRouter>
   );

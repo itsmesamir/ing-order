@@ -11,7 +11,7 @@ import * as ordersService from './orders.service';
  * @returns {Promise<Response>}
  */
 export const fetchOrders = async (req: Request, res: Response) => {
-  const orders = await ordersService.fetchOrders({});
+  const orders = await ordersService.fetchOrders(req.query);
 
   return res.status(HttpStatus.OK).json({ data: orders });
 };

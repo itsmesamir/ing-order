@@ -25,7 +25,7 @@ class OrderModel extends BaseModel {
         'o.total_price as totalPrice',
         'o.created_at as orderCreatedAt',
         'o.updated_at as orderUpdatedAt',
-        'us.status as orderStatus',
+        'us.status as status',
         'us.updated_at as statusUpdatedAt',
         'u.email',
         'u.name',
@@ -73,7 +73,23 @@ class OrderModel extends BaseModel {
       .leftJoin('OrderStatus as us', function () {
         this.on('latest_status.max_id', '=', 'us.id');
       })
-      .groupBy('o.id', 'u.id', 'c.id', 'cl.id', 'us.id');
+      .whereNull('o.deleted_at')
+      .groupBy('o.id', 'u.id', 'c.id', 'cl.id', 'us.id')
+      .orderBy('o.id', 'desc');
+  }
+
+  /**
+   * Inject filter in query.
+   *
+   * @param {Knex.QueryBuilder} query
+   * @param {FilterNotesParams} filters
+   */
+  static injectFilter(query: Knex.QueryBuilder, filters: Any) {
+    if (filters?.status) {
+      query.where('us.status', filters.status);
+    }
+
+    return query;
   }
 
   /**
@@ -84,7 +100,11 @@ class OrderModel extends BaseModel {
    * @returns {Knex.QueryBuilder<Order[]>}
    */
   static fetch(filters: Any, trx?: Knex.Transaction) {
-    return this.baseQuery(trx);
+    const query = this.baseQuery(trx);
+
+    this.injectFilter(query, filters);
+
+    return query;
   }
 
   /**

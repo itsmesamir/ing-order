@@ -155,7 +155,7 @@ export interface Order {
   user: User;
   transaction_id?: string;
   order_date: string;
-  status: string;
+  status: OrderStatusEnum;
   created_by: number;
   created_at: string;
   updated_by?: number;
