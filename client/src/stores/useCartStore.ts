@@ -14,6 +14,7 @@ interface Summary {
   total: number;
   tax: number;
   subTotal: number;
+  quantity?: number;
 }
 
 interface TCartStore extends TCartState {
@@ -30,7 +31,7 @@ const initialCartState: TCartState = {
   loading: false,
   error: false,
   errorData: null,
-  summary: { total: 0, tax: 0, subTotal: 0 },
+  summary: { total: 0, tax: 0, subTotal: 0, quantity: 0 },
 };
 
 const localStorageKey = 'cartState';
@@ -124,8 +125,9 @@ const useCartStore = create<TCartStore>((set, get) => ({
     const taxRate = 0.1; // Example tax rate
     const tax = subTotal * taxRate;
     const total = subTotal + tax;
+    const quantity = items.reduce((acc, item) => acc + item.quantity, 0);
 
-    return { total, tax, subTotal };
+    return { total, tax, subTotal, quantity };
   },
 }));
 

@@ -4,6 +4,8 @@ import { MdSettings, MdShoppingCart } from 'react-icons/md';
 
 import Search from 'pages/layout/search/Search';
 
+import useCartStore from 'stores/useCartStore';
+
 import { User } from 'types/User';
 
 type HeaderProps = {
@@ -12,6 +14,8 @@ type HeaderProps = {
 
 function Header(props: HeaderProps) {
   const { currentUser } = props;
+
+  const { summary } = useCartStore();
 
   const [searchItem, setSearchItem] = useState('');
 
@@ -41,7 +45,7 @@ function Header(props: HeaderProps) {
             textAlign="center"
             className="absolute -top-2 -right-2"
           >
-            10
+            {summary.quantity}
           </Badge>
 
           <MdShoppingCart size={24} />

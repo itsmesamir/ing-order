@@ -39,7 +39,7 @@ function PageLayout() {
     <Switch>
       <Route
         exact
-        path={createRoute([paths.home, paths.menus, paths.list])}
+        path={createRoute([paths.menus, paths.list])}
         render={() => (
           <RightColumn>
             {/* body */}
@@ -59,7 +59,7 @@ function PageLayout() {
 
       <Route
         exact
-        path={createRoute([paths.home, paths.menus, paths.id, paths.detail])}
+        path={createRoute([paths.menus, paths.id, paths.detail])}
         render={() => (
           <RightColumn>
             <MenuDetail />
@@ -67,7 +67,7 @@ function PageLayout() {
         )}
       />
 
-      <Redirect to={createRoute([paths.home, paths.menus, paths.list])} />
+      <Redirect to={createRoute([paths.menus, paths.list])} />
     </Switch>
   );
 }
