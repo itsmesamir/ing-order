@@ -20,6 +20,8 @@ const api = {
   leave: '/leave',
   updateLeave: '/leave/:id',
   menus: '/menus',
+  menuItemById: '/menus/:id',
+  reviews: 'reviews',
   menuCategories: '/menus/categories',
   orders: '/orders',
 };

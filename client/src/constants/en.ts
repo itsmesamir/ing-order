@@ -11,6 +11,13 @@ const en = {
   ORDER: {
     CURRENTY: 'RS.',
     PAYMENT_SUMMARY: 'Payment Summary',
+    PRICE: 'Price',
+    TOTAL_PRICE: 'Total Price',
+    QUANTITY: 'Quantity',
+  },
+
+  BUTTON: {
+    ADD_TO_CART: 'Add to cart',
   },
 };
 

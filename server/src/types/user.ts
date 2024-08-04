@@ -28,4 +28,12 @@ export interface UserFilters {
   excludeIds?: string;
 }
 
+export interface ReviewUser {
+  id: number;
+  imageUrl: string;
+  name: string;
+  email: string;
+  phone: number;
+}
+
 export type UserBody = Omit<User, 'id'>;

@@ -11,7 +11,7 @@ import * as reviewsService from './reviews.service';
  * @returns {Promise<Response>}
  */
 export const fetchReviews = async (req: Request, res: Response) => {
-  const reviews = await reviewsService.fetchReviews({});
+  const reviews = await reviewsService.fetchReviews(req.query);
 
   return res.status(HttpStatus.OK).json({ data: reviews });
 };

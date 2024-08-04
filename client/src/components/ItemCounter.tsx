@@ -1,9 +1,21 @@
 import React, { useState } from 'react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
-import { HStack, IconButton, Text } from '@chakra-ui/react';
+import { HStack, IconButton, ResponsiveValue, Text } from '@chakra-ui/react';
 
-function ItemCounter() {
-  const [count, setCount] = useState(1);
+type ItemCounterProps = {
+  variant?: 'default' | 'rounded';
+  size?: ResponsiveValue<string>;
+  quantity?: number;
+  countText?: {
+    fontSize?: string;
+    fontWeight?: string;
+  };
+};
+
+function ItemCounter(props: ItemCounterProps) {
+  const { variant = 'default', size = 'sm', countText, quantity } = props;
+
+  const [count, setCount] = useState(quantity || 1);
 
   const increaseCount = () => setCount(count + 1);
 
@@ -14,19 +26,27 @@ function ItemCounter() {
   };
 
   return (
-    <HStack spacing="1" align="center">
+    <HStack spacing="3" align="center">
       <IconButton
-        icon={<MinusIcon />}
+        backgroundColor={variant === 'rounded' ? 'gray.800' : 'white'}
+        rounded={variant === 'rounded' ? 'full' : 'md'}
+        icon={<MinusIcon color={variant === 'rounded' ? 'white' : 'black'} />}
         aria-label="Decrease quantity"
-        size="sm"
+        size={size}
         onClick={decreaseCount}
+        _hover={{ backgroundColor: 'gray.900' }}
       />
-      <Text>{count}</Text>
+      <Text fontSize={countText?.fontSize} fontWeight={countText?.fontWeight}>
+        {count}
+      </Text>
       <IconButton
-        icon={<AddIcon />}
+        backgroundColor={variant === 'rounded' ? 'gray.800' : 'white'}
+        rounded={variant === 'rounded' ? 'full' : 'md'}
+        icon={<AddIcon color={variant === 'rounded' ? 'white' : 'black'} />}
         aria-label="Increase quantity"
-        size="sm"
+        size={size}
         onClick={increaseCount}
+        _hover={{ backgroundColor: 'gray.900' }}
       />
     </HStack>
   );

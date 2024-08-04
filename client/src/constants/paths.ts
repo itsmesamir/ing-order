@@ -1,7 +1,10 @@
 export default {
+  id: ':id',
   home: '/home',
+  detail: 'detail',
   signup: 'signup',
   menus: 'menus',
+  list: 'list',
   signin: 'signin',
   products: 'products',
   leave: 'leave',

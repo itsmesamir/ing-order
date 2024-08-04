@@ -73,8 +73,6 @@ export const signUp = async (req: Request, res: Response) => {
 export const signIn = async (req: Request, res: Response) => {
   const user = await userService.signIn(req.body);
 
-  console.log(user);
-
   const tokens = await tokenService.generateAccessAndRefreshTokens({
     id: user.id,
     email: user.email,

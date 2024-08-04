@@ -1,4 +1,4 @@
-import { User } from './user';
+import { ReviewUser, User } from './user';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type Any = any;
@@ -218,4 +218,19 @@ export interface Review {
   createdBy: number;
   updatedAt: string;
   updatedBy: number;
+}
+
+export interface MenuReview {
+  id: number;
+  user: ReviewUser;
+  cafeId: number;
+  menuItemId: number;
+  rating: number;
+  comment: string;
+  createdBy: number;
+  createdAt: string; // or Date if you are handling it as a Date object
+  updatedBy: number | null;
+  updatedAt: string | null; // or Date if you are handling it as a Date object
+  deletedBy: number | null;
+  deletedAt: string | null; // or Date if you are handling it as a Date object
 }

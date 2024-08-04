@@ -4,7 +4,7 @@ import ReviewModel from '@/modules/reviews/reviews.model';
 
 import logger from '@/services/logger';
 
-import { Any, Review } from '@/types/common';
+import { Any, MenuReview, Review } from '@/types/common';
 
 const log = logger.withNamespace('modules/reviews.service');
 
@@ -13,7 +13,7 @@ const log = logger.withNamespace('modules/reviews.service');
  *
  * @returns A promise that resolves to an array of review objects.
  */
-export const fetchReviews = async (params: Any, trx?: Knex.Transaction): Promise<Review[]> => {
+export const fetchReviews = async (params: Any, trx?: Knex.Transaction): Promise<MenuReview[]> => {
   log.info('Fetching reviews');
 
   const reviews = await ReviewModel.fetch(params, trx);

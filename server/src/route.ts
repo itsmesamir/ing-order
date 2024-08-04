@@ -3,6 +3,7 @@ import { Router } from 'express';
 import swaggerRoute from '@/modules/swagger/swagger.route';
 import usersRoute from '@/modules/user/user.route';
 import rolesRoute from '@/modules/roles/role.route';
+import reviewsRoute from '@/modules/reviews/reviews.route';
 import designationsRoute from '@/modules/designations/designation.route';
 import leaveTypesRoute from '@/modules/leaveTypes/leaveType.route';
 import leaveCreditsRoute from '@/modules/leaveCredits/leaveCredit.route';
@@ -47,6 +48,7 @@ router.use(authMiddleware);
 
 router.use('/users', usersRoute);
 router.use('/roles', rolesRoute);
+router.use('/reviews', reviewsRoute);
 router.use('/countries', countriesRoute);
 router.use('/designations', designationsRoute);
 router.use('/leave-types', leaveTypesRoute);
