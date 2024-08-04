@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { IoIosArrowForward, IoIosArrowDown } from 'react-icons/io';
 import { Flex } from '@chakra-ui/layout';
 import {
   Heading,
@@ -21,6 +22,8 @@ import Link from 'components/Link';
 import Table from 'components/table/Table';
 import Loading from 'components/common/Loading';
 import ActionModal from 'components/common/actionModal';
+import ExpandButton from 'components/common/button/ExpandButton';
+import { DivWrapper } from 'components/table/tableCells';
 
 import { getFormattedDate } from 'utils/date';
 
@@ -29,6 +32,8 @@ import { Any, CellData, MenuItem, Order, OrderStatusEnum, RowData } from 'types/
 import paths from 'constants/paths';
 import queryKey from 'constants/queryKey';
 import { MMMM_DD_YYYY_H_MM_A } from 'constants/date';
+
+import SubRowComponent from './SubRowComponent';
 
 const statusTypes = [
   { id: '', name: 'Any' },
@@ -41,6 +46,16 @@ function StatusButton({ status }: { status: OrderStatusEnum }) {
   return <Button w={40}>{status}</Button>;
 }
 
+function OutSideComponent({ row }: { row: Any }) {
+  const { getToggleExpandedHandler, getIsExpanded } = row;
+
+  return (
+    <button type="button" onClick={getToggleExpandedHandler()} style={{ cursor: 'pointer' }}>
+      {getIsExpanded() ? <IoIosArrowDown /> : <IoIosArrowForward />}
+    </button>
+  );
+}
+
 function ActionCell(
   { row: { original } }: { row: { original: RowData<Order> } },
   ActionOption: (requestData: RowData<Order>) => CellData[]
@@ -49,6 +64,14 @@ function ActionCell(
 
   return <ActionModal cellData={option} rowData={original} />;
 }
+
+const renderSubComponent = (props: Any) => {
+  const { subRow, isLoading } = props;
+
+  const { row } = subRow;
+
+  return <SubRowComponent data={row.original} isLoading={isLoading} />;
+};
 
 function AdminOrders() {
   const [filter, setFilter] = useState(statusTypes[0].id);
@@ -96,8 +119,22 @@ function AdminOrders() {
     return [
       {
         header: 'SN',
-        cell: ({ row: { index } }: { row: { index: number } }) => index + 1,
         size: 40,
+        cell: ({ row }) => {
+          const expand = row.getCanExpand()
+            ? ExpandButton({
+                onExpand: () => {
+                  row.getToggleExpandedHandler();
+                },
+                isExpanded: row.getIsExpanded(),
+              })
+            : '';
+
+          return DivWrapper({
+            items: [expand, String(row.index + 1)],
+            className: 'flex items-center',
+          });
+        },
       },
       {
         header: 'Order ID',
@@ -164,6 +201,16 @@ function AdminOrders() {
         columns={getOrderColumns()}
         data={orders || []}
         emptyMessage="No leave data available."
+        getRowCanExpand={() => true}
+        renderSubComponent={row => renderSubComponent({ subRow: row, isLoading })}
+        classes={{
+          tableHeader: 'bg-grey-10',
+          tableHeaderCell:
+            '[&:nth-child(1)]:pr-0 [&:nth-child(2)]:px-0 [&:nth-child(3)]:pl-0 [&:nth-child(4)]:pl-0 [&:nth-child(5)]:pl-0 [&:nth-child(6)]:px-0',
+          tableBodyCell:
+            '[&:nth-child(1)]:px-0 [&:nth-child(2)]:px-0 [&:nth-child(3)]:pl-0 [&:nth-child(4)]:pl-0 [&:nth-child(5)]:pl-0 [&:nth-child(6)]:px-0',
+        }}
+        onRowClick={row => row.toggleExpanded()}
       />
     </>
   );
