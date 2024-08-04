@@ -12,37 +12,30 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
-import {
-  FaBars,
-  FaCog,
-  FaComment,
-  FaHeart,
-  FaHistory,
-  FaHome,
-  FaSearch,
-  FaShoppingCart,
-  FaStar,
-} from 'react-icons/fa';
+import { useHistory } from 'react-router-dom';
+import { FaBars, FaComment, FaHistory, FaHome, FaSearch } from 'react-icons/fa';
+
+import { createRoute } from 'utils/route';
+
+import paths from 'constants/paths';
 
 const menuItems = [
-  { name: 'Dashboard', icon: FaHome },
-  { name: 'Explore', icon: FaSearch },
-  { name: 'Favourite', icon: FaHeart },
-  { name: 'Order', icon: FaShoppingCart },
-  { name: 'Order History', icon: FaHistory },
-  { name: 'Messages', icon: FaComment },
-  { name: 'Reviews', icon: FaStar },
-  { name: 'Settings', icon: FaCog },
+  { name: 'Dashboard', icon: FaHome, path: paths.dashboard },
+  { name: 'Menu', icon: FaSearch, path: paths.menus },
+  { name: 'Order History', icon: FaHistory, path: paths.orders },
+  { name: 'Feedback', icon: FaComment, path: paths.feedbacks },
 ];
 
 function DashboardDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [activeItem, setActiveItem] = useState<string>('Dashboard');
-
   const btnRef = useRef<HTMLButtonElement>(null);
+  const history = useHistory();
 
-  const handleMenuItemClick = (name: string) => {
+  const handleMenuItemClick = (name: string, path: string) => {
     setActiveItem(name);
+    console.log(createRoute([path]));
+    history.push(createRoute([path]));
     onClose();
   };
 
@@ -60,7 +53,7 @@ function DashboardDrawer() {
           color={activeItem === item.name ? 'orange.500' : 'inherit'}
           _hover={{ bg: 'gray.200' }}
           cursor="pointer"
-          onClick={() => handleMenuItemClick(item.name)}
+          onClick={() => handleMenuItemClick(item.name, item.path)}
         >
           <Icon as={item.icon} w="6" h="6" />
           <Text ml="4" fontSize="md">

@@ -20,4 +20,7 @@ export default {
   leaveRequests: 'leave-request',
   menuDetail: 'menu/details',
   adminOrders: 'admin/orders',
+  dashboard: 'dashboard',
+  orders: 'orders',
+  feedbacks: 'feedbacks',
 } as const;
