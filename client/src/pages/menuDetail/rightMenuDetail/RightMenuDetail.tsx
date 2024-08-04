@@ -5,7 +5,7 @@ import useCartStore from 'stores/useCartStore';
 
 import ItemCounter from 'components/ItemCounter';
 
-import { MenuItem } from 'types/common';
+import { CartItem, MenuItem } from 'types/common';
 
 import en from 'constants/en';
 
@@ -31,7 +31,7 @@ function RightMenuDetail(props: RightMenuDetailProps) {
 
   const [count, setCount] = useState(1);
 
-  const cartItem = carts.find(cart => cart.menu?.id === menuItem.id);
+  const cartItem = carts.find((cart: CartItem) => cart.menu?.id === menuItem.id);
 
   const totalPrice = useMemo(() => {
     return menuItem.price * (cartItem?.quantity || 1);

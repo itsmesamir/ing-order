@@ -7,6 +7,7 @@ interface TCartState {
   loading: boolean;
   error: boolean;
   errorData: Any;
+  summary: Summary;
 }
 
 interface Summary {
@@ -27,11 +28,12 @@ const initialCartState: TCartState = {
   loading: false,
   error: false,
   errorData: null,
+  summary: { total: 0 },
 };
 
 const localStorageKey = 'cartState';
 
-const useCartStore = create<TCartStore>(set => ({
+const useCartStore = create<TCartStore>((set, get) => ({
   ...initialCartState,
 
   addItem: (item: CartItem) =>
@@ -45,9 +47,13 @@ const useCartStore = create<TCartStore>(set => ({
         updatedItems.push(item);
       }
 
-      const newState = { ...state, items: updatedItems };
+      const newState = {
+        ...state,
+        items: updatedItems,
+        summary: get().getSummary(updatedItems),
+      };
 
-      localStorage.setItem(localStorageKey, JSON.stringify(newState));
+      localStorage.setItem(localStorageKey, JSON.stringify(newState.items));
 
       return newState;
     }),
@@ -61,9 +67,13 @@ const useCartStore = create<TCartStore>(set => ({
         updatedItems[existingItemIndex].quantity = quantity;
       }
 
-      const newState = { ...state, items: updatedItems };
+      const newState = {
+        ...state,
+        items: updatedItems,
+        summary: get().getSummary(updatedItems),
+      };
 
-      localStorage.setItem(localStorageKey, JSON.stringify(newState));
+      localStorage.setItem(localStorageKey, JSON.stringify(newState.items));
 
       return newState;
     }),
@@ -72,18 +82,22 @@ const useCartStore = create<TCartStore>(set => ({
     set(state => {
       const updatedItems = state.items.filter(item => item.menu?.id !== id);
 
-      const newState = { ...state, items: updatedItems };
+      const newState = {
+        ...state,
+        items: updatedItems,
+        summary: get().getSummary(updatedItems),
+      };
 
-      localStorage.setItem(localStorageKey, JSON.stringify(newState));
+      localStorage.setItem(localStorageKey, JSON.stringify(newState.items));
 
       return newState;
     }),
 
   clearCart: () =>
     set(state => {
-      const newState = { ...state, items: [] };
+      const newState = { ...state, items: [], summary: get().getSummary([]) };
 
-      localStorage.setItem(localStorageKey, JSON.stringify(newState));
+      localStorage.setItem(localStorageKey, JSON.stringify(newState.items));
 
       return newState;
     }),
@@ -93,16 +107,18 @@ const useCartStore = create<TCartStore>(set => ({
       const storedState = localStorage.getItem(localStorageKey);
 
       if (storedState) {
-        return JSON.parse(storedState);
+        const parsedState: TCartState = JSON.parse(storedState);
+        parsedState.summary = get()?.getSummary(parsedState.items || []);
+        return parsedState;
       }
 
       return initialCartState;
     }),
 
   getSummary: items => {
-    const total = items.reduce((accTotal, item) => accTotal + item.price * item.quantity, 0);
+    const total = items?.reduce((accTotal, item) => accTotal + item.price * item.quantity, 0);
 
-    return { total };
+    return { total: total || 0 };
   },
 }));
 

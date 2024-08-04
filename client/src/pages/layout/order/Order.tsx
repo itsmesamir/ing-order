@@ -107,7 +107,7 @@ function Order() {
       <div className="p-6 bg-white rounded-lg overflow-auto h-100">
         <Text>My Orders</Text>
         <div className="flex flex-col">
-          {carts.map(cart => {
+          {carts.map((cart: CartItem) => {
             const menu = cart.menu as MenuItem;
 
             return (
