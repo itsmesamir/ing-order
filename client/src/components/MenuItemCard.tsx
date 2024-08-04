@@ -60,7 +60,13 @@ function MenuItemCard(props: MenuItemCardProps) {
           </Flex>
         </VStack>
         <Flex justify="space-between" my="2">
-          <ItemCounter quantity={count} setCount={setCount} />
+          <ItemCounter
+            count={count}
+            handleCount={count => {
+              setCount(count);
+            }}
+          />
+
           <Button
             background="#EE5733"
             color="#FFFFFF"
@@ -71,7 +77,6 @@ function MenuItemCard(props: MenuItemCardProps) {
                 quantity: count,
                 price: item.price,
                 discount: item.discount,
-                imageUrl: item.imageUrl,
               });
             }}
           >

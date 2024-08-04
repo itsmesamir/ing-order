@@ -12,8 +12,8 @@ function MenuItemList({ menuItems }: { menuItems: MenuItem[] }) {
   return (
     <Box p="4">
       <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing="4">
-        {menuItems.map((item, index) => (
-          <MenuItemCard item={item} addItem={addItem} />
+        {menuItems.map(item => (
+          <MenuItemCard key={item.id} item={item} addItem={addItem} />
         ))}
       </SimpleGrid>
     </Box>

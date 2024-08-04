@@ -5,21 +5,23 @@ import { HStack, IconButton, ResponsiveValue, Text } from '@chakra-ui/react';
 type ItemCounterProps = {
   variant?: 'default' | 'rounded';
   size?: ResponsiveValue<string>;
-  quantity?: number;
+  count: number;
   countText?: {
     fontSize?: string;
     fontWeight?: string;
   };
-  setCount: React.Dispatch<React.SetStateAction<number>>;
+  handleCount: (count: number) => void;
 };
 
 function ItemCounter(props: ItemCounterProps) {
-  const { variant = 'default', size = 'sm', countText, quantity = 1, setCount } = props;
+  const { variant = 'default', size = 'sm', countText, count, handleCount } = props;
 
-  const increaseCount = () => setCount(prev => prev + 1);
+  const increaseCount = () => handleCount(count + 1);
 
   const decreaseCount = () => {
-    setCount(prev => (prev > 1 ? prev - 1 : prev));
+    if (count > 1) {
+      handleCount(count - 1);
+    }
   };
 
   return (
@@ -34,7 +36,7 @@ function ItemCounter(props: ItemCounterProps) {
         _hover={{ backgroundColor: 'gray.900' }}
       />
       <Text fontSize={countText?.fontSize} fontWeight={countText?.fontWeight}>
-        {quantity}
+        {count}
       </Text>
       <IconButton
         backgroundColor={variant === 'rounded' ? 'gray.800' : 'white'}

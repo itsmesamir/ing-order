@@ -57,14 +57,14 @@ function RightMenuDetail(props: RightMenuDetailProps) {
         <p className="text-xl font-medium text-gray-600">{en.ORDER.QUANTITY}</p>
 
         <ItemCounter
-          quantity={cartItem?.quantity || 1}
+          count={cartItem?.quantity || 1}
           variant="rounded"
           size="md"
           countText={{
             fontSize: '32px',
             fontWeight: 'medium',
           }}
-          setCount={setCount}
+          handleCount={count => setCount(count)}
         />
       </div>
 

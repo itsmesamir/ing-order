@@ -15,6 +15,7 @@ interface Summary {
 
 interface TCartStore extends TCartState {
   addItem: (item: CartItem) => void;
+  updateItemCount: (id: number, quantity: number) => void;
   removeItem: (id: number) => void;
   clearCart: () => void;
   loadCart: () => void;
@@ -42,6 +43,22 @@ const useCartStore = create<TCartStore>(set => ({
         updatedItems[existingItemIndex].quantity += item.quantity;
       } else {
         updatedItems.push(item);
+      }
+
+      const newState = { ...state, items: updatedItems };
+
+      localStorage.setItem(localStorageKey, JSON.stringify(newState));
+
+      return newState;
+    }),
+
+  updateItemCount: (id: number, quantity: number) =>
+    set(state => {
+      const updatedItems = [...state.items];
+      const existingItemIndex = updatedItems.findIndex(i => i.menu?.id === id);
+
+      if (existingItemIndex !== -1) {
+        updatedItems[existingItemIndex].quantity = quantity;
       }
 
       const newState = { ...state, items: updatedItems };

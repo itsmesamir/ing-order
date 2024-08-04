@@ -25,7 +25,7 @@ import ItemCounter from 'components/ItemCounter';
 import * as toast from 'utils/toast';
 import { handleError } from 'utils/handleError';
 
-import { CartItem } from 'types/common';
+import { CartItem, MenuItem } from 'types/common';
 
 import en from 'constants/en';
 
@@ -49,7 +49,7 @@ function Order() {
   const { data: currentUser } = useUserStore();
   const [submitting, setSubmitting] = useState(false);
 
-  const { items: carts, getSummary, clearCart } = useCartStore();
+  const { items: carts, getSummary, addItem, updateItemCount, clearCart } = useCartStore();
 
   const mapSummaryToPayload = (cart: CartItem[]) => {
     return {
@@ -107,27 +107,34 @@ function Order() {
       <div className="p-6 bg-white rounded-lg overflow-auto h-100">
         <Text>My Orders</Text>
         <div className="flex flex-col">
-          {carts.map(cart => (
-            <div className="border-b border-white first:pt-0 py-4">
-              <Image
-                boxSize="50px"
-                objectFit="cover"
-                src={cart.menu?.imageUrl}
-                alt="Dan Abramov"
-                className="rounded-lg"
-              />
-              <div className="ml-4">
-                <p className="text-base font-semibold">{cart.menu?.name}</p>
-                <ItemCounter quantity={cart.quantity} setCount={setCount} />
-                <div className="flex ml-4">
-                  <p className="text-lg font-semibold">
-                    {en.ORDER.CURRENCY}
-                    {cart.price}
-                  </p>
+          {carts.map(cart => {
+            const menu = cart.menu as MenuItem;
+
+            return (
+              <div className="border-b border-white first:pt-0 py-4">
+                <Image
+                  boxSize="50px"
+                  objectFit="cover"
+                  src={cart.menu?.imageUrl}
+                  alt="Dan Abramov"
+                  className="rounded-lg"
+                />
+                <div className="ml-4">
+                  <p className="text-base font-semibold">{cart.menu?.name}</p>
+                  <ItemCounter
+                    count={cart.quantity}
+                    handleCount={newCount => updateItemCount(cart.menu?.id as number, newCount)}
+                  />
+                  <div className="flex ml-4">
+                    <p className="text-lg font-semibold">
+                      {en.ORDER.CURRENCY}
+                      {cart.price}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Payment Summary */}
