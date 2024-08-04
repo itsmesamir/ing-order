@@ -63,7 +63,7 @@ function RightColumn() {
         </div>
 
         {/* Order */}
-        <div className="sticky top-[64px] right-0 w-80 pr-6 h-[70vh]">
+        <div className="sticky top-[64px] right-0 w-80 pr-6 h-[100vh]">
           <Order />
         </div>
       </div>

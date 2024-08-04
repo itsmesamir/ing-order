@@ -137,6 +137,7 @@ export interface MenuItem {
   description: string;
   price: number;
   rating: number;
+  quantity: number;
   imageUrl: string;
   maxOrder: number;
   preparedTime: number;
@@ -197,6 +198,7 @@ export interface OrderItem {
   quantity: number;
   price: number;
   discount: number;
+  imageUrl?: string;
   createdAt?: string;
   createdBy?: number;
   updatedAt?: string;

@@ -9,7 +9,7 @@ const en = {
   },
 
   ORDER: {
-    CURRENTY: 'RS.',
+    CURRENCY: 'RS.',
     PAYMENT_SUMMARY: 'Payment Summary',
   },
 };

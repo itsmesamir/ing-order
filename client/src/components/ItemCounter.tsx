@@ -2,15 +2,18 @@ import React, { useState } from 'react';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { HStack, IconButton, Text } from '@chakra-ui/react';
 
-function ItemCounter() {
-  const [count, setCount] = useState(1);
+interface ItemCounterProps {
+  quantity?: number;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
+}
 
-  const increaseCount = () => setCount(count + 1);
+function ItemCounter(props: ItemCounterProps) {
+  const { quantity = 1, setCount } = props;
+
+  const increaseCount = () => setCount(prev => prev + 1);
 
   const decreaseCount = () => {
-    if (count > 1) {
-      setCount(count - 1);
-    }
+    setCount(prev => (prev > 1 ? prev - 1 : prev));
   };
 
   return (
@@ -21,7 +24,7 @@ function ItemCounter() {
         size="sm"
         onClick={decreaseCount}
       />
-      <Text>{count}</Text>
+      <Text>{quantity}</Text>
       <IconButton
         icon={<AddIcon />}
         aria-label="Increase quantity"
