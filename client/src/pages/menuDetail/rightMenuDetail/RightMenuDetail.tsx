@@ -38,7 +38,7 @@ function RightMenuDetail(props: RightMenuDetailProps) {
   }, [cartItem?.quantity, menuItem.price]);
 
   return (
-    <div className="w-96 bg-white rounded-lg px-5 py-6 h-fit max-h-[70hv]">
+    <div className="w-96 bg-white rounded-lg px-5 py-6 h-fit max-h-[70hv] border-[1.5px] border-solid border-orange-500">
       <div className="flex items-center justify-between">
         <p className="text-2xl font-medium text-gray-600">{en.ORDER.PRICE}</p>
 
@@ -53,7 +53,7 @@ function RightMenuDetail(props: RightMenuDetailProps) {
         <Card icon={<MdLocationOn size={28} />} title="5 Km" />
       </div>
 
-      <div className="flex flex-col gap-y-6 mt-6">
+      <div className="flex gap-x-6 items-center mt-6 justify-center">
         <p className="text-xl font-medium text-gray-600">{en.ORDER.QUANTITY}</p>
 
         <ItemCounter
@@ -68,7 +68,7 @@ function RightMenuDetail(props: RightMenuDetailProps) {
         />
       </div>
 
-      <div className="mt-6">
+      <div className="mt-6 flex items-center justify-center gap-x-6">
         <p className="text-xl font-medium text-gray-600">{en.ORDER.TOTAL_PRICE}</p>
 
         <p className="text-3xl font-medium text-orange-600 mt-3">
