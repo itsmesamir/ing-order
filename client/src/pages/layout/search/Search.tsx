@@ -8,6 +8,10 @@ import Modal from 'components/common/modal';
 import { useMenusQuery } from 'hooks/useMenusQuery';
 
 import { debounceInput } from 'utils/string';
+import { createRoute } from 'utils/route';
+import { interpolate } from 'utils/interpolate';
+
+import paths from 'constants/paths';
 
 type SearchProps = {
   searchItem: string;
@@ -54,7 +58,7 @@ function Search(props: SearchProps) {
         }}
       >
         <div>
-          <div className="flex items-center gap-x-2">
+          <div className="flex items-center gap-x-2 p-4">
             <FiSearch className="" size={16} />
 
             <Input
@@ -69,9 +73,14 @@ function Search(props: SearchProps) {
           </div>
 
           {/* Search item */}
-          <div className="flex flex-col gap-y-4 mt-4">
+          <div className="flex flex-col mt-4">
             {menuItems?.map(item => (
-              <div className="flex items-center">
+              <a
+                className="flex items-center hover:bg-orange-100 p-4 cursor-pointer"
+                href={interpolate(createRoute([paths.menus, paths.id, paths.detail]), {
+                  id: item.id,
+                })}
+              >
                 <Image
                   boxSize="40px"
                   objectFit="cover"
@@ -83,7 +92,7 @@ function Search(props: SearchProps) {
                   <p className="text-gray-600 font-semibold">{item.name}</p>
                   <p className="text-sm text-gray-400">{item?.cafe?.name}</p>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
