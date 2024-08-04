@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Flex } from '@chakra-ui/layout';
 import {
@@ -12,14 +12,19 @@ import {
   Button,
   Skeleton,
 } from '@chakra-ui/react';
+import { ColumnDef } from '@tanstack/react-table';
+import { FiEdit, FiTrash } from 'react-icons/fi';
 
 import { fetchOrders } from 'services/oders';
 
 import Link from 'components/Link';
+import Table from 'components/table/Table';
+import Loading from 'components/common/Loading';
+import ActionModal from 'components/common/actionModal';
 
 import { getFormattedDate } from 'utils/date';
 
-import { Any, MenuItem, OrderStatusEnum } from 'types/common';
+import { Any, CellData, MenuItem, Order, OrderStatusEnum, RowData } from 'types/common';
 
 import paths from 'constants/paths';
 import queryKey from 'constants/queryKey';
@@ -34,6 +39,15 @@ const statusTypes = [
 
 function StatusButton({ status }: { status: OrderStatusEnum }) {
   return <Button w={40}>{status}</Button>;
+}
+
+function ActionCell(
+  { row: { original } }: { row: { original: RowData<Order> } },
+  ActionOption: (requestData: RowData<Order>) => CellData[]
+) {
+  const option = ActionOption(original);
+
+  return <ActionModal cellData={option} rowData={original} />;
 }
 
 function AdminOrders() {
@@ -54,115 +68,104 @@ function AdminOrders() {
     setFilter(event.target.value);
   };
 
+  const ActionOption = () =>
+    useMemo(
+      () => [
+        {
+          name: 'Edit',
+          icon: <FiEdit />,
+          state: (rowData: Order) => {
+            console.log(rowData);
+          },
+        },
+
+        {
+          name: 'Delete',
+          className: 'text-red-500',
+          icon: <FiTrash />,
+          state: (rowData: Order) => {
+            console.log(rowData);
+          },
+          // state: (rowData: Order) => setDeleteModalOpenFor(rowData?.id),
+        },
+      ],
+      []
+    );
+
+  const getOrderColumns = (): Array<ColumnDef<Order>> => {
+    return [
+      {
+        header: 'SN',
+        cell: ({ row: { index } }: { row: { index: number } }) => index + 1,
+        size: 40,
+      },
+      {
+        header: 'Order ID',
+        cell: ({ row }) => row.original.id,
+        size: 40,
+      },
+      {
+        header: "Employee's Name",
+        accessorKey: 'userName',
+        cell: ({ row }) => row.original.name,
+        size: 240,
+        enableSorting: true,
+      },
+      {
+        header: 'Status',
+        accessorKey: 'status',
+        size: 100,
+      },
+      {
+        header: 'Order Date',
+        accessorKey: 'orderCreatedAt',
+        size: 100,
+        cell: ({ row }) => getFormattedDate(row.original.createdAt),
+      },
+      {
+        header: 'Total Amount',
+        accessorKey: 'totalPrice',
+        size: 100,
+      },
+      {
+        header: 'Cafe Name',
+        accessorKey: 'cafeName',
+        size: 100,
+        // cell: ({ row }) => row.original.cafe.name,
+      },
+      {
+        header: 'College Name',
+        accessorKey: 'collegeName',
+        size: 100,
+        // cell: ({ row }) => row.original.cafe.name,
+      },
+      {
+        header: 'Actions',
+        accessorKey: 'actions',
+        cell: ({ row }: { row: Any }) => ActionCell({ row }, ActionOption as () => CellData[]),
+        size: 160,
+      },
+    ];
+  };
+
+  // if order empty show skeleton
+
+  if (isOrderLoading) {
+    return <Loading />;
+  }
+
   return (
-    <Box bgColor="gray.200">
-      <Flex justifyContent="space-between">
-        <Heading py={2} fontWeight="500">
-          Order history
-        </Heading>
-
-        <Select maxWidth="300px" value={filter} onChange={onChange}>
-          {statusTypes.map(option => (
-            <option key={option.id} value={option.id}>
-              {option.name}
-            </option>
-          ))}
-        </Select>
-      </Flex>
-      <Flex border="1px solid gray.400" borderRadius="10px" p={2} direction="column">
-        {isOrderLoading && (
-          <Stack>
-            <Skeleton height="20px" />
-            <Skeleton height="20px" />
-            <Skeleton height="20px" />
-          </Stack>
-        )}
-
-        {!isOrderLoading &&
-          orders.map(order => {
-            const totalItems = order.items.reduce((total, item) => item.quantity + total, 0);
-
-            return (
-              <Link
-                passHref
-                to={`/${paths.adminOrders}`}
-                borderBottom="1px solid"
-                borderColor="gray.200"
-                _hover={{ bg: 'gray.50' }}
-              >
-                <Box
-                  display="flex"
-                  bgColor="white"
-                  flexDirection="column"
-                  borderRadius={10}
-                  p={[0, 2, 4]}
-                  my={[4, 4]}
-                >
-                  <Flex justifyContent="space-between">
-                    <Flex flexDir="column">
-                      <Heading size="md">Orders #{order.id}</Heading>
-                      <Text fontSize={['sm', 'md']}>
-                        {getFormattedDate(order.createdAt, MMMM_DD_YYYY_H_MM_A)}
-                      </Text>
-                    </Flex>
-                  </Flex>
-
-                  <Flex>
-                    <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing="4">
-                      {order.items.map(item => {
-                        if (!item || !item?.menu) {
-                          return null;
-                        }
-
-                        const { name, imageUrl } = item?.menu as MenuItem;
-
-                        return (
-                          <Flex key={item.id} flexDir="row" m={2}>
-                            <Image
-                              src={imageUrl || defaultImageUrl}
-                              alt={name}
-                              objectFit="cover"
-                              h="40px"
-                              w="40px"
-                            />
-
-                            <Flex flexDir="column">
-                              <Heading size="md">{name}</Heading>
-                              <Flex>
-                                <Text>x{item.quantity}</Text>
-                                <Flex> Rs {item.price}</Flex>
-                              </Flex>
-                            </Flex>
-                          </Flex>
-                        );
-                      })}
-                    </SimpleGrid>
-                  </Flex>
-
-                  <Flex justifyContent="space-between" w="full" bgColor="orange.300" p="2">
-                    <Flex alignItems="center">
-                      <Box>Dilevery Time:</Box>
-                      <Heading size="sm" ml={2}>
-                        25 min
-                      </Heading>
-                    </Flex>
-                    <Flex alignItems="center">
-                      <Flex>x{totalItems} items</Flex>
-                      <Heading size="sm" ml={2}>
-                        Rs {order.totalPrice}
-                      </Heading>
-                    </Flex>
-                  </Flex>
-
-                  <Flex flexDir="row" my={2} justifyContent="flex-end">
-                    <StatusButton status={order.status} />
-                  </Flex>
-                </Box>
-              </Link>
-            );
-          })}
-      </Flex>
-    </Box>
+    <>
+      <Text fontSize="2xl" fontWeight="bold" color="gray.10">
+        Orders
+      </Text>
+      <Table
+        loading={false}
+        columns={getOrderColumns()}
+        data={orders || []}
+        emptyMessage="No leave data available."
+      />
+    </>
   );
 }
 

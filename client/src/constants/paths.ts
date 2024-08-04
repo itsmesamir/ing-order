@@ -24,4 +24,5 @@ export default {
   dashboard: 'dashboard',
   orders: 'orders',
   feedbacks: 'feedbacks',
+  userOrders: 'user/orders',
 } as const;

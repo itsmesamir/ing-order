@@ -25,3 +25,17 @@
   background-color: rgba(0, 0, 0, 0.2);
   z-index: 1000;
 }
+
+.tippy-popper,
+.tippy-tooltip {
+  padding: 0px !important;
+
+  .action-dialog {
+    color: #808080;
+    background-color: white;
+  }
+}
+
+.tippy-popper {
+  max-width: 500px !important;
+}
