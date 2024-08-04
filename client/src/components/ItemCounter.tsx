@@ -33,7 +33,6 @@ function ItemCounter(props: ItemCounterProps) {
         aria-label="Decrease quantity"
         size={size}
         onClick={decreaseCount}
-        _hover={{ backgroundColor: 'gray.900' }}
       />
       <Text fontSize={countText?.fontSize} fontWeight={countText?.fontWeight}>
         {count}
@@ -45,7 +44,6 @@ function ItemCounter(props: ItemCounterProps) {
         aria-label="Increase quantity"
         size={size}
         onClick={increaseCount}
-        _hover={{ backgroundColor: 'gray.900' }}
       />
     </HStack>
   );
