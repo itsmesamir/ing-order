@@ -16,11 +16,11 @@ function Router() {
   return (
     <BrowserRouter>
       <Switch>
-        <AuthRoute path={createRoute([])} component={Home} />
-
         <Route exact path={createRoute([paths.signin])} component={SignIn} />
 
         <Route exact path={createRoute([paths.signup])} component={SignUp} />
+
+        <AuthRoute path={createRoute([])} component={Home} />
 
         <Redirect to={createRoute([])} />
       </Switch>
