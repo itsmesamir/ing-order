@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { MdAccessTime, MdLocationOn } from 'react-icons/md';
 
 import useCartStore from 'stores/useCartStore';
@@ -29,6 +29,8 @@ function RightMenuDetail(props: RightMenuDetailProps) {
 
   const { addItem, items: carts } = useCartStore();
 
+  const [count, setCount] = useState(1);
+
   const cartItem = carts.find(cart => cart.menu?.id === menuItem.id);
 
   const totalPrice = useMemo(() => {
@@ -41,7 +43,7 @@ function RightMenuDetail(props: RightMenuDetailProps) {
         <p className="text-2xl font-medium text-gray-600">{en.ORDER.PRICE}</p>
 
         <p className="text-3xl font-medium text-orange-600 mt-3">
-          {en.ORDER.CURRENTY} {menuItem.price}
+          {en.ORDER.CURRENCY} {menuItem.price}
         </p>
       </div>
 
@@ -62,6 +64,7 @@ function RightMenuDetail(props: RightMenuDetailProps) {
             fontSize: '32px',
             fontWeight: 'medium',
           }}
+          setCount={setCount}
         />
       </div>
 
@@ -69,7 +72,7 @@ function RightMenuDetail(props: RightMenuDetailProps) {
         <p className="text-xl font-medium text-gray-600">{en.ORDER.TOTAL_PRICE}</p>
 
         <p className="text-3xl font-medium text-orange-600 mt-3">
-          {en.ORDER.CURRENTY} {totalPrice}
+          {en.ORDER.CURRENCY} {totalPrice}
         </p>
       </div>
 

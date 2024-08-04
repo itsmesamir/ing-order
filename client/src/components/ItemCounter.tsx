@@ -10,19 +10,16 @@ type ItemCounterProps = {
     fontSize?: string;
     fontWeight?: string;
   };
+  setCount: React.Dispatch<React.SetStateAction<number>>;
 };
 
 function ItemCounter(props: ItemCounterProps) {
-  const { variant = 'default', size = 'sm', countText, quantity } = props;
+  const { variant = 'default', size = 'sm', countText, quantity = 1, setCount } = props;
 
-  const [count, setCount] = useState(quantity || 1);
-
-  const increaseCount = () => setCount(count + 1);
+  const increaseCount = () => setCount(prev => prev + 1);
 
   const decreaseCount = () => {
-    if (count > 1) {
-      setCount(count - 1);
-    }
+    setCount(prev => (prev > 1 ? prev - 1 : prev));
   };
 
   return (
@@ -37,7 +34,7 @@ function ItemCounter(props: ItemCounterProps) {
         _hover={{ backgroundColor: 'gray.900' }}
       />
       <Text fontSize={countText?.fontSize} fontWeight={countText?.fontWeight}>
-        {count}
+        {quantity}
       </Text>
       <IconButton
         backgroundColor={variant === 'rounded' ? 'gray.800' : 'white'}
