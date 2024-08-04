@@ -17,10 +17,13 @@ import { fetchOrders } from 'services/oders';
 
 import Link from 'components/Link';
 
-import { Any, MenuItem } from 'types/common';
+import { getFormattedDate } from 'utils/date';
+
+import { Any, MenuItem, OrderStatusEnum } from 'types/common';
 
 import paths from 'constants/paths';
 import queryKey from 'constants/queryKey';
+import { MMMM_DD_YYYY_H_MM_A } from 'constants/date';
 
 const statusTypes = [
   { id: '', name: 'Any' },
@@ -28,6 +31,10 @@ const statusTypes = [
   { id: 'Completed', name: 'Completed' },
   { id: 'Failed', name: 'Failed' },
 ];
+
+function StatusButton({ status }: { status: OrderStatusEnum }) {
+  return <Button w={40}>{status}</Button>;
+}
 
 function AdminOrders() {
   const [filter, setFilter] = useState(statusTypes[0].id);
@@ -72,7 +79,7 @@ function AdminOrders() {
         )}
 
         {!isOrderLoading &&
-          orders.map((order, index) => {
+          orders.map(order => {
             const totalItems = order.items.reduce((total, item) => item.quantity + total, 0);
 
             return (
@@ -94,13 +101,15 @@ function AdminOrders() {
                   <Flex justifyContent="space-between">
                     <Flex flexDir="column">
                       <Heading size="md">Orders #{order.id}</Heading>
-                      <Text fontSize={['sm', 'md']}>November, 11 2024 2:30 PM</Text>
+                      <Text fontSize={['sm', 'md']}>
+                        {getFormattedDate(order.createdAt, MMMM_DD_YYYY_H_MM_A)}
+                      </Text>
                     </Flex>
                   </Flex>
 
                   <Flex>
                     <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing="4">
-                      {order.items.map((item, index) => {
+                      {order.items.map(item => {
                         if (!item || !item?.menu) {
                           return null;
                         }
@@ -108,7 +117,7 @@ function AdminOrders() {
                         const { name, imageUrl } = item?.menu as MenuItem;
 
                         return (
-                          <Flex flexDir="row" m={2}>
+                          <Flex key={item.id} flexDir="row" m={2}>
                             <Image
                               src={imageUrl || defaultImageUrl}
                               alt={name}
@@ -146,7 +155,7 @@ function AdminOrders() {
                   </Flex>
 
                   <Flex flexDir="row" my={2} justifyContent="flex-end">
-                    <Button w={40}>{order.status}</Button>
+                    <StatusButton status={order.status} />
                   </Flex>
                 </Box>
               </Link>

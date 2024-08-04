@@ -109,7 +109,7 @@ function Order() {
               boxSize="50px"
               objectFit="cover"
               src={cart.menu?.imageUrl}
-              alt="Dan Abramov"
+              alt={cart.menu?.name}
               className="rounded-lg"
             />
             <div className="ml-4">
