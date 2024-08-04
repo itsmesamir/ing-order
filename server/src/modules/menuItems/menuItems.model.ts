@@ -79,7 +79,7 @@ class MenuItemModel extends BaseModel {
    * @returns {Knex.QueryBuilder<MenuItem>}
    */
   static fetchById(id: number, filters: Any, trx?: Knex.Transaction) {
-    return this.baseQuery(trx).where('id', id).first().then(this.mapToModel);
+    return this.baseQuery(trx).where('mi.id', id).first().then(this.mapToModel);
   }
 
   /**
