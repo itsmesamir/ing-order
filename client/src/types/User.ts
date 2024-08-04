@@ -17,4 +17,5 @@ export interface User {
   manager?: MinimalUser;
   phone: string;
   roles: Role[];
+  imageUrl: string;
 }

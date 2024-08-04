@@ -1,6 +1,7 @@
 export default {
   id: ':id',
-  home: '/home',
+  slash: '/',
+  home: 'home',
   detail: 'detail',
   signup: 'signup',
   menus: 'menus',

@@ -1,14 +1,22 @@
-import { Button } from '@chakra-ui/react';
+import { Avatar, Badge, Button } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { MdSettings } from 'react-icons/md';
+import { MdSettings, MdShoppingCart } from 'react-icons/md';
 
 import Search from 'pages/layout/search/Search';
 
-function Header() {
+import { User } from 'types/User';
+
+type HeaderProps = {
+  currentUser: User;
+};
+
+function Header(props: HeaderProps) {
+  const { currentUser } = props;
+
   const [searchItem, setSearchItem] = useState('');
 
   return (
-    <nav className="flex justify-between max-h-16 h-16  items-center px-6 sticky top-0 z-50 bg-white">
+    <nav className="flex justify-between max-h-16 h-16  items-center px-6 sticky top-0 z-50 bg-white shadow-sm">
       <div className="flex items-center gap-x-5">
         <Search searchItem={searchItem} setSearchItem={setSearchItem} />
 
@@ -17,10 +25,32 @@ function Header() {
         </Button>
       </div>
 
-      <div className="flex">
-        <div>location</div>
-        <div>notification</div>
-        <div>profile</div>
+      <div className="flex items-center gap-x-6">
+        <div className="relative">
+          <Badge
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            rounded={{ base: 'full' }}
+            variant="solid"
+            bgColor="orange.500"
+            width="20px"
+            height="20px"
+            fontSize="12px"
+            fontWeight="medium"
+            textAlign="center"
+            className="absolute -top-2 -right-2"
+          >
+            10
+          </Badge>
+
+          <MdShoppingCart size={24} />
+        </div>
+
+        <div className="flex items-center gap-x-2 rounded-lg bg-gray-200 h-11 px-4">
+          <Avatar height="32px" width="32px" name="Dan Abrahmov" src={currentUser.imageUrl} />
+          <p>{currentUser.name}</p>
+        </div>
       </div>
     </nav>
   );
