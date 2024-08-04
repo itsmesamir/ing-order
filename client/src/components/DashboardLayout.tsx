@@ -19,9 +19,12 @@ import { MdPayment } from 'react-icons/md';
 import { HiOutlineCalendar } from 'react-icons/hi';
 import { BsPerson, BsQuestionCircle } from 'react-icons/bs';
 
+import useUserStore from 'stores/useUserStore';
+
 import paths from 'constants/paths';
 
 import NavItem from './NavItem';
+import Header from './common/header/Header';
 
 interface DashboardProps {
   children: React.ReactNode | React.ReactNode[];
@@ -115,6 +118,8 @@ function DashboardLayout({ children, bgColor }: DashboardLayoutProps) {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
+  const user = useUserStore(state => state.data);
+
   const width = isSidebarOpen ? 300 : 0;
 
   return (
@@ -145,7 +150,7 @@ function DashboardLayout({ children, bgColor }: DashboardLayoutProps) {
               <DashboardDrawerItems onOpen={onOpen} />
             </Box>
             <Box maxH="100vh" overflowY="scroll">
-              <Flex bg="white" justifyContent="space-between" py="2" px="4">
+              <Flex bg="white" justifyContent="space-between" height="95px" alignItems="center">
                 <IconButton
                   bg="white"
                   display={['auto', 'auto', 'none']}
@@ -153,15 +158,21 @@ function DashboardLayout({ children, bgColor }: DashboardLayoutProps) {
                   onClick={onOpen}
                   icon={<AiOutlineMenu />}
                 />
-                <IconButton
-                  bg="white"
-                  display={['none', 'none', 'flex']}
-                  aria-label="Main Drawer"
-                  onClick={() => {
-                    setIsSidebarOpen(open => !open);
-                  }}
-                  icon={<AiOutlineMenu />}
-                />
+
+                <div className="center">
+                  <IconButton
+                    bg="white"
+                    display={['none', 'none', 'flex']}
+                    aria-label="Main Drawer"
+                    onClick={() => {
+                      setIsSidebarOpen(open => !open);
+                    }}
+                    icon={<AiOutlineMenu />}
+                  />
+                </div>
+
+                <Header currentUser={user} />
+                {/* 
                 <Menu>
                   <MenuButton as={Button} rounded="full" variant="link" cursor="pointer" minW={0}>
                     <Avatar
@@ -175,12 +186,13 @@ function DashboardLayout({ children, bgColor }: DashboardLayoutProps) {
                     <MenuDivider />
                     <MenuItem>Link 3</MenuItem>
                   </MenuList>
-                </Menu>
+                </Menu> */}
               </Flex>
               {children}
             </Box>
           </Grid>
         </Box>
+
         <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
           <DrawerOverlay />
           <DashboardDrawerContent onOpen={onOpen} />

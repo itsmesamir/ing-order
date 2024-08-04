@@ -9,7 +9,7 @@ import useCartStore from 'stores/useCartStore';
 import { User } from 'types/User';
 
 type HeaderProps = {
-  currentUser: User;
+  currentUser: User | null;
 };
 
 function Header(props: HeaderProps) {
@@ -20,7 +20,7 @@ function Header(props: HeaderProps) {
   const [searchItem, setSearchItem] = useState('');
 
   return (
-    <nav className="flex justify-between max-h-16 h-16  items-center px-6 sticky top-0 z-50 bg-white shadow-sm">
+    <nav className="flex-1 flex justify-between max-h-16 h-16  items-center sticky top-0 z-50 bg-white px-4">
       <div className="flex items-center gap-x-5">
         <Search searchItem={searchItem} setSearchItem={setSearchItem} />
 
@@ -52,8 +52,8 @@ function Header(props: HeaderProps) {
         </div>
 
         <div className="flex items-center gap-x-2 rounded-lg bg-gray-200 h-11 px-4">
-          <Avatar height="32px" width="32px" name="Dan Abrahmov" src={currentUser.imageUrl} />
-          <p>{currentUser.name}</p>
+          <Avatar height="32px" width="32px" name="Dan Abrahmov" src={currentUser?.imageUrl} />
+          <p>{currentUser?.name}</p>
         </div>
       </div>
     </nav>
