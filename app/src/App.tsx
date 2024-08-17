@@ -1,13 +1,11 @@
+import { useEffect } from 'react';
 import { ChakraProvider, theme } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useEffect } from 'react';
 
-import DashboardDrawer from 'pages/dashboard/components/DashboardDrawer';
+import AppRouter from 'pages/AppRouter';
 
 import useUserStore from 'stores/useUserStore';
 
-import Header from 'components/common/header/Header';
-import Router from 'components/Router';
 import Toast from 'components/Toast';
 
 import './styles.css';
@@ -34,7 +32,7 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
-        <Router />
+        <AppRouter />
         <Toast />
       </ChakraProvider>
     </QueryClientProvider>

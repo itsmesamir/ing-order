@@ -10,15 +10,17 @@ import { createRoute } from 'utils/route';
 
 import paths from 'constants/paths';
 
-import DashboardLayout from './DashboardLayout';
+import Admin from './admin/Admin';
 
-function Router() {
+function AppRouter() {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path={createRoute([paths.signin])} component={SignIn} />
 
         <Route exact path={createRoute([paths.signup])} component={SignUp} />
+
+        <AuthRoute path={createRoute([paths.admin])} component={Admin} />
 
         <AuthRoute path={createRoute([])} component={Home} />
 
@@ -28,4 +30,4 @@ function Router() {
   );
 }
 
-export default Router;
+export default AppRouter;

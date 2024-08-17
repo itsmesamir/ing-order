@@ -7,6 +7,7 @@ import Dashboard from 'pages/dashboard/Dashboard';
 import UserOrders from 'pages/userOrders/UserOrders';
 import AdminOrders from 'pages/adminOrders/AdminOrders';
 import OrderHistory from 'pages/orderHistory/OrderHistory';
+import AdminMenus from 'pages/adminMenus/AdminMenu';
 
 import useUserStore from 'stores/useUserStore';
 
@@ -27,8 +28,6 @@ function Home() {
     <DashboardLayout bgColor="white">
       <Switch>
         <Route path={createRoute([paths.menus])} component={PageLayout} />
-
-        <Route exact path={createRoute([paths.adminOrders])} component={AdminOrders} />
 
         <Route exact path={createRoute([paths.dashboard])} component={Dashboard} />
 

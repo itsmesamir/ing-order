@@ -30,7 +30,7 @@ function ProtectedRoute(props: ProtectedRouteProps) {
     );
 
   if (!isAuthorized) {
-    return <Redirect to={paths.leave} />;
+    return <Redirect to={paths.home} />;
   }
 
   return <Route exact={exact} path={path} component={component} render={render} />;
