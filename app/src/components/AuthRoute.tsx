@@ -24,7 +24,7 @@ function AuthRoute(props: AuthRouteProps) {
   }
 
   if (!user) {
-    return <Redirect to={buildUrl(paths.signin)} />;
+    return <Redirect to={`/${buildUrl(paths.signin)}`} />;
   }
 
   return <Route exact={exact} path={path} render={() => children} component={component} />;
