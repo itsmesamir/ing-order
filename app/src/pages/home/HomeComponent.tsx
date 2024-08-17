@@ -1,10 +1,10 @@
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import MenuDetail from 'pages/menuDetail';
-import DashboardDrawer from 'pages/dashboard/components/DashboardDrawer';
 
 import useCartStore from 'stores/useCartStore';
 
+import Order from 'components/order/Order';
 import MenuItemList from 'components/MenuItemList';
 
 import { useMenusQuery } from 'hooks/useMenusQuery';
@@ -13,7 +13,6 @@ import { createRoute } from 'utils/route';
 
 import paths from 'constants/paths';
 
-import Order from './order/Order';
 import RightColumn from './RightColumn';
 
 // function MenuWrapper() {
@@ -25,8 +24,7 @@ import RightColumn from './RightColumn';
 //   );
 // }
 
-function PageLayout() {
-  // Initialize this in the top component
+function HomeComponent() {
   const { items } = useCartStore();
 
   const { data: menuItems, isLoading: isMenuItemLoading } = useMenusQuery({});
@@ -72,4 +70,4 @@ function PageLayout() {
   );
 }
 
-export default PageLayout;
+export default HomeComponent;

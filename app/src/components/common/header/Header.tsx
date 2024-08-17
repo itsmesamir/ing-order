@@ -1,10 +1,10 @@
+import { useState } from 'react';
 import { Avatar, Badge, Button } from '@chakra-ui/react';
-import React, { useState } from 'react';
 import { MdSettings, MdShoppingCart } from 'react-icons/md';
 
-import Search from 'pages/layout/search/Search';
-
 import useCartStore from 'stores/useCartStore';
+
+import Search from 'components/search/Search';
 
 import { User } from 'types/User';
 

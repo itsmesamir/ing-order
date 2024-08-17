@@ -1,13 +1,9 @@
-import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Feedback from 'pages/feedback/Feedback';
-import PageLayout from 'pages/layout/PageLayout';
 import Dashboard from 'pages/dashboard/Dashboard';
 import UserOrders from 'pages/userOrders/UserOrders';
-import AdminOrders from 'pages/adminOrders/AdminOrders';
 import OrderHistory from 'pages/orderHistory/OrderHistory';
-import AdminMenus from 'pages/adminMenus/AdminMenu';
 
 import useUserStore from 'stores/useUserStore';
 
@@ -16,6 +12,8 @@ import DashboardLayout from 'components/DashboardLayout';
 import { createRoute } from 'utils/route';
 
 import paths from 'constants/paths';
+
+import HomeComponent from './HomeComponent';
 
 function Home() {
   const user = useUserStore(state => state.data);
@@ -27,7 +25,7 @@ function Home() {
   return (
     <DashboardLayout bgColor="white">
       <Switch>
-        <Route path={createRoute([paths.menus])} component={PageLayout} />
+        <Route path={createRoute([paths.menus])} component={HomeComponent} />
 
         <Route exact path={createRoute([paths.dashboard])} component={Dashboard} />
 

@@ -1,9 +1,7 @@
-import React from 'react';
+import { Image } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
-import { Image, Progress, Stack } from '@chakra-ui/react';
-import { StarIcon } from '@chakra-ui/icons';
 
-import Order from 'pages/layout/order/Order';
+import Order from 'components/order/Order';
 
 import { useMenuByIdQuery } from 'hooks/useMenuByIdQuery';
 
