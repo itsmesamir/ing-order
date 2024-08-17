@@ -178,7 +178,7 @@ function AdminMenus() {
   return (
     <>
       <Text fontSize="2xl" fontWeight="bold" color="gray.10">
-        Orders
+        Menus
       </Text>
       <Table
         loading={false}

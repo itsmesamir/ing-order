@@ -29,7 +29,11 @@ interface DrawerProps {
 const menuItems = [
   { name: 'Dashboard', icon: <FaHome />, path: paths.dashboard },
   { name: 'Menu', icon: <FaSearch />, path: createRoute([paths.menus, paths.list]) },
-  { name: 'Order History', icon: <FaHistory />, path: createRoute([paths.user, paths.orders]) },
+  {
+    name: 'Order',
+    icon: <FaHistory />,
+    path: createRoute([paths.orders]),
+  },
   { name: 'Feedback', icon: <FaComment />, path: paths.feedbacks },
 ];
 
@@ -44,7 +48,12 @@ function AdminDrawerItems({ onOpen }: DrawerProps) {
       </Flex>
 
       {menuItems.map(item => (
-        <NavItem key={item.name} icon={item.icon} label={item.name} link={item.path} />
+        <NavItem
+          key={item.name}
+          icon={item.icon}
+          label={item.name}
+          link={createRoute([paths.admin, item.path])}
+        />
       ))}
 
       <Divider color="gray.300" />
