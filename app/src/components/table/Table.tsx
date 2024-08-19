@@ -11,6 +11,7 @@ import {
   getExpandedRowModel,
 } from '@tanstack/react-table';
 import { useHistory } from 'react-router-dom';
+import { FaCaretUp } from 'react-icons/fa';
 
 import Empty from 'components/common/Empty';
 import Loading from 'components/common/Loading';
@@ -204,11 +205,11 @@ function Table<T>(props: MyTableProps<T>) {
                           onKeyUp={() => {}}
                           tabIndex={0}
                           className={classNames(
-                            'flex items-center text-grey-60',
+                            'flex items-center text-gray-800 font-bold',
                             {
                               'cursor-pointer whitespace-nowrap':
                                 sortable && header.column.getCanSort(),
-                              'text-tertiary-blue-40':
+                              'text-orange-600':
                                 !isTableEmpty && header.column.getIsSorted() && !loading,
                               'cursor-default': isTableEmpty || !header.column.getCanSort(),
                               'mt-6 text-xs font-normal': header.column.parent,
@@ -247,9 +248,11 @@ function Table<T>(props: MyTableProps<T>) {
                             header.column.getIsSorted() &&
                             !loading &&
                             !header.isPlaceholder && (
-                              <span
-                                className={classNames('triangle', {
-                                  'triangle--up': header.column.getIsSorted() === 'asc',
+                              <FaCaretUp
+                                size={12}
+                                className={classNames('ml-[2px]', {
+                                  'rotate-0': header.column.getIsSorted() === 'asc',
+                                  'rotate-180': header.column.getIsSorted() === 'desc',
                                   'absolute right-[100px] top-4': hasSubHeaders,
                                 })}
                               />
@@ -273,7 +276,7 @@ function Table<T>(props: MyTableProps<T>) {
                   <>
                     <tr
                       className={classNames(
-                        'lf-table__row cursor-pointer border-b border-solid border-grey-10',
+                        'lf-table__row hover:bg-gray-100 cursor-pointer border-b border-solid border-grey-10',
                         {
                           'bg-tertiary-blue-15': isRowSelected(id),
                         },
@@ -304,7 +307,7 @@ function Table<T>(props: MyTableProps<T>) {
                                 : 0
                             }
                             className={classNames(
-                              'px-4 py-3 text-sm text-grey-80',
+                              'px-4 py-3 text-sm text-gray-500',
                               // TODO: Need to refactor this code
                               `${
                                 fixedColumns?.find(item => item.title === accessorKey)?.className

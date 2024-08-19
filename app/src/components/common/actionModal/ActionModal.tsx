@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { CellData, DefaultObject } from 'types/common';
 
-import { tertiaryBlue60 } from 'constants/color';
+import { tertiaryBlue60, tertiaryOrange80 } from 'constants/color';
 
 import PopOver from '../popOver';
 
@@ -77,8 +77,8 @@ function ActionModal(props: ActionModalProps) {
           </ul>
         }
       >
-        <div className="menu-button-icon" aria-label="Menu Button">
-          <FiMoreVertical size={24} color={openMenu ? tertiaryBlue60 : 'inherit'} />
+        <div className="menu-button-icon flex justify-center" aria-label="Menu Button">
+          <FiMoreVertical size={24} color={openMenu ? tertiaryOrange80 : 'inherit'} />
         </div>
       </PopOver>
     </div>

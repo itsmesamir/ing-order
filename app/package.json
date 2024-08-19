@@ -33,6 +33,7 @@
     "react-scripts": "5.0.1",
     "react-tippy": "^1.4.0",
     "react-toastify": "^10.0.5",
+    "sass": "^1.77.8",
     "tailwind-override": "^0.6.1",
     "universal-cookie": "^7.1.4",
     "web-vitals": "^2.1.0",

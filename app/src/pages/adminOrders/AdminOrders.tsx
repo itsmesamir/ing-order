@@ -118,7 +118,7 @@ function AdminOrders() {
   const getOrderColumns = (): Array<ColumnDef<Order>> => {
     return [
       {
-        header: 'SN',
+        header: ' ',
         size: 40,
         cell: ({ row }) => {
           const expand = row.getCanExpand()
@@ -131,21 +131,21 @@ function AdminOrders() {
             : '';
 
           return DivWrapper({
-            items: [expand, String(row.index + 1)],
+            items: [expand],
             className: 'flex items-center',
           });
         },
       },
-      {
-        header: 'Order ID',
-        cell: ({ row }) => row.original.id,
-        size: 40,
-      },
+      // {
+      //   header: 'Order ID',
+      //   cell: ({ row }) => row.original.id,
+      //   size: 60,
+      // },
       {
         header: "Employee's Name",
-        accessorKey: 'userName',
+        accessorKey: 'name',
         cell: ({ row }) => row.original.name,
-        size: 240,
+        size: 200,
         enableSorting: true,
       },
       {
@@ -155,7 +155,7 @@ function AdminOrders() {
       },
       {
         header: 'Order Date',
-        accessorKey: 'orderCreatedAt',
+        accessorKey: 'createdAt',
         size: 100,
         cell: ({ row }) => getFormattedDate(row.original.createdAt),
       },
@@ -167,20 +167,20 @@ function AdminOrders() {
       {
         header: 'Cafe Name',
         accessorKey: 'cafeName',
-        size: 100,
+        size: 180,
         // cell: ({ row }) => row.original.cafe.name,
       },
       {
         header: 'College Name',
         accessorKey: 'collegeName',
-        size: 100,
+        size: 180,
         // cell: ({ row }) => row.original.cafe.name,
       },
       {
         header: 'Actions',
         accessorKey: 'actions',
         cell: ({ row }: { row: Any }) => ActionCell({ row }, ActionOption as () => CellData[]),
-        size: 160,
+        size: 60,
       },
     ];
   };

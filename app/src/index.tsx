@@ -6,7 +6,8 @@ import { App } from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 
-import './styles.css';
+// import './styles.css';
+import './assets/scss/index.scss';
 import './styles/toast.css';
 
 const container = document.getElementById('root');

@@ -16,15 +16,12 @@ function ExpandButton(props: ExpandButtonProps) {
     <button
       type="button"
       onClick={onExpand}
-      className={classNames(
-        'center group h-8 w-8 cursor-pointer rounded-full text-right hover:bg-tertiary-blue-15',
-        className
-      )}
+      className={classNames('center group h-8 w-8 cursor-pointer', className)}
       aria-label="Expand Button"
     >
       <FiChevronRight
         className={classNames(
-          'text-lg text-grey-40 duration-300 group-hover:text-tertiary-blue-60',
+          'text-lg text-gray-500 duration-300 group-hover:text-orange-800',
           {
             'rotate-90': isExpanded,
           },

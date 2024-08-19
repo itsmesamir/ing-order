@@ -39,3 +39,27 @@
 .tippy-popper {
   max-width: 500px !important;
 }
+
+table {
+  tr {
+    .menu-container {
+      .menu-button-icon {
+        visibility: hidden;
+      }
+
+      @include m(active) {
+        .menu-button-icon {
+          visibility: visible;
+        }
+      }
+    }
+
+    &:hover {
+      .menu-container {
+        .menu-button-icon {
+          visibility: visible;
+        }
+      }
+    }
+  }
+}
