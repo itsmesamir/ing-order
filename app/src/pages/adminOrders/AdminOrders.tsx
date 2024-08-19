@@ -13,7 +13,7 @@ import {
   Button,
   Skeleton,
 } from '@chakra-ui/react';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, Row } from '@tanstack/react-table';
 import { FiEdit, FiTrash } from 'react-icons/fi';
 
 import { fetchOrders } from 'services/oders';
@@ -24,6 +24,9 @@ import Loading from 'components/common/Loading';
 import ActionModal from 'components/common/actionModal';
 import ExpandButton from 'components/common/button/ExpandButton';
 import { DivWrapper } from 'components/table/tableCells';
+import Overlay from 'components/common/overlay';
+
+import useOpen from 'hooks/useOpen';
 
 import { getFormattedDate } from 'utils/date';
 
@@ -185,6 +188,8 @@ function AdminOrders() {
     ];
   };
 
+  const { close, isOpen, open, state } = useOpen<Row<Order>>();
+
   // if order empty show skeleton
 
   if (isOrderLoading) {
@@ -195,6 +200,7 @@ function AdminOrders() {
     <>
       <Text fontSize="2xl" fontWeight="bold" color="gray.10">
         Orders
+        {state?.original.name}
       </Text>
       <Table
         loading={false}
@@ -210,7 +216,16 @@ function AdminOrders() {
           tableBodyCell:
             '[&:nth-child(1)]:px-0 [&:nth-child(2)]:px-0 [&:nth-child(3)]:pl-0 [&:nth-child(4)]:pl-0 [&:nth-child(5)]:pl-0 [&:nth-child(6)]:px-0',
         }}
-        onRowClick={row => row.toggleExpanded()}
+        // onRowClick={row => row.toggleExpanded()}
+        onRowClick={row => open(row)}
+      />
+
+      <Overlay
+        showCloseIcon
+        title="ddd"
+        isOpen={isOpen}
+        body={<div>Hell world</div>}
+        onClose={close}
       />
     </>
   );
