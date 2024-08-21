@@ -6,6 +6,6 @@
   }
 
   .overlay-content--close {
-    @apply -right-[640px];
+    right: -640px;
   }
 }
