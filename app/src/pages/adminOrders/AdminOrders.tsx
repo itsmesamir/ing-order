@@ -24,7 +24,7 @@ import Loading from 'components/common/Loading';
 import ActionModal from 'components/common/actionModal';
 import ExpandButton from 'components/common/button/ExpandButton';
 import { DivWrapper } from 'components/table/tableCells';
-import Overlay from 'components/common/overlay';
+import MyOverlay from 'components/common/myOverlay';
 
 import useOpen from 'hooks/useOpen';
 
@@ -220,7 +220,7 @@ function AdminOrders() {
         onRowClick={row => open(row)}
       />
 
-      <Overlay
+      <MyOverlay
         showCloseIcon
         title="ddd"
         isOpen={isOpen}
