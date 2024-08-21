@@ -25,6 +25,7 @@ import ActionModal from 'components/common/actionModal';
 import ExpandButton from 'components/common/button/ExpandButton';
 import { DivWrapper } from 'components/table/tableCells';
 import MyOverlay from 'components/common/myOverlay';
+import Modal from 'components/common/modal';
 
 import useOpen from 'hooks/useOpen';
 
@@ -220,13 +221,17 @@ function AdminOrders() {
         onRowClick={row => open(row)}
       />
 
-      <MyOverlay
+      {/* <MyOverlay
         showCloseIcon
         title="ddd"
         isOpen={isOpen}
         body={<div>Hell world</div>}
         onClose={close}
-      />
+      /> */}
+
+      <Modal isOpen={isOpen} onClose={close} header={{ title: 'Are you sure?' }}>
+        <h1>hello world {state?.original?.name}</h1>
+      </Modal>
     </>
   );
 }
