@@ -9,6 +9,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       cafe_id: 1,
       category_id: 1,
+      unit_id: 4,
       name: 'Espresso',
       description: 'Rich and bold espresso coffee.',
       price: 200,
@@ -26,6 +27,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       cafe_id: 1,
       category_id: 1,
+      unit_id: 4,
       name: 'Latte',
       description: 'Smooth and creamy latte with steamed milk.',
       price: 280,
@@ -42,6 +44,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       cafe_id: 2,
       category_id: 2,
+      unit_id: 8,
       name: 'Chocolate Cake',
       description: 'Decadent chocolate cake with a rich frosting.',
       price: 180,
@@ -60,6 +63,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       cafe_id: 2,
       category_id: 3,
+      unit_id: 6,
       name: 'Caesar Salad',
       description: 'Fresh Caesar salad with crispy croutons.',
       price: 150,
@@ -76,6 +80,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       cafe_id: 3,
       category_id: 1,
+      unit_id: 4,
       name: 'Cappuccino',
       description: 'Classic cappuccino with a rich foam layer.',
       price: 250,
@@ -92,6 +97,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       cafe_id: 1,
       category_id: 2,
+      unit_id: 1,
       name: 'momo',
       description: 'Juicy and spicy momo.',
       price: 120,
@@ -108,6 +114,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       cafe_id: 3,
       category_id: 2,
+      unit_id: 2,
       name: 'Muffin',
       description: 'Freshly baked muffin with a crumbly top.',
       price: 80,
@@ -124,6 +131,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       cafe_id: 3,
       category_id: 2,
+      unit_id: 2,
       name: 'Blueberry Muffin',
       description: 'Freshly baked blueberry muffin with a crumbly top.',
       price: 80,
@@ -140,6 +148,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       cafe_id: 1,
       category_id: 2,
+      unit_id: 2,
       name: 'Pancakes',
       description: 'Fluffy pancakes served with maple syrup.',
       price: 150,
@@ -156,6 +165,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       cafe_id: 2,
       category_id: 1,
+      unit_id: 4,
       name: 'Macchiato',
       description: 'Espresso with a small amount of foamed milk.',
       price: 220,
@@ -172,6 +182,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       cafe_id: 3,
       category_id: 3,
+      unit_id: 6,
       name: 'Greek Salad',
       description: 'Fresh Greek salad with feta cheese and olives.',
       price: 170,
@@ -188,6 +199,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       cafe_id: 1,
       category_id: 2,
+      unit_id: 2,
       name: 'Brownie',
       description: 'Chewy and rich chocolate brownie.',
       price: 100,
@@ -204,6 +216,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       cafe_id: 1,
       category_id: 2,
+      unit_id: 1,
       name: 'Chowmin',
       description: 'Spicy and delicious chowmin.',
       price: 150,

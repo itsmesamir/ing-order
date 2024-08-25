@@ -1,10 +1,10 @@
 import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-  await knex.schema.createTable('menu_categories', table => {
+  await knex.schema.createTable('menu_units', table => {
     table.bigIncrements('id').primary().unsigned();
-    table.integer('parent_id').unsigned().nullable();
     table.string('name', 255).unique().notNullable();
+    table.string('symbol', 255).unique().notNullable();
     table
       .specificType('created_by', 'bigint(19)')
       .unsigned()
@@ -35,5 +35,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema.dropTableIfExists('menu_categories');
+  await knex.schema.dropTableIfExists('menu_units');
 }

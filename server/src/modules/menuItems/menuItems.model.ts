@@ -21,9 +21,13 @@ class MenuItemModel extends BaseModel {
       .select('mi.*')
       .select({
         cafe_name: 'c.name',
+        category_name: 'cat.name',
+        unit_name: 'u.name',
       })
       .from({ mi: this.table })
-      .leftJoin({ c: dbTables.cafes }, 'c.id', 'mi.cafe_id');
+      .leftJoin({ c: dbTables.cafes }, 'c.id', 'mi.cafe_id')
+      .leftJoin({ cat: dbTables.menuCategories }, 'cat.id', 'mi.category_id')
+      .leftJoin({ u: dbTables.menuUnis }, 'u.id', 'mi.unit_id');
   }
 
   /**
@@ -39,6 +43,14 @@ class MenuItemModel extends BaseModel {
 
     if (filters?.cafeName) {
       query.whereILike('c.name', `${filters.cafeName}`);
+    }
+
+    if (filters?.categoryName) {
+      query.whereILike('cat.name', `${filters.categoryName}`);
+    }
+
+    if (filters?.unitName) {
+      query.whereILike('u.name', `${filters.unitName}`);
     }
 
     return query;
@@ -114,6 +126,15 @@ class MenuItemModel extends BaseModel {
         name: item.cafeName,
       },
       categoryId: item.categoryId,
+      category: item.categoryId && {
+        id: item.categoryId,
+        name: item.categoryName,
+      },
+      unitId: item.unitId,
+      unit: item.unitId && {
+        id: item.unitId,
+        name: item.unitName,
+      },
       name: item.name,
       description: item.description,
       price: item.price,

@@ -96,7 +96,17 @@ export interface Cafe {
 export interface MenuCategory {
   id: number;
   parentId: number;
-  categoryName: string;
+  name: string;
+  createdAt: string;
+  createdBy: number;
+  updatedAt: string;
+  updatedBy: number;
+}
+
+export interface MenuUnit {
+  id: number;
+  name: string;
+  symbol: string;
   createdAt: string;
   createdBy: number;
   updatedAt: string;
@@ -114,6 +124,9 @@ export interface MenuItem {
   cafeId?: number;
   cafe?: Cafe;
   categoryId: number;
+  category?: MenuCategory;
+  unitId: number;
+  unit?: MenuUnit;
   name: string;
   quantity?: number;
   description: string;

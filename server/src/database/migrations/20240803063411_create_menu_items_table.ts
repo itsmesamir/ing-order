@@ -10,6 +10,12 @@ export async function up(knex: Knex): Promise<void> {
       .references('id')
       .inTable('menu_categories')
       .onDelete('CASCADE');
+    table
+      .bigInteger('unit_id')
+      .unsigned()
+      .references('id')
+      .inTable('menu_units')
+      .onDelete('CASCADE');
     table.string('name', 255).notNullable();
     table.text('description').nullable();
     table.decimal('price', 10, 2).notNullable();

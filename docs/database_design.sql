@@ -107,10 +107,17 @@ Table MenuCategories {
   category_name VARCHAR(255) [unique, not null]
 }
 
+Table Units{
+  id INT [pk, increment]
+  title VARCHAR (255) [not null]
+  symbol VARCHAR (255) [not null]
+}
+
 Table MenuItems {
   id INT [pk, increment]
   cafe_id INT [ref: > Cafes.id]
   category_id INT [ref: > MenuCategories.id]
+  unit_id INT [ref: > Units.id]
   name VARCHAR(255) [not null]
   description TEXT
   price DECIMAL(10, 2) [not null]
@@ -203,3 +210,7 @@ Table Analytics {
   created_at TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   updated_at TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 }
+
+
+
+

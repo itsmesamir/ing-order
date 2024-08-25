@@ -23,6 +23,8 @@ const api = {
   menuItemById: '/menus/:id',
   reviews: 'reviews',
   menuCategories: '/menus/categories',
+  menuUnits: '/menus/units',
+  cafes: '/cafes',
   orders: '/orders',
 };
 
