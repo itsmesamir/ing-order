@@ -42,7 +42,7 @@ function MenuReview(props: MenuReviewProps) {
 
   return (
     <div>
-      <div className="bg-orange-50 mt-10 rounded-lg px-5 py-6">
+      <div className="bg-primary-50 mt-10 rounded-lg px-5 py-6">
         <div className="flex justify-between">
           <p className="text-xl font-semibold">
             Reviews{' '}

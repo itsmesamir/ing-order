@@ -71,10 +71,10 @@ function MyOverlay(props: OverlayProps) {
           onKeyUp={() => {}}
           tabIndex={0}
           aria-label="Close"
-          className="w-8 h-8 rounded-full center hover:bg-orange-100 absolute right-4 top-4 cursor-pointer group"
+          className="w-8 h-8 rounded-full center hover:bg-primary-100 absolute right-4 top-4 cursor-pointer group"
           onClick={onClose}
         >
-          <FaCross size={20} className="group-hover:text-orange-800" />
+          <FaCross size={20} className="group-hover:text-primary-800" />
         </div>
       )}
 

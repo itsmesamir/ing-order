@@ -1,19 +1,9 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ['./src/components/**/*.{js,jsx,ts,tsx}', './src/pages/**/*.{js,jsx,ts,tsx}'],
-  theme: {
-    extend: {
-      keyframes: {
-        overlay: {
-          from: { right: '-640px' },
-          to: { right: '0px' },
-        },
-      },
 
-      animation: {
-        overlay: 'overlay 300ms',
-      },
-    },
-  },
+const vyagutaPresets = require('./presets/ingPresets.ts');
+
+module.exports = {
+  presets: [vyagutaPresets],
+  content: ['./src/components/**/*.{js,jsx,ts,tsx}', './src/pages/**/*.{js,jsx,ts,tsx}'],
   plugins: [],
 };

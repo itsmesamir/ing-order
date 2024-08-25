@@ -209,7 +209,7 @@ function Table<T>(props: MyTableProps<T>) {
                             {
                               'cursor-pointer whitespace-nowrap':
                                 sortable && header.column.getCanSort(),
-                              'text-orange-600':
+                              'text-primary-600':
                                 !isTableEmpty && header.column.getIsSorted() && !loading,
                               'cursor-default': isTableEmpty || !header.column.getCanSort(),
                               'mt-6 text-xs font-normal': header.column.parent,
