@@ -8,12 +8,10 @@ export function createRoute(
     return '/';
   }
 
-  // Clean up any leading '/' from the first route segment
-  const cleanedRoutes = routes.map((route, index) => {
-    return index === 0 && route.startsWith('/') ? route.substring(1) : route;
+  const cleanedRoutes = routes.map(route => {
+    return route.startsWith('/') ? route.substring(1) : route;
   });
 
-  // Join the routes and interpolate parameters
   const path = cleanedRoutes.join('/');
   const interpolatedPath = interpolate(path, params);
 
