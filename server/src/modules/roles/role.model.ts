@@ -49,6 +49,22 @@ class RoleModel extends BaseModel {
   static fetchById(id: number, filters: Any, trx?: Knex.Transaction) {
     return this.queryBuilder(trx).select('*').from({ d: this.table }).where('id', id).first();
   }
+
+  static update(id: number, data: Any, trx?: Knex.Transaction) {
+    return this.queryBuilder(trx).table(this.table).where('id', id).update(data);
+  }
+
+  static delete(id: number, trx?: Knex.Transaction) {
+    return this.queryBuilder(trx).table(this.table).where('id', id).del();
+  }
+
+  static count(filters: Any, trx?: Knex.Transaction) {
+    const query = this.queryBuilder(trx).count('* as count').from({ r: this.table });
+
+    this.injectFilter(query, filters);
+
+    return query;
+  }
 }
 
 export default RoleModel;

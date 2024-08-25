@@ -37,4 +37,10 @@ router.post('/signup', validateReqBody(userValidator.signUpSchema), userControll
 
 router.post('/signout', userController.signOut);
 
+// get user roles /users/:id/roles
+router.get('/:id/roles', requireAuth, userController.fetchUserRoles);
+
+// post user roles /users/:id/roles
+router.post('/:id/roles', requireAuth, userController.upsertUserRoles);
+
 export default router;

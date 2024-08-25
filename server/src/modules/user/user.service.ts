@@ -255,3 +255,36 @@ export const updateUserById = async (id: number, body: Partial<User>): Promise<U
 
   return user;
 };
+
+/**
+ * Fetch user roles.
+ *
+ * @param id - The ID of the user to fetch roles for.
+ * @returns A promise that resolves to an array of Role objects.
+ */
+export const fetchUserRoles = async (id: number): Promise<Role[]> => {
+  log.info(`Fetching user roles for user with ID: ${id}`);
+
+  const roles = (await fetchUserRolesByUserId(id)) as Role[];
+
+  return roles;
+};
+
+/**
+ * create, update or delete user roles.
+ *
+ * @param id - The ID of the user to update.
+ * @param roles - The roles to update.
+ * @returns A promise that resolves when the user roles are updated.
+ */
+export const upsertUserRoles = async (id: number, roles: Role[]): Promise<void> => {
+  log.info(`Upserting user roles for user with ID: ${id}`);
+
+  const userRoles = (await fetchUserRolesByUserId(id)) as UserRole[];
+
+  await db.transaction(async trx => {
+    await updateRoles(roles, userRoles, id, trx);
+  });
+
+  return;
+};

@@ -109,3 +109,34 @@ export const updateUserById = async (req: Request, res: Response) => {
 
   return res.status(HttpStatus.OK).json({ data: users });
 };
+
+// get user roles /users/:id/roles
+/**
+ * fetch user roles.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {Promise<Response>}
+ */
+export const fetchUserRoles = async (req: Request, res: Response) => {
+  const userId = +req.params.id as number;
+
+  const roles = await userService.fetchUserRoles(userId);
+
+  return res.status(HttpStatus.OK).json({ data: roles });
+};
+
+/**
+ * create, update or delete user roles.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {Promise<Response>}
+ */
+export const upsertUserRoles = async (req: Request, res: Response) => {
+  const userId = +req.params.id as number;
+
+  const roles = await userService.upsertUserRoles(userId, req.body);
+
+  return res.status(HttpStatus.OK).json({ data: roles });
+};

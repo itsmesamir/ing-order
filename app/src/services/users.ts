@@ -1,5 +1,6 @@
-import { buildUrl } from 'utils/string';
 import http from 'utils/http';
+import { buildUrl } from 'utils/string';
+import { interpolate } from 'utils/interpolate';
 
 import { Any } from 'types/common';
 import { User } from 'types/User';
@@ -26,6 +27,22 @@ export async function updateUserById(id: number, body: Any, signal?: AbortSignal
   const url = buildUrl(api.users, id);
 
   const { data } = await http.put(url, body, { signal });
+
+  return data;
+}
+
+export async function fetchUserRoles(id: number, signal?: AbortSignal): Promise<User[]> {
+  const url = buildUrl(interpolate(api.userRoles, { id }));
+
+  const { data } = await http.get(url, { signal });
+
+  return data;
+}
+
+export async function addUserRoles(id: number, body: Any, signal?: AbortSignal): Promise<User[]> {
+  const url = buildUrl(interpolate(api.userRoles, { id }));
+
+  const { data } = await http.post(url, body, { signal });
 
   return data;
 }
