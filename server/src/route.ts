@@ -11,6 +11,8 @@ import leaveRequestsRoute from '@/modules/leaveRequests/leaveRequest.route';
 import countriesRoute from '@/modules/countries/countries.route';
 import fiscalYearsRoute from '@/modules/fiscalYears/fiscalYears.route';
 import menuCategoriesRoute from '@/modules/menuCategories/menuCategories.route';
+import menuUnitsRoute from '@/modules/menuUnits/menuUnits.route';
+import cafesRoute from '@/modules/cafes/cafes.route';
 import ordersRoute from '@/modules/orders/orders.route';
 import menuItemsRoute from '@/modules/menuItems/menuItems.route';
 
@@ -56,6 +58,8 @@ router.use('/leave-credits', leaveCreditsRoute);
 router.use('/leave-requests', leaveRequestsRoute);
 router.use('/fiscal-years', fiscalYearsRoute);
 router.use('/menus/categories', menuCategoriesRoute);
+router.use('/menus/units', menuUnitsRoute);
+router.use('/cafes', cafesRoute);
 router.use('/menus', menuItemsRoute);
 router.use('/orders', ordersRoute);
 router.use('/fiscal-years', fiscalYearsRoute);

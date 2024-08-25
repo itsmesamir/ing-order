@@ -8,7 +8,7 @@ export async function seed(knex: Knex): Promise<void> {
   await knex('menu_categories').insert([
     {
       parent_id: null, // Top-level category
-      category_name: 'Appetizers',
+      name: 'Appetizers',
       created_by: 1,
       created_at: new Date(),
       updated_by: null,
@@ -18,7 +18,7 @@ export async function seed(knex: Knex): Promise<void> {
     },
     {
       parent_id: null, // Top-level category
-      category_name: 'Main Courses',
+      name: 'Main Courses',
       created_by: 1,
       created_at: new Date(),
       updated_by: null,
@@ -28,7 +28,7 @@ export async function seed(knex: Knex): Promise<void> {
     },
     {
       parent_id: 1, // Sub-category under Appetizers
-      category_name: 'Starters',
+      name: 'Starters',
       created_by: 2,
       created_at: new Date(),
       updated_by: null,
@@ -38,7 +38,7 @@ export async function seed(knex: Knex): Promise<void> {
     },
     {
       parent_id: 1, // Sub-category under Appetizers
-      category_name: 'Salads',
+      name: 'Salads',
       created_by: 2,
       created_at: new Date(),
       updated_by: null,
@@ -48,7 +48,7 @@ export async function seed(knex: Knex): Promise<void> {
     },
     {
       parent_id: 2, // Sub-category under Main Courses
-      category_name: 'Pasta',
+      name: 'Pasta',
       created_by: 3,
       created_at: new Date(),
       updated_by: null,
@@ -58,7 +58,7 @@ export async function seed(knex: Knex): Promise<void> {
     },
     {
       parent_id: 2, // Sub-category under Main Courses
-      category_name: 'Grilled Meat',
+      name: 'Grilled Meat',
       created_by: 3,
       created_at: new Date(),
       updated_by: null,

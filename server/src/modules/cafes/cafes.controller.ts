@@ -11,7 +11,7 @@ import * as cafesService from './cafes.service';
  * @returns {Promise<Response>}
  */
 export const fetchCafes = async (req: Request, res: Response) => {
-  const countries = await cafesService.fetchCafes();
+  const cafes = await cafesService.fetchCafes({});
 
-  return res.status(HttpStatus.OK).json({ data: countries });
+  return res.status(HttpStatus.OK).json({ data: cafes });
 };

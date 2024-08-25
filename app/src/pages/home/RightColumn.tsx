@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { useMenuCategoriesQuery } from 'hooks/useMenuCategoriesQuery';
 import { useMenusQuery } from 'hooks/useMenusQuery';
 
 type RightColumnProps = {
@@ -11,10 +10,6 @@ function RightColumn(props: RightColumnProps) {
   const { children } = props;
 
   const { data: menuItems, isLoading: isMenuItemLoading } = useMenusQuery({});
-
-  const { data: menuCateogries, isLoading: isMenuCategoriesLoading } = useMenuCategoriesQuery({});
-
-  const [searchItem, setSearchItem] = useState('');
 
   if (!menuItems || isMenuItemLoading) {
     return <>Loading...</>;

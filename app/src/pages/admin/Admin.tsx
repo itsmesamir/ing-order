@@ -1,7 +1,10 @@
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import AdminOrders from 'pages/adminOrders/AdminOrders';
-import AdminMenus from 'pages/adminMenus/AdminMenu';
+import AdminMenuLists from 'pages/adminMenus/AdminMenuLists';
+import AddMenuItems from 'pages/adminMenus/AddMenuItems';
+import AdminCategories from 'pages/adminCategories/AdminCategories';
+import AddCategories from 'pages/adminCategories/AddCategories';
 
 import useUserStore from 'stores/useUserStore';
 
@@ -23,7 +26,12 @@ function Admin() {
       <Switch>
         <Route exact path={createRoute([paths.adminOrders])} component={AdminOrders} />
 
-        <Route exact path={createRoute([paths.adminMenus])} component={AdminMenus} />
+        <Route exact path={createRoute([paths.addMenuItems])} component={AddMenuItems} />
+        <Route exact path={createRoute([paths.editMenuItems])} component={AddMenuItems} />
+        <Route exact path={createRoute([paths.adminMenus])} component={AdminMenuLists} />
+
+        <Route exact path={createRoute([paths.categories])} component={AdminCategories} />
+        <Route exact path={createRoute([paths.addCategories])} component={AddCategories} />
 
         <Redirect to={createRoute([paths.adminMenus])} />
       </Switch>

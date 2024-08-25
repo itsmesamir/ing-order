@@ -11,6 +11,7 @@ const dbTables = {
   notifications: 'notifications',
   cafes: 'cafes',
   menuCategories: 'menu_categories',
+  menuUnis: 'menu_units',
   menuItems: 'menu_items',
   orders: 'orders',
   orderItems: 'order_items',

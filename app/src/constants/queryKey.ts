@@ -14,5 +14,7 @@ export default {
   menus: 'menus',
   reviews: 'reviews',
   menuCategories: 'menu-categories',
+  menuUnits: 'menu-units',
+  cafes: 'cafes',
   orders: 'orders',
 } as const;
