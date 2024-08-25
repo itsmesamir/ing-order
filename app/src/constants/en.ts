@@ -19,6 +19,8 @@ const en = {
   BUTTON: {
     ADD_TO_CART: 'Add to cart',
   },
+  confirmDelete: 'Yes, Delete',
+  removeMember: 'Remove Member',
 };
 
 export default en;

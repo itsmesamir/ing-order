@@ -2,6 +2,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Feedback from 'pages/feedback/Feedback';
 import Dashboard from 'pages/dashboard/Dashboard';
+import UserRoles from 'pages/userRoles/UserRoles';
 import UserOrders from 'pages/userOrders/UserOrders';
 import OrderHistory from 'pages/orderHistory/OrderHistory';
 
@@ -34,6 +35,8 @@ function Home() {
         <Route exact path={createRoute([paths.orders])} component={OrderHistory} />
 
         <Route exact path={createRoute([paths.feedbacks])} component={Feedback} />
+
+        <Route exact path={createRoute([paths.userRoles])} component={UserRoles} />
 
         <Redirect to={createRoute([paths.menus])} />
       </Switch>

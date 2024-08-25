@@ -10,6 +10,7 @@ const api = {
   designations: '/designations',
   roles: '/roles',
   users: '/users',
+  userRoles: 'users/:id/roles',
   countries: '/countries',
   leaveTypes: '/leave-types',
   leaveCredits: '/leave-credits',

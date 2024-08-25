@@ -3,6 +3,7 @@ import { debounce } from 'lodash';
 import { Any } from 'types/common';
 
 import { INPUT_DEBOUNCE_TIME } from 'constants/common';
+import { interpolate } from './interpolate';
 
 /**
  * Build a Url removing multiple slashes and trailing slash.

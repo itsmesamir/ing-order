@@ -31,4 +31,5 @@ export default {
   orders: 'orders',
   feedbacks: 'feedbacks',
   userOrders: 'user/orders',
+  userRoles: 'user/roles',
 } as const;

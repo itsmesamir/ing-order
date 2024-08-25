@@ -13,7 +13,15 @@ import {
 } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { FaBars, FaComment, FaHistory, FaHome, FaSearch } from 'react-icons/fa';
+import {
+  FaBars,
+  FaComment,
+  FaFirstOrder,
+  FaHistory,
+  FaHome,
+  FaSearch,
+  FaTools,
+} from 'react-icons/fa';
 
 import { createRoute } from 'utils/route';
 
@@ -24,6 +32,8 @@ const menuItems = [
   { name: 'Menu', icon: FaSearch, path: paths.menus },
   { name: 'Order History', icon: FaHistory, path: paths.orders },
   { name: 'Feedback', icon: FaComment, path: paths.feedbacks },
+  { name: 'Admin Orders', icon: FaFirstOrder, path: paths.userRoles },
+  { name: 'User Roles', icon: FaTools, path: paths.adminOrders },
 ];
 
 function DashboardDrawer() {
