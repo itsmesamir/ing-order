@@ -2,6 +2,7 @@ import { Knex } from 'knex';
 
 import BaseModel from '@/models/baseModel';
 
+import { OrderFilter } from '@/types/orders';
 import { Order, Any, OrderStatus, OrderItem } from '@/types/common';
 
 import db from '@/db';
@@ -84,9 +85,17 @@ class OrderModel extends BaseModel {
    * @param {Knex.QueryBuilder} query
    * @param {FilterNotesParams} filters
    */
-  static injectFilter(query: Knex.QueryBuilder, filters: Any) {
-    if (filters?.status) {
-      query.where('us.status', filters.status);
+  static injectFilter(query: Knex.QueryBuilder, filters: OrderFilter) {
+    if (filters?.cafeIds) {
+      query.whereIn('c.id', filters.cafeIds);
+    }
+
+    if (filters?.menuItemIds) {
+      query.whereIn('mi.id', filters.menuItemIds);
+    }
+
+    if (filters?.userIds) {
+      query.whereIn('u.id', filters.userIds);
     }
 
     return query;
@@ -99,7 +108,7 @@ class OrderModel extends BaseModel {
    * @param {Knex.Transaction} [trx]
    * @returns {Knex.QueryBuilder<Order[]>}
    */
-  static fetch(filters: Any, trx?: Knex.Transaction) {
+  static fetch(filters: OrderFilter, trx?: Knex.Transaction) {
     const query = this.baseQuery(trx);
 
     this.injectFilter(query, filters);

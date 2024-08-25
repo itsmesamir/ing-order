@@ -6,6 +6,7 @@ import BaseModel from '@/models/baseModel';
 
 import logger from '@/services/logger';
 
+import { OrderFilter } from '@/types/orders';
 import { Any, Order, OrderStatusEnum } from '@/types/common';
 
 const log = logger.withNamespace('modules/orders.service');
@@ -15,7 +16,10 @@ const log = logger.withNamespace('modules/orders.service');
  *
  * @returns A promise that resolves to an array of orders objects.
  */
-export const fetchOrders = async (params: Any, trx?: Knex.Transaction): Promise<Order[]> => {
+export const fetchOrders = async (
+  params: OrderFilter,
+  trx?: Knex.Transaction
+): Promise<Order[]> => {
   log.info('Fetching orders');
 
   const orders = await OrderModel.fetch(params, trx);
