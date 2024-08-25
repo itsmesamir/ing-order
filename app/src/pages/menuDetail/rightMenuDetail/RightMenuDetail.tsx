@@ -42,7 +42,7 @@ function RightMenuDetail(props: RightMenuDetailProps) {
       <div className="flex items-center justify-between">
         <p className="text-2xl font-medium text-gray-600">{en.ORDER.PRICE}</p>
 
-        <p className="text-3xl font-medium text-orange-600 mt-3">
+        <p className="text-3xl font-medium text-primary-600 mt-3">
           {en.ORDER.CURRENCY} {menuItem.price}
         </p>
       </div>
@@ -71,7 +71,7 @@ function RightMenuDetail(props: RightMenuDetailProps) {
       <div className="mt-6 flex items-center justify-center gap-x-6">
         <p className="text-xl font-medium text-gray-600">{en.ORDER.TOTAL_PRICE}</p>
 
-        <p className="text-3xl font-medium text-orange-600 mt-3">
+        <p className="text-3xl font-medium text-primary-600 mt-3">
           {en.ORDER.CURRENCY} {totalPrice}
         </p>
       </div>
@@ -87,7 +87,7 @@ function RightMenuDetail(props: RightMenuDetailProps) {
               discount: menuItem.discount,
             });
           }}
-          className="w-full text-center text-xl font-medium h-14 center rounded bg-orange-600 px-3  leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className="w-full text-center text-xl font-medium h-14 center rounded bg-primary-600 px-3  leading-6 text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           {en.BUTTON.ADD_TO_CART}
         </button>

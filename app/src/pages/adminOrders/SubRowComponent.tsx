@@ -14,7 +14,7 @@ import paths from 'constants/paths';
 function AvatarComponent(item: Any) {
   return (
     <a
-      className="flex items-center hover:bg-orange-100 p-4 cursor-pointer"
+      className="flex items-center hover:bg-primary-100 p-4 cursor-pointer"
       href={interpolate(createRoute([paths.menus, paths.id, paths.detail]), {
         id: item?.id,
       })}

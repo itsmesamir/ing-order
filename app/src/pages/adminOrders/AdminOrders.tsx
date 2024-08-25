@@ -221,17 +221,17 @@ function AdminOrders() {
         onRowClick={row => open(row)}
       />
 
-      {/* <MyOverlay
+      <MyOverlay
         showCloseIcon
         title="ddd"
         isOpen={isOpen}
         body={<div>Hell world</div>}
         onClose={close}
-      /> */}
+      />
 
-      <Modal isOpen={isOpen} onClose={close} header={{ title: 'Are you sure?' }}>
+      {/* <Modal isOpen={isOpen} onClose={close} header={{ title: 'Are you sure?' }}>
         <h1>hello world {state?.original?.name}</h1>
-      </Modal>
+      </Modal> */}
     </>
   );
 }
