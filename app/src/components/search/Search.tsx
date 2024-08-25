@@ -51,6 +51,7 @@ function Search(props: SearchProps) {
       </div>
 
       <Modal
+        className="search-modal"
         isOpen={isOpen}
         onClose={() => {
           setSearchItem('');
