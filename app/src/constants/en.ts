@@ -8,6 +8,8 @@ const en = {
     SOMETHING_WENT_WRONG: 'Something went wrong',
   },
 
+  MEMBER: 'Member',
+
   ORDER: {
     CURRENCY: 'RS.',
     PAYMENT_SUMMARY: 'Payment Summary',
@@ -18,9 +20,12 @@ const en = {
 
   BUTTON: {
     ADD_TO_CART: 'Add to cart',
+    CONFIRM_DELETE: 'Yes, Delete',
   },
-  confirmDelete: 'Yes, Delete',
-  removeMember: 'Remove Member',
+
+  MODEL: {
+    DELETE: 'Are you sure you want to delete :title?',
+  },
 };
 
 export default en;

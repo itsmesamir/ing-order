@@ -1,8 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
 import { icons } from 'react-icons';
-import Modal from '../modal';
 import { AiFillExclamationCircle } from 'react-icons/ai';
+
+import Modal from '../modal';
 import Loading from '../Loading';
 
 interface DeleteConfirmProps {
@@ -35,35 +36,34 @@ function DeleteConfirm(props: DeleteConfirmProps) {
   } = props;
 
   return (
-    <Modal isOpen={isModalOpen} onClose={closeModal} overlayClassName="delete-confirm">
-      <div className="omb-modal__content wp-100">
+    <Modal
+      isOpen={isModalOpen}
+      onClose={closeModal}
+      overlayClassName="delete-confirm"
+      header={{
+        icon: (
+          <AiFillExclamationCircle
+            size={22}
+            className={classnames({
+              'text-error-base': options.type === 'danger',
+              'color-tertiary-yellow-60': options.type === 'warning',
+              'color-tertiary-green-60': options.type === 'success',
+            })}
+          />
+        ),
+        title,
+        className: 'delete-confirm__header',
+      }}
+    >
+      <div className="omb-modal__content wp-100 p-4">
         <div className="row p-5x mr-4x wp-100">
-          <div className="col-2x p-1x pr-3x">
-            <AiFillExclamationCircle
-              size={22}
-              className={classnames({
-                'color-tertiary-red-60': options.type === 'danger',
-                'color-tertiary-yellow-60': options.type === 'warning',
-                'color-tertiary-green-60': options.type === 'success',
-              })}
-            />
-          </div>
+          <div className="col-2x p-1x pr-3x" />
           <div className="col w-400 break-word flex-1">
-            <h3
-              className={classnames('pb-5x', {
-                'color-tertiary-red-60': options.type === 'danger',
-                'color-tertiary-green-60': options.type === 'success',
-                'color-tertiary-yellow-60': options.type === 'warning',
-              })}
-            >
-              {title}
-            </h3>
-
-            {message}
+            <p className="text-xl">{message}</p>
 
             {children && <div className="mt-4x">{children}</div>}
 
-            <div className="omb-modal__buttons d-flex pt-5x">
+            <div className="omb-modal__buttons d-flex pt-4">
               <button
                 type="submit"
                 onClick={onApplyClick}
@@ -82,6 +82,7 @@ function DeleteConfirm(props: DeleteConfirmProps) {
                 </span>
                 {isSubmitting && <Loading />}
               </button>
+
               <button
                 type="button"
                 className="btn btn--outlined-grey ml-3x wpx-100"
