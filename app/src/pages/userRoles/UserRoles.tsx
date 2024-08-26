@@ -1,120 +1,22 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { FiEdit, FiTrash } from 'react-icons/fi';
+import { fetchUsers } from 'services/users';
 
-import { ColumnDef } from '@tanstack/react-table';
-
+import DeleteConfirm from 'components/common/deleteConfirm';
 import Table from 'components/table/Table';
-import ActionModal from 'components/common/actionModal';
+
+import { interpolate } from 'utils/interpolate';
 
 import { User } from 'types/User';
 
-import { Any, CellData, DefaultObject, RowData } from 'types/common';
-
-import history from 'utils/history';
-import { classNames } from 'utils/className';
-import { parseQuery as parse } from 'utils/queryParams';
-import { fetchUserById, fetchUsers } from 'services/users';
-import DeleteConfirm from 'components/common/deleteConfirm';
 import en from 'constants/en';
 
-function UserRoles(props: Any) {
-  const { location } = history;
+import { columns } from './columns';
+
+function UserRoles() {
   const [userRoles, setUserRoles] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [deleteModalOpenFor, setDeleteModalOpenFor] = useState<User | null>(null);
-  const queryParams: DefaultObject = parse(location.search);
-
-  const ActionOption = () =>
-    useMemo(
-      () => [
-        {
-          name: 'Edit roles',
-          icon: <FiEdit />,
-          state: (rowData: User) => {
-            console.log(rowData);
-          },
-        },
-
-        {
-          name: 'Delete roles',
-          className: 'text-red-500',
-          icon: <FiTrash />,
-          state: (rowData: User) => {
-            console.log(rowData);
-            setDeleteModalOpenFor(rowData);
-          },
-          // state: (rowData: Order) => setDeleteModalOpenFor(rowData?.id),
-        },
-      ],
-      []
-    );
-
-  function ActionCell(
-    { row: { original } }: { row: { original: RowData<User> } },
-    ActionOption: (requestData: RowData<User>) => CellData[]
-  ) {
-    const option = ActionOption(original);
-
-    return <ActionModal cellData={option} rowData={original} />;
-  }
-
-  const getColumns = (): Array<ColumnDef<User>> => {
-    return [
-      {
-        header: 'S/N',
-        accessorKey: 'sn',
-        size: 56,
-        enableSorting: false,
-        enableColumnFilter: false,
-        cell: ({ row: { index } }: { row: { index: number } }) => <span>{index + 1}</span>,
-      },
-      {
-        header: 'Name',
-        accessorKey: 'name',
-        size: 325,
-        cell: ({ row }) => {
-          return (
-            <span className="capital-text employees__table-text">{`${row?.original.name}`}</span>
-          );
-        },
-      },
-      {
-        header: () => <div className="d-flex align-items-center">Role(s)</div>,
-        accessorKey: 'role',
-        enableSorting: false,
-        cell: ({ row: props }) => {
-          console.log(props);
-          const { roles } = props.original;
-          const roleIds = queryParams.roleIds ? queryParams.roleIds.split(',') : [];
-
-          return (
-            <div className="employee__role" id={`user-role-${props.original.id}`}>
-              {roles?.length > 0
-                ? roles.map(role => {
-                    const matchId = roleIds?.find((id: number) => id == role.id);
-                    return (
-                      <span
-                        key={role.id}
-                        className={classNames('role-table-item', { 'text-bold': matchId })}
-                      >
-                        {role.name}
-                      </span>
-                    );
-                  })
-                : '-'}
-            </div>
-          );
-        },
-      },
-      {
-        header: 'Actions',
-        accessorKey: 'actions',
-        cell: ({ row }: { row: Any }) => ActionCell({ row }, ActionOption as () => CellData[]),
-        size: 160,
-      },
-    ];
-  };
 
   const fetchUserRoles = async () => {
     try {
@@ -132,20 +34,18 @@ function UserRoles(props: Any) {
     fetchUserRoles();
   }, []);
 
-  console.log(userRoles);
-
   return (
     <div>
       <Table
         loading={isLoading}
-        columns={getColumns()}
+        columns={columns(setDeleteModalOpenFor)}
         data={userRoles}
         getRowCanExpand={() => true}
         emptyMessage=""
-      ></Table>
+      />
       <DeleteConfirm
-        actionLabel={en.confirmDelete}
-        title={en.removeMember}
+        actionLabel={en.BUTTON.CONFIRM_DELETE}
+        title={interpolate(en.MODEL.DELETE, { title: deleteModalOpenFor?.name as string })}
         isModalOpen={!!deleteModalOpenFor}
         onApplyClick={() => {}}
         // isSubmitting={false}
