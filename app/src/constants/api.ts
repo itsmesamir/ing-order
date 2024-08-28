@@ -24,7 +24,9 @@ const api = {
   menuItemById: '/menus/:id',
   reviews: 'reviews',
   menuCategories: '/menus/categories',
+  menuCategoriesById: '/menus/categories/edit/:id',
   menuUnits: '/menus/units',
+  menuUnitsById: '/menus/units/edit/:id',
   cafes: '/cafes',
   orders: '/orders',
 };
