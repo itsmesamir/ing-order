@@ -1,8 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
 import { icons } from 'react-icons';
-import Modal from '../modal';
 import { AiFillExclamationCircle } from 'react-icons/ai';
+
+import Modal from '../modal';
 import Loading from '../Loading';
 
 interface DeleteConfirmProps {

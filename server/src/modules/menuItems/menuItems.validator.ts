@@ -13,6 +13,7 @@ const createMenuItemSchema = Joi.object({
   isSpecial: Joi.boolean().required(),
   price: Joi.number().positive().required(),
   discount: Joi.number().positive().max(100).allow('', null),
+  createdBy: Joi.number().required(), // <-- Add this line to allow 'createdBy'
 });
 
 const updateMenuItemSchema = Joi.object({
@@ -28,6 +29,7 @@ const updateMenuItemSchema = Joi.object({
   isSpecial: Joi.boolean(),
   price: Joi.number().positive(),
   discount: Joi.number().positive().max(100).allow('', null),
+  updatedBy: Joi.number(), // <-- Add this line to allow 'updatedBy'
 });
 
 export { createMenuItemSchema, updateMenuItemSchema };

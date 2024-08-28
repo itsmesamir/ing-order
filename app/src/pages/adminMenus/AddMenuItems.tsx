@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 
 import { createMenuItem, updateMenuById } from 'services/menus';
 
+import useUserStore from 'stores/useUserStore'; // <-- Import the user store
+
 import Form, { FormInputField } from 'components/Form';
 
 import { useMenuCategoriesQuery } from 'hooks/useMenuCategoriesQuery';
@@ -28,6 +30,8 @@ function AddEditMenuItem() {
   const { data: menuItem, isLoading: isMenuItemLoading } = useMenuByIdQuery(
     id as unknown as number
   );
+
+  const { data: currentUser } = useUserStore(); // <-- Get current user
 
   const fields: FormInputField[] = [
     { name: 'name', label: 'Name', type: 'text' },
@@ -84,6 +88,24 @@ function AddEditMenuItem() {
     { name: 'discount', label: 'Discount', type: 'number' },
   ];
 
+  // Function to filter and format the menuItem data
+  const getInitialValues = (item: Any = {}): Record<string, string | number | boolean> => {
+    return {
+      name: item.name || '',
+      categoryId: item.category?.id || '', // Extract category ID
+      unitId: item.unit?.id || '', // Extract unit ID
+      cafeId: item.cafe?.id || '', // Extract cafe ID
+      description: item.description || '',
+      maxOrder: item.maxOrder || '',
+      preparedTime: item.preparedTime || '',
+      availability: item.availability === 1, // Convert availability to boolean
+      status: item.status || '', // Default value if not present
+      isSpecial: item.isSpecial === 1, // Convert isSpecial to boolean
+      price: item.price || '',
+      discount: item.discount || '',
+    };
+  };
+
   const createMutation = useMutation({
     mutationFn: createMenuItem,
     onSuccess: () => {
@@ -111,10 +133,15 @@ function AddEditMenuItem() {
   });
 
   const handleSubmit = (data: Record<string, string | number | boolean>) => {
+    const payload = {
+      ...data,
+      createdBy: currentUser?.id, // Pass userId as createdBy
+    };
+
     if (isEditMode) {
-      updateMutation.mutate(data);
+      updateMutation.mutate(payload);
     } else {
-      createMutation.mutate(data);
+      createMutation.mutate(payload);
     }
   };
 
@@ -134,7 +161,11 @@ function AddEditMenuItem() {
   return (
     <div className="p-4">
       <h1 className="font-bold text-3xl pb-4">{isEditMode ? 'Edit Menu Item' : 'Add Menu Item'}</h1>
-      <Form fields={fields} defaultValues={menuItem as Any} onSubmit={handleSubmit} />
+      <Form
+        fields={fields}
+        defaultValues={getInitialValues(menuItem as Any)}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 }

@@ -6,27 +6,27 @@ import { FiEdit, FiTrash } from 'react-icons/fi';
 import Table from 'components/table/Table';
 import ActionModal from 'components/common/actionModal/ActionModal';
 
-import { useMenuCategoriesQuery } from 'hooks/useMenuCategoriesQuery';
+import { useMenuUnitsQuery } from 'hooks/useMenuUnitsQuery';
 
-import { Any, CellData, MenuCategory, MenuItem, Order, RowData } from 'types/common';
+import { MenuUnit, RowData, CellData, Any } from 'types/common';
 
 function ActionCell(
-  { row: { original } }: { row: { original: RowData<Order> } },
-  ActionOption: (requestData: RowData<Order>) => CellData[]
+  { row: { original } }: { row: { original: RowData<MenuUnit> } },
+  ActionOption: (requestData: RowData<MenuUnit>) => CellData[]
 ) {
   const option = ActionOption(original);
 
   return <ActionModal cellData={option} rowData={original} />;
 }
 
-function AdminCategories() {
+function AdminUnits() {
   const history = useHistory();
   const [error, setError] = useState<string | null>(null);
 
-  const { data: menuCategories, isLoading, error: queryError } = useMenuCategoriesQuery({});
+  const { data: menuUnits, isLoading, error: queryError } = useMenuUnitsQuery({});
 
   if (isLoading) {
-    return <div>Loading....</div>;
+    return <div>Loading...</div>;
   }
 
   if (queryError || error) {
@@ -36,17 +36,14 @@ function AdminCategories() {
   }
 
   const handleAddItemClick = () => {
-    history.push('/admin/menus/categories/add');
+    history.push('/admin/menus/units/add');
   };
 
-  const handleEdit = (rowData: MenuCategory) => {
-    history.push({
-      pathname: `/admin/menus/categories/edit/${rowData.id}`,
-      state: { id: rowData.id, itemData: rowData },
-    });
+  const handleEdit = (rowData: MenuUnit) => {
+    history.push(`/admin/menus/units/edit/${rowData.id}`);
   };
 
-  const handleDelete = (rowData: MenuCategory) => {
+  const handleDelete = (rowData: MenuUnit) => {
     // Implement your delete logic here
     console.log('Delete item:', rowData);
   };
@@ -57,25 +54,23 @@ function AdminCategories() {
         {
           name: 'Edit',
           icon: <FiEdit />,
-          state: (rowData: MenuCategory) => {
+          state: (rowData: MenuUnit) => {
             handleEdit(rowData);
           },
         },
-
         {
           name: 'Delete',
           className: 'text-red-500',
           icon: <FiTrash />,
-          state: (rowData: MenuCategory) => {
-            console.log(rowData);
+          state: (rowData: MenuUnit) => {
+            handleDelete(rowData);
           },
-          // state: (rowData: Order) => setDeleteModalOpenFor(rowData?.id),
         },
       ],
       []
     );
 
-  const columns: Array<ColumnDef<MenuCategory>> = [
+  const columns: Array<ColumnDef<MenuUnit>> = [
     {
       accessorKey: 'sn',
       header: 'SN',
@@ -84,6 +79,11 @@ function AdminCategories() {
     {
       accessorKey: 'name',
       header: 'Name',
+      cell: info => info.getValue(),
+    },
+    {
+      accessorKey: 'symbol',
+      header: 'Symbol',
       cell: info => info.getValue(),
     },
     {
@@ -96,20 +96,20 @@ function AdminCategories() {
 
   return (
     <div className="p-4">
-      <h1 className="font-bold text-2xl">Category Lists</h1>
+      <h1 className="font-bold text-2xl">Unit Lists</h1>
       <div className="flex justify-end mb-4">
         <button
           type="button"
           className="bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600"
           onClick={handleAddItemClick}
-          aria-label="Add new category"
+          aria-label="Add new unit"
         >
           Add Item +
         </button>
       </div>
       <Table
         columns={columns}
-        data={menuCategories || []}
+        data={menuUnits || []}
         loading={isLoading}
         emptyMessage="No data available"
       />
@@ -117,4 +117,4 @@ function AdminCategories() {
   );
 }
 
-export default AdminCategories;
+export default AdminUnits;

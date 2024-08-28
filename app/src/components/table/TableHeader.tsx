@@ -9,7 +9,7 @@ interface TableHeaderProps {
   onClick: () => void;
 }
 
-const TableHeader = (props: React.PropsWithChildren<TableHeaderProps>) => {
+function TableHeader(props: React.PropsWithChildren<TableHeaderProps>) {
   const { label, identifier, columnToSortBy, isAscendingOrdered, onClick } = props;
   const highlightColumn = identifier === columnToSortBy;
 
@@ -24,11 +24,11 @@ const TableHeader = (props: React.PropsWithChildren<TableHeaderProps>) => {
       {label}
       {highlightColumn ? (
         <span>
-          <span className={classNames('triangle', { 'triangle--up': isAscendingOrdered })}></span>
+          <span className={classNames('triangle', { 'triangle--up': isAscendingOrdered })} />
         </span>
       ) : null}
     </div>
   );
-};
+}
 
 export default TableHeader;
