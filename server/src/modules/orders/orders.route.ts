@@ -1,13 +1,16 @@
 import { Router } from 'express';
 
+import { validateReqQuery } from '@/utils/validator';
+
 import { requireAuth } from '@/middlewares/auth';
 
+import { fetch } from './orders.validator';
 import * as ordersController from './orders.controller';
 
 const router = Router();
 
 // Public route to get all orders
-router.get('/', requireAuth, ordersController.fetchOrders);
+router.get('/', validateReqQuery(fetch), ordersController.fetchOrders);
 
 // Authenticated routes for specific order operations
 router.get('/:id', requireAuth, ordersController.fetchOrderById);

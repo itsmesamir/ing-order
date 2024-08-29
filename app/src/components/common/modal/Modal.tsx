@@ -12,6 +12,7 @@ export interface ModalProps {
   children?: JSX.Element;
   overlayClassName?: string;
   header?: {
+    icon?: React.ReactNode;
     title?: string;
     className?: string;
   };
@@ -34,7 +35,7 @@ export default function Modal(props: ModalProps) {
       shouldCloseOnOverlayClick
       shouldReturnFocusAfterClose
     >
-      <ModalHeader title={header?.title} className={header?.className} />
+      <ModalHeader icon={header?.icon} title={header?.title} className={header?.className} />
 
       {children}
     </ReactModal>

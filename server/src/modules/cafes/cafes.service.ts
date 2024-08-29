@@ -14,7 +14,6 @@ const log = logger.withNamespace('modules/cafes.service');
  * @returns A promise that resolves to an array of cafes objects.
  */
 export const fetchCafes = async (params?: Any, trx?: Knex.Transaction): Promise<Cafe[]> => {
-  console.log(params);
   log.info('Fetching cafes');
 
   const cafes = await CafeModel.fetch(params, trx);
