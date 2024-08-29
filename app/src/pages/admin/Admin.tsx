@@ -4,7 +4,10 @@ import AdminOrders from 'pages/adminOrders/AdminOrders';
 import AdminMenuLists from 'pages/adminMenus/AdminMenuLists';
 import AddMenuItems from 'pages/adminMenus/AddMenuItems';
 import AdminCategories from 'pages/adminCategories/AdminCategories';
-import AddCategories from 'pages/adminCategories/AddCategories';
+import AdminUnits from 'pages/adminUnits/AdminUnits';
+import AddEditCategories from 'pages/adminCategories/AddEditCategories';
+import AddEditMenuItem from 'pages/adminMenus/AddMenuItems';
+import AddEditUnits from 'pages/adminUnits/AddEditUnits';
 
 import useUserStore from 'stores/useUserStore';
 
@@ -31,7 +34,12 @@ function Admin() {
         <Route exact path={createRoute([paths.adminMenus])} component={AdminMenuLists} />
 
         <Route exact path={createRoute([paths.categories])} component={AdminCategories} />
-        <Route exact path={createRoute([paths.addCategories])} component={AddCategories} />
+        <Route exact path={createRoute([paths.addCategories])} component={AddEditCategories} />
+        <Route exact path={createRoute([paths.editCategories])} component={AddEditCategories} />
+
+        <Route exact path={createRoute([paths.units])} component={AdminUnits} />
+        <Route exact path={createRoute([paths.addUnits])} component={AddEditUnits} />
+        <Route exact path={createRoute([paths.editUnits])} component={AddEditUnits} />
 
         <Redirect to={createRoute([paths.adminMenus])} />
       </Switch>
