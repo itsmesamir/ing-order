@@ -55,3 +55,17 @@ export const tertiaryOrange80 = '#CF6D16';
 export const tertiaryPurple80 = '#ab22ff';
 
 export const tertiaryTeal60 = '#43a6a5';
+
+// Define individual color constants for the neutral color scale
+export const neutrals100 = '#E7EBEF';
+export const neutrals200 = '#DAE1E7';
+export const neutrals300 = '#CED7DE';
+export const neutrals400 = '#C2CDD6';
+export const neutrals500 = '#B6C3CD';
+export const neutrals600 = '#92A5B5';
+export const neutrals700 = '#7991A4';
+export const neutrals800 = '#637D92';
+export const neutrals900 = '#4A5E6D';
+export const neutrals1000 = '#323F49';
+
+export const black = '#000000';

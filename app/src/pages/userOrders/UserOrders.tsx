@@ -1,29 +1,39 @@
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { Flex } from '@chakra-ui/layout';
 import {
+  Box,
+  Button,
   Heading,
   Image,
-  SimpleGrid,
-  Stack,
   Select,
-  Box,
-  Text,
-  Button,
+  SimpleGrid,
   Skeleton,
+  Stack,
+  Text,
 } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
+import { useMemo, useState } from 'react';
 
 import { fetchOrders } from 'services/oders';
 
 import Link from 'components/Link';
+import TableFilters from 'components/table/components/TableFilter';
+
+import { useCafesQuery } from 'hooks/useCafesQuery';
+import useFilters from 'hooks/useFilter';
+import { useMenusQuery } from 'hooks/useMenusQuery';
 
 import { getFormattedDate } from 'utils/date';
+import { mapAndSortSelectOptions } from 'utils/filter';
+import { parseQuery } from 'utils/queryParams';
 
 import { Any, MenuItem, OrderStatusEnum } from 'types/common';
 
+import { MMMM_DD_YYYY_H_MM_A } from 'constants/date';
+import en from 'constants/en';
 import paths from 'constants/paths';
 import queryKey from 'constants/queryKey';
-import { MMMM_DD_YYYY_H_MM_A } from 'constants/date';
+import { FilterType } from 'enum/filter';
+import { DefaultFilter, Filters } from 'interface/filter';
 
 const statusTypes = [
   { id: '', name: 'Any' },
@@ -36,12 +46,78 @@ function StatusButton({ status }: { status: OrderStatusEnum }) {
   return <Button w={40}>{status}</Button>;
 }
 
+// type UserOrderFilterID = 'cafeIds' | 'date';
+enum UserOrderFilterID {
+  cafeIds = 'cafeIds',
+  menuIds = 'menuIds',
+  date = 'date',
+  status = 'status',
+}
+
+const DEFAULT_FILTERS: DefaultFilter<UserOrderFilterID> = {
+  cafeIds: null,
+  date: null,
+  menuIds: null,
+  status: null,
+};
+
 function UserOrders() {
   const [filter, setFilter] = useState(statusTypes[0].id);
 
+  const { data: cafes, isLoading: isCafesLoading } = useCafesQuery({});
+
+  const { data: menuItems, isLoading: isMenuItemLoading } = useMenusQuery();
+
+  const cafeOptions = mapAndSortSelectOptions(cafes || [], 'name', 'id');
+
+  const menuItemsOptions = mapAndSortSelectOptions(menuItems || [], 'name', 'id');
+
+  const statusOptions = mapAndSortSelectOptions(statusTypes || [], 'name', 'id');
+
+  const filters: Filters<UserOrderFilterID>[] = useMemo(
+    () => [
+      {
+        name: en.CAFE,
+        key: UserOrderFilterID.cafeIds,
+        isFixed: true,
+        type: FilterType.Dropdown,
+        isMulti: true,
+        options: cafeOptions,
+      },
+      {
+        name: en.MENU,
+        key: UserOrderFilterID.menuIds,
+        isFixed: true,
+        type: FilterType.Dropdown,
+        isMulti: true,
+        options: menuItemsOptions,
+      },
+      {
+        name: en.GENERAL.STATUS,
+        key: UserOrderFilterID.status,
+        isFixed: true,
+        type: FilterType.Dropdown,
+        isMulti: true,
+        options: statusOptions,
+      },
+      {
+        name: en.GENERAL.DATE,
+        key: UserOrderFilterID.date,
+        isFixed: true,
+        type: FilterType.Date,
+      },
+    ],
+    [cafeOptions, menuItemsOptions, statusOptions]
+  );
+
+  const { appliedFilters, applyFilters, resetFilters, canResetFilters } =
+    useFilters(DEFAULT_FILTERS);
+
+  const params = parseQuery(window.location.search);
+
   const { data: orders, isLoading } = useQuery({
-    queryKey: [queryKey.orders, filter],
-    queryFn: ({ signal }: Any) => fetchOrders(filter ? { status: filter } : {}, signal),
+    queryKey: [queryKey.orders, filter, params],
+    queryFn: ({ signal }: Any) => fetchOrders(params, signal),
     enabled: true,
   });
 
@@ -60,6 +136,15 @@ function UserOrders() {
         <Heading py={2} fontWeight="500">
           Order history
         </Heading>
+
+        <TableFilters<UserOrderFilterID>
+          appliedFilters={appliedFilters}
+          onFilterApply={applyFilters}
+          filters={filters}
+          onFilterReset={resetFilters}
+          canResetFilters={canResetFilters}
+          isLoading={isCafesLoading}
+        />
 
         <Select maxWidth="300px" value={filter} onChange={onChange}>
           {statusTypes.map(option => (

@@ -8,7 +8,14 @@ const en = {
     SOMETHING_WENT_WRONG: 'Something went wrong',
   },
 
+  GENERAL: {
+    DATE: 'Date',
+    STATUS: 'Status',
+  },
+
   MEMBER: 'Member',
+  CAFE: 'Cafe',
+  MENU: 'Menu',
 
   ORDER: {
     CURRENCY: 'RS.',
@@ -21,6 +28,9 @@ const en = {
   BUTTON: {
     ADD_TO_CART: 'Add to cart',
     CONFIRM_DELETE: 'Yes, Delete',
+    APPLY: 'Apply',
+    CANCEL: 'Cancel',
+    RESET: 'Reset',
   },
 
   MODEL: {
