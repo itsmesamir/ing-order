@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { Button } from '@chakra-ui/react';
 
 import { signIn } from 'services/auth';
 
@@ -62,15 +63,14 @@ export default function SignIn() {
 
           <Alert errors={errors} />
 
-          <div>
-            <button
-              disabled={isSubmitting}
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              {!isSubmitting ? 'Sign In' : 'Submitting'}
-            </button>
-          </div>
+          <Button
+            className="flex w-full justify-center"
+            disabled={isSubmitting}
+            colorScheme="primary"
+            type="submit"
+          >
+            {!isSubmitting ? 'Sign In' : 'Submitting'}
+          </Button>
         </form>
 
         <p className="mt-10 text-center text-sm text-gray-500">

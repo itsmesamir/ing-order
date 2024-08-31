@@ -1,7 +1,21 @@
 import { useState } from 'react';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { Drawer, DrawerContent, DrawerOverlay, DrawerCloseButton } from '@chakra-ui/modal';
-import { IconButton, Box, Grid, Flex, Heading, Text, Stack, Divider } from '@chakra-ui/react';
+import {
+  IconButton,
+  Box,
+  Grid,
+  Flex,
+  Heading,
+  Text,
+  Stack,
+  Divider,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel,
+  Accordion,
+  AccordionItem,
+} from '@chakra-ui/react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { BiLogOut } from 'react-icons/bi';
 import { FaComment, FaHistory, FaHome, FaSearch } from 'react-icons/fa';
@@ -58,30 +72,24 @@ function AdminDrawerItems({ onOpen }: DrawerProps) {
         </Flex>
       </Flex>
 
-      {menuItems.map(item => {
-        if (item.subItems) {
-          return (
-            <Box key={item.name} position="relative">
-              <Flex alignItems="center" onClick={() => toggleSubItems(item.name)} cursor="pointer">
-                <NavItem icon={item.icon} label={item.name} link="#" />
-                <ChevronDownIcon
-                  ml="auto"
-                  transform={activeItem === item.name ? 'rotate(180deg)' : 'rotate(0)'}
-                  transition="transform 0.2s ease"
-                />
-              </Flex>
-              {activeItem === item.name && (
-                <Box
-                  position="absolute"
-                  top="100%"
-                  left="0"
-                  zIndex={1}
-                  bg="white"
-                  boxShadow="md"
-                  borderRadius="md"
-                  overflow="hidden"
-                  mt={1}
-                >
+      <Accordion allowToggle>
+        {menuItems.map(item => {
+          if (item.subItems) {
+            return (
+              <AccordionItem>
+                <AccordionButton>
+                  {/* <Box as="span" flex="1" textAlign="left">
+                    Menu
+                  </Box> */}
+                  <NavItem
+                    icon={item.icon}
+                    label={item.name}
+                    link="#"
+                    classes={{ link: 'w-full' }}
+                  />
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel pb={4}>
                   {item.subItems.map(subItem => (
                     <NavItem
                       key={subItem.name}
@@ -90,20 +98,21 @@ function AdminDrawerItems({ onOpen }: DrawerProps) {
                       link={createRoute([paths.admin, subItem.path])}
                     />
                   ))}
-                </Box>
-              )}
-            </Box>
+                </AccordionPanel>
+              </AccordionItem>
+            );
+          }
+
+          return (
+            <NavItem
+              key={item.name}
+              icon={item.icon}
+              label={item.name}
+              link={createRoute([paths.admin, item.path])}
+            />
           );
-        }
-        return (
-          <NavItem
-            key={item.name}
-            icon={item.icon}
-            label={item.name}
-            link={createRoute([paths.admin, item.path])}
-          />
-        );
-      })}
+        })}
+      </Accordion>
 
       <Divider color="gray.300" />
       <NavItem icon={<BiLogOut />} label="Log Out" link="/#" />
