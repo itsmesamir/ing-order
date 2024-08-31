@@ -6,7 +6,7 @@ import { Any, Order } from 'types/common';
 import api from 'constants/api';
 
 export async function fetchOrders(params: Any, signal?: AbortSignal): Promise<Order[]> {
-  const url = buildUrl(api.orders);
+  const url = buildUrl(api.order.orders);
 
   const { data } = await http.get(url, { signal, params });
 
@@ -18,7 +18,7 @@ export async function fetchOrderById(
   params: Any,
   signal?: AbortSignal
 ): Promise<Order> {
-  const url = buildUrl(api.orders, id);
+  const url = buildUrl(api.order.orders, id);
 
   const { data } = await http.get(url, { signal, params });
 
@@ -30,7 +30,7 @@ export async function updateOrderById(
   body: Any,
   signal?: AbortSignal
 ): Promise<Order[]> {
-  const url = buildUrl(api.orders, id);
+  const url = buildUrl(api.order.orders, id);
 
   const { data } = await http.put(url, body, { signal });
 
@@ -40,7 +40,7 @@ export async function updateOrderById(
 // post order
 
 export async function createOrder(body: Any, signal?: AbortSignal): Promise<Order> {
-  const url = buildUrl(api.orders);
+  const url = buildUrl(api.order.orders);
 
   const { data } = await http.post(url, body, { signal });
 

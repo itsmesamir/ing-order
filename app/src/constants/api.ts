@@ -28,7 +28,9 @@ const api = {
   menuUnits: '/menus/units',
   menuUnitsById: '/menus/units/edit/:id',
   cafes: '/cafes',
-  orders: '/orders',
+  order: {
+    orders: '/orders',
+  },
 };
 
 export default api;

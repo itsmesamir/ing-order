@@ -94,7 +94,6 @@ function Dropdown<OptionType>(props: DropdownProps<OptionType>) {
         styles={customStyles}
         filterOption={filterOption}
         controlShouldRenderValue={controlShouldRenderValue}
-        // menuIsOpen
       />
     </div>
   );

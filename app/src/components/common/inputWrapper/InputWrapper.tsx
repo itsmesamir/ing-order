@@ -7,6 +7,7 @@ import PopOver from '../popOver';
 
 interface InputWrapperProps {
   label?: string;
+  name?: string;
   children: React.ReactNode;
   error?: string;
   isRequired?: boolean;
@@ -15,12 +16,12 @@ interface InputWrapperProps {
 }
 
 function InputWrapper(props: InputWrapperProps) {
-  const { label, error, isRequired = false, children, className, labelInfoPrefix } = props;
+  const { label, name, error, isRequired = false, children, className, labelInfoPrefix } = props;
 
   return (
     <div className={classNames('flex flex-col', className)}>
       {label && (
-        <label htmlFor="name" className="text-xs text-grey-60 mb-1 flex items-center">
+        <label htmlFor={name} className="text-xs text-grey-60 mb-1 flex items-center">
           {label}
 
           {isRequired && <span className="ml-2px text-error-base">*</span>}

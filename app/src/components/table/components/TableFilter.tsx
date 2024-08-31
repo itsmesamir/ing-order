@@ -224,8 +224,6 @@ export default function TableFilters<T>(props: TableFilterProps<T>) {
   const [moreFilters, setMoreFilters] = useState<FilterData[]>([]);
   const [openModal, setOpenModal] = useState(false);
 
-  console.log('fixedFilters', fixedFilters);
-
   useEffect(() => {
     setOpenModal(false);
   }, [isFilterModalOpen]);
