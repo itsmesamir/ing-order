@@ -2,13 +2,14 @@ import { useMemo, useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import { useHistory } from 'react-router-dom';
 import { FiEdit, FiTrash } from 'react-icons/fi';
+import { Button } from '@chakra-ui/react';
 
 import Table from 'components/table/Table';
 import ActionModal from 'components/common/actionModal/ActionModal';
 
 import { useMenuCategoriesQuery } from 'hooks/useMenuCategoriesQuery';
 
-import { Any, CellData, MenuCategory, MenuItem, Order, RowData } from 'types/common';
+import { Any, CellData, MenuCategory, Order, RowData } from 'types/common';
 
 function ActionCell(
   { row: { original } }: { row: { original: RowData<Order> } },
@@ -21,7 +22,6 @@ function ActionCell(
 
 function AdminCategories() {
   const history = useHistory();
-  const [error, setError] = useState<string | null>(null);
 
   const { data: menuCategories, isLoading, error: queryError } = useMenuCategoriesQuery({});
 
@@ -29,9 +29,11 @@ function AdminCategories() {
     return <div>Loading....</div>;
   }
 
-  if (queryError || error) {
+  if (queryError) {
     return (
-      <div className="p-4 text-red-500">{error || 'An error occurred while fetching data.'}</div>
+      <div className="p-4 text-red-500">
+        {queryError.message || 'An error occurred while fetching data.'}
+      </div>
     );
   }
 
@@ -98,14 +100,14 @@ function AdminCategories() {
     <div className="p-4">
       <h1 className="font-bold text-2xl">Category Lists</h1>
       <div className="flex justify-end mb-4">
-        <button
+        <Button
           type="button"
-          className="bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600"
+          colorScheme="primary"
           onClick={handleAddItemClick}
           aria-label="Add new category"
         >
           Add Item +
-        </button>
+        </Button>
       </div>
       <Table
         columns={columns}

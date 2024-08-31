@@ -1,6 +1,6 @@
+import { useHistory } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Select, Button, FormControl, FormLabel, Box } from '@chakra-ui/react';
-import { useHistory } from 'react-router-dom';
 
 type Option = {
   label: string;
@@ -24,7 +24,7 @@ type FormProps = {
 };
 
 function Form({ fields, defaultValues = {}, onSubmit }: FormProps) {
-  const history = useHistory(); // Using useHistory to manage navigation
+  const history = useHistory();
   const { control, handleSubmit } = useForm<Record<string, string | number | boolean>>({
     defaultValues,
   });
@@ -33,34 +33,37 @@ function Form({ fields, defaultValues = {}, onSubmit }: FormProps) {
     if (value === true || value === 1) {
       return 'true';
     }
+
     if (value === false || value === 0) {
       return 'false';
     }
+
     return value !== undefined ? value.toString() : '';
   };
 
   const onSubmitHandler = (data: Record<string, string | number | boolean>) => {
     onSubmit(data);
-    history.goBack(); // Navigate back after successful submission
+    history.goBack();
   };
 
   const handleCancel = () => {
-    history.goBack(); // Navigate back when "Cancel" is clicked
+    history.goBack();
   };
 
   return (
     <Box as="form" onSubmit={handleSubmit(onSubmitHandler)} className="space-y-4">
-      {fields.map((field, index) => {
+      {fields.map(field => {
         const fieldName = field.name || field.label;
 
         return (
-          <FormControl key={index} mb={4} isDisabled={field.disabled}>
+          <FormControl key={field.name} mb={4} isDisabled={field.disabled}>
             <FormLabel htmlFor={fieldName}>{field.label}</FormLabel>
             <Controller
               name={fieldName}
               control={control}
               render={({ field: { onChange, value } }) => {
                 const processedValue = handleValue(value);
+
                 switch (field.type) {
                   case 'text':
                     return (
@@ -72,6 +75,7 @@ function Form({ fields, defaultValues = {}, onSubmit }: FormProps) {
                         isDisabled={field.disabled}
                       />
                     );
+
                   case 'number':
                     return (
                       <Input
@@ -82,6 +86,7 @@ function Form({ fields, defaultValues = {}, onSubmit }: FormProps) {
                         isDisabled={field.disabled}
                       />
                     );
+
                   case 'select':
                     return (
                       <Select
@@ -100,13 +105,14 @@ function Form({ fields, defaultValues = {}, onSubmit }: FormProps) {
                         isDisabled={field.disabled}
                       >
                         <option value="">Select an option</option>
-                        {field.options?.map((option, idx) => (
-                          <option key={idx} value={option.value.toString()}>
+                        {field.options?.map(option => (
+                          <option key={option.value.toString()} value={option.value.toString()}>
                             {option.label}
                           </option>
                         ))}
                       </Select>
                     );
+
                   case 'boolean':
                     return (
                       <Select
@@ -119,6 +125,7 @@ function Form({ fields, defaultValues = {}, onSubmit }: FormProps) {
                         <option value="false">False</option>
                       </Select>
                     );
+
                   default:
                     return <div />;
                 }
@@ -127,7 +134,7 @@ function Form({ fields, defaultValues = {}, onSubmit }: FormProps) {
           </FormControl>
         );
       })}
-      <Button type="submit" colorScheme="orange">
+      <Button type="submit" colorScheme="primary">
         Submit
       </Button>
       <Button type="button" colorScheme="red" ml={4} onClick={handleCancel}>
