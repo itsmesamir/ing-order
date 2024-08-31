@@ -1,7 +1,6 @@
 import { Router } from 'express';
 
-import { validateReqQuery } from '@/utils/validator';
-
+import { validateReqQuery } from '@/middlewares/validator';
 import { requireAuth } from '@/middlewares/auth';
 
 import { fetch } from './orders.validator';

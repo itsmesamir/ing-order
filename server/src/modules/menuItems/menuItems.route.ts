@@ -1,7 +1,6 @@
 import { Router } from 'express';
 
-import { validateReqBody } from '@/utils/validator';
-
+import { validateReqBody } from '@/middlewares/validator';
 import { requireAuth } from '@/middlewares/auth';
 
 import * as menuItemsController from './menuItems.controller';
