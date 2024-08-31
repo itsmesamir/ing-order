@@ -23,18 +23,19 @@ function Link({
     textDecoration: decoration || 'none',
   };
   return (
-    <RouterLink
+    <ChackraLink
+      as={RouterLink}
       to={to}
-      as={as}
       passhref={passhref}
       replace={replace}
       scroll={scroll}
       shallow={shallow}
       locale={locale}
-      {...nextLink}
+      className="w-full text-primary-600"
+      {...chackraProps}
     >
-      <ChackraLink {...chackraProps}>{children}</ChackraLink>
-    </RouterLink>
+      {children}
+    </ChackraLink>
   );
 }
 

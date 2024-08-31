@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { ChakraProvider, theme } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import AppRouter from 'pages/AppRouter';
@@ -9,6 +9,7 @@ import useUserStore from 'stores/useUserStore';
 import Toast from 'components/Toast';
 
 import './styles.css';
+import { colors } from './presets/ingPresets';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,6 +21,20 @@ const queryClient = new QueryClient({
 
 export function App() {
   const { loading, fetchUser } = useUserStore();
+
+  const theme = extendTheme({
+    colors,
+    components: {
+      FormError: {
+        baseStyle: {
+          text: {
+            color: 'error-base',
+            fontSize: 'xl',
+          },
+        },
+      },
+    },
+  });
 
   useEffect(() => {
     fetchUser();

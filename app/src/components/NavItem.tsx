@@ -10,10 +10,13 @@ type NavItemData = {
   icon: Any;
   label: string;
   link: string;
+  classes?: {
+    link?: string;
+  };
   onClick?: () => void;
 };
 
-function NavItem({ icon, label, link, onClick }: NavItemData) {
+function NavItem({ icon, label, link, classes, onClick }: NavItemData) {
   const location = useLocation();
   const isActive = location.pathname === link;
 
@@ -32,6 +35,7 @@ function NavItem({ icon, label, link, onClick }: NavItemData) {
       _hover={{
         backgroundColor: 'gray.100',
       }}
+      className={classes?.link}
     >
       <Flex align="center">
         {React.cloneElement(icon, { size: '24px' })}
