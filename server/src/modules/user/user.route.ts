@@ -1,10 +1,9 @@
 import { Router } from 'express';
 
-import { validateReqBody } from '@/utils/validator';
-
 import { Roles } from '@/types/common';
 
 import { requireAuth } from '@/middlewares/auth';
+import { validateReqBody } from '@/middlewares/validator';
 import { authorizeWithRoles } from '@/middlewares/authorizeWIthRoles';
 
 import * as userController from './user.controller';
