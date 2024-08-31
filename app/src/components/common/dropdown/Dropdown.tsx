@@ -1,6 +1,16 @@
 import React from 'react';
 import classname from 'classnames';
-import Select, { MenuPlacement, MultiValue, SingleValue } from 'react-select';
+import Select, {
+  GroupBase,
+  MenuPlacement,
+  MultiValue,
+  SingleValue,
+  StylesConfig,
+} from 'react-select';
+
+import { getClassName } from 'utils/className';
+
+import config from 'config/config';
 
 interface DropdownProps<OptionType> {
   defaultValue?: OptionType;
@@ -22,7 +32,7 @@ interface DropdownProps<OptionType> {
   filterOption?: () => boolean;
   menuPlacement?: MenuPlacement;
   controlShouldRenderValue?: boolean;
-  customStyles?: Record<string, unknown>;
+  customStyles?: StylesConfig<OptionType, boolean, GroupBase<OptionType>>;
 }
 
 function Dropdown<OptionType>(props: DropdownProps<OptionType>) {
@@ -63,8 +73,9 @@ function Dropdown<OptionType>(props: DropdownProps<OptionType>) {
           {label}
         </label>
       )}
+
       <Select
-        classNamePrefix="lf-select"
+        classNamePrefix={getClassName('select')}
         defaultValue={defaultValue}
         isDisabled={isDisabled}
         isClearable={isClearable}
@@ -83,6 +94,7 @@ function Dropdown<OptionType>(props: DropdownProps<OptionType>) {
         styles={customStyles}
         filterOption={filterOption}
         controlShouldRenderValue={controlShouldRenderValue}
+        // menuIsOpen
       />
     </div>
   );
