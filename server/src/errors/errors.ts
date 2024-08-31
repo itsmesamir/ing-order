@@ -34,7 +34,7 @@ export class UnauthorizedError extends BaseError {
   }
 }
 
-export class RowNotFoundError extends BaseError {
+export class NotFoundError extends BaseError {
   statusCode = HttpStatus.NOT_FOUND;
 
   serializeErrors() {

@@ -5,9 +5,14 @@ import OrderModel from '@/modules/orders/orders.model';
 import BaseModel from '@/models/baseModel';
 
 import logger from '@/services/logger';
+import { getFromStore } from '@/services/store';
+
+import { BadRequestError, NotFoundError } from '@/errors/errors';
 
 import { OrderFilter } from '@/types/orders';
-import { Any, Order, OrderStatusEnum } from '@/types/common';
+import { Order, OrderStatusEnum } from '@/types/common';
+
+import { VALID_ORDER_STATUS_UPDATE } from '@/constants/orders';
 
 const log = logger.withNamespace('modules/orders.service');
 
@@ -30,19 +35,22 @@ export const fetchOrders = async (
 /**
  * Fetch an order by its ID.
  *
- * @param {number} id
- * @param {Any} filters
- * @param {Knex.Transaction} [trx]
- * @returns {Promise<Order | null>}
+ * @param  id
+ * @param  filters
+ * @param  trx
  */
 export const fetchOrderById = async (
   id: number,
-  filters: Any,
+  filters: Partial<Order>,
   trx?: Knex.Transaction
 ): Promise<Order | null> => {
   log.info(`Fetching order with ID ${id}`);
 
   const order = await OrderModel.fetchById(id, filters, trx);
+
+  if (!order) {
+    throw new NotFoundError('Order not found.');
+  }
 
   return order;
 };
@@ -52,11 +60,9 @@ export const fetchOrderById = async (
 /**
  * Fetch list of orders by user ID.
  *
- * @param {number} userId
- * @param {Knex.Transaction} [trx]
- * @returns {Promise<Order[]>}
+ * @param  userId
+ * @param  trx
  */
-
 export const fetchOrdersByUserId = async (
   userId: number,
   trx?: Knex.Transaction
@@ -71,33 +77,31 @@ export const fetchOrdersByUserId = async (
 /**
  * Create a new order.
  *
- * @param {Partial<Order>} data
- * @param {Knex.Transaction} [trx]
- * @returns {Promise<Order>}
+ * @param data
  */
-export const createOrder = async (data: Partial<Order>, trx?: Knex.Transaction): Promise<Order> => {
+export const createOrder = async (data: Partial<Order>): Promise<Order> => {
   log.info('Creating new order');
 
   const {
     user: { id: userId },
-    menu_items,
+    menuItems,
   } = data;
 
-  const totalPrice = menu_items.reduce((total, item) => total + item.price * item.quantity, 0);
+  const totalPrice = menuItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
   const orderData = {
-    user_id: userId,
-    cafe_id: menu_items[0].cafeId,
-    total_price: totalPrice,
-    created_by: userId,
+    userId,
+    cafeId: menuItems[0].cafeId,
+    totalPrice: totalPrice,
+    createdBy: userId,
   };
 
-  const orderItemsData = menu_items.map(item => ({
-    item_id: item.id,
+  const orderItemsData = menuItems.map(item => ({
+    itemId: item.id,
     quantity: item.quantity,
     price: item.price,
     discount: item.discount || 0.0,
-    created_by: userId,
+    createdBy: userId,
   }));
 
   try {
@@ -106,15 +110,15 @@ export const createOrder = async (data: Partial<Order>, trx?: Knex.Transaction):
 
       const orderStatusData = {
         status: OrderStatusEnum.Pending,
-        created_by: userId,
-        order_id: orderId,
+        createdBy: userId,
+        orderId: orderId,
       };
 
       await OrderModel.insertOrderStatus(orderStatusData, trx);
 
       const orderItems = orderItemsData.map(item => ({
         ...item,
-        order_id: orderId,
+        orderId: orderId,
       }));
       await OrderModel.insertOrderItems(orderItems, trx);
 
@@ -149,6 +153,59 @@ export const updateOrderById = async (
 
   return updatedOrder;
 };
+
+export async function updateOrderStatusById(id: number, status: OrderStatusEnum) {
+  log.info(`Updating status of order with id: ${id}.`);
+
+  const { status: existingStatus } = await fetchOrderById(id, {});
+
+  const isValidUpdate = VALID_ORDER_STATUS_UPDATE[existingStatus].includes(status);
+
+  if (!isValidUpdate) {
+    throw new BadRequestError(`Cannot update status from ${existingStatus} to ${status}.`);
+  }
+
+  const currentUser = getFromStore('currentUser');
+
+  await BaseModel.transaction(async trx => {
+    const newStatus = {
+      orderId: id,
+      status,
+      createdBy: currentUser.id,
+    };
+
+    await Promise.all([
+      OrderModel.insertOrderStatus(newStatus, trx),
+      OrderModel.updateOrderItemByOrderId(id, { status }, trx),
+    ]);
+  });
+
+  const updatedOrder = await fetchOrderById(id, {});
+
+  return updatedOrder;
+}
+
+export async function updateOrderItemStatusById(
+  id: number,
+  status: OrderStatusEnum,
+  trx?: Knex.Transaction
+) {
+  log.info(`Updating status of order item with id: ${id}.`);
+
+  const orderItem = await OrderModel.fetchOrderItemById(id);
+
+  if (!orderItem) {
+    throw new NotFoundError(`Order item with id: ${id} not found.`);
+  }
+
+  const isValidUpdate = VALID_ORDER_STATUS_UPDATE[orderItem.status].includes(status);
+
+  if (!isValidUpdate) {
+    throw new BadRequestError(`Cannot update status from ${orderItem.status} to ${status}.`);
+  }
+
+  return OrderModel.updateOrderItemById(id, { status }, trx);
+}
 
 /**
  * Delete an order by its ID.
