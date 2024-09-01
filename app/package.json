@@ -40,6 +40,7 @@
     "tailwind-override": "^0.6.1",
     "universal-cookie": "^7.1.4",
     "web-vitals": "^2.1.0",
+    "yup": "^1.4.0",
     "zustand": "^4.5.2"
   },
   "scripts": {

@@ -6,6 +6,12 @@ export interface CustomError {
   status: number;
 }
 
+export interface FilterOption {
+  id?: number;
+  label: string;
+  value: string;
+}
+
 export interface Role {
   id: number;
   name: string;

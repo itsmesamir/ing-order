@@ -2,12 +2,13 @@ import { CellContext, ColumnDef } from '@tanstack/react-table';
 import { FiEdit, FiTrash } from 'react-icons/fi';
 
 import { User } from 'types/User';
-import { Any, CellData } from 'types/common';
+import { Any, CellData, Role } from 'types/common';
 
 import { ActionCell, TextCell, RoleCell } from './tableCells';
 
 export const columns = (
-  setDeleteModalOpenFor: React.Dispatch<React.SetStateAction<User | null>>
+  setDeleteModalOpenFor: React.Dispatch<React.SetStateAction<User | null>>,
+  setEditModalOpenFor: React.Dispatch<React.SetStateAction<User | null>>
 ): Array<ColumnDef<User>> => {
   return [
     {
@@ -45,7 +46,7 @@ export const columns = (
             name: 'Edit roles',
             icon: FiEdit,
             state: (rowData: User) => {
-              console.log(rowData);
+              setEditModalOpenFor(rowData);
             },
           },
 
@@ -54,7 +55,6 @@ export const columns = (
             className: 'text-red-500',
             icon: FiTrash,
             state: (rowData: User) => {
-              console.log(rowData);
               setDeleteModalOpenFor(rowData);
             },
             // state: (rowData: Order) => setDeleteModalOpenFor(rowData?.id),

@@ -26,6 +26,8 @@ const en = {
   },
 
   BUTTON: {
+    ADD_ROLE: 'Add Role',
+    EDIT_ROLE: 'Edit Role',
     ADD_TO_CART: 'Add to cart',
     CONFIRM_DELETE: 'Yes, Delete',
     APPLY: 'Apply',
