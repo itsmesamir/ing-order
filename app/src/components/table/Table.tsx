@@ -294,7 +294,7 @@ function Table<T>(props: MyTableProps<T>) {
                       className={classNames(
                         'hover:bg-grey-100 cursor-pointer border-b border-solid border-grey-200',
                         {
-                          'bg-tertiary-primary-15': isRowSelected(id),
+                          'bg-tertiary-blue-15': isRowSelected(id),
                         },
                         classes?.tableBodyRow && classes?.tableBodyRow(original),
                         conditionalClasses && conditionalClasses(row.original)
