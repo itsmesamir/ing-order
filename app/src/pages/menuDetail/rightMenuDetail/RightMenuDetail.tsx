@@ -11,10 +11,10 @@ import en from 'constants/en';
 
 function Card({ icon, title }: { icon: React.ReactNode; title: string }) {
   return (
-    <div className="flex flex-1 items-center justify-center bg-gray-100 rounded h-20 w-36">
+    <div className="flex flex-1 items-center justify-center bg-grey-100 rounded h-20 w-36">
       <div className="flex flex-col center">
         {icon}
-        <p className="mt-1 text-xl font-medium text-gray-600">{title}</p>
+        <p className="mt-1 text-xl font-medium text-grey-600">{title}</p>
       </div>
     </div>
   );
@@ -40,7 +40,7 @@ function RightMenuDetail(props: RightMenuDetailProps) {
   return (
     <div className="w-96 bg-white rounded-lg px-5 py-6 h-fit max-h-[70hv] border-[1.5px] border-solid border-orange-500">
       <div className="flex items-center justify-between">
-        <p className="text-2xl font-medium text-gray-600">{en.ORDER.PRICE}</p>
+        <p className="text-2xl font-medium text-grey-600">{en.ORDER.PRICE}</p>
 
         <p className="text-3xl font-medium text-primary-600 mt-3">
           {en.ORDER.CURRENCY} {menuItem.price}
@@ -54,7 +54,7 @@ function RightMenuDetail(props: RightMenuDetailProps) {
       </div>
 
       <div className="flex gap-x-6 items-center mt-6 justify-center">
-        <p className="text-xl font-medium text-gray-600">{en.ORDER.QUANTITY}</p>
+        <p className="text-xl font-medium text-grey-600">{en.ORDER.QUANTITY}</p>
 
         <ItemCounter
           count={cartItem?.quantity || 1}
@@ -69,7 +69,7 @@ function RightMenuDetail(props: RightMenuDetailProps) {
       </div>
 
       <div className="mt-6 flex items-center justify-center gap-x-6">
-        <p className="text-xl font-medium text-gray-600">{en.ORDER.TOTAL_PRICE}</p>
+        <p className="text-xl font-medium text-grey-600">{en.ORDER.TOTAL_PRICE}</p>
 
         <p className="text-3xl font-medium text-primary-600 mt-3">
           {en.ORDER.CURRENCY} {totalPrice}

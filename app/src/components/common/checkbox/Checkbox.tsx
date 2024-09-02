@@ -16,12 +16,12 @@ function Checkbox(props: CheckboxProps) {
       <input
         type="checkbox"
         id={id}
-        className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+        className="shrink-0 mt-0.5 border-grey-200 rounded text-primary-600 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-grey-800 dark:border-grey-700 dark:checked:bg-primary-500 dark:checked:border-primary-500 dark:focus:ring-offset-grey-800"
         checked={checked}
         onChange={onChange}
         disabled={disabled}
       />
-      <label htmlFor={id} className="text-sm text-gray-500 ms-3 dark:text-neutral-400">
+      <label htmlFor={id} className="text-sm text-grey-500 ms-3 dark:text-grey-400">
         {label}
       </label>
     </div>

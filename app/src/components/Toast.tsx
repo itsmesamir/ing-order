@@ -36,7 +36,7 @@ function CustomToast({ statusType, toastMessage, toastClassName }: CustomToastPr
       {toastType && toastType !== undefined && (
         <div
           className={classNames(
-            'flex items-center bg-green-700 py-4 px-4 text-white',
+            'flex items-center bg-success-base py-4 px-4 text-white',
             {
               'bg-red-700': toastType.className === 'danger',
               'bg-yellow-700': toastType.className === 'warning',

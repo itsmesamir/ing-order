@@ -41,7 +41,7 @@ function HomeComponent() {
         render={() => (
           <RightColumn>
             {/* body */}
-            <div className="flex bg-gray-100 pt-6">
+            <div className="flex bg-grey-100 pt-6">
               <div className="flex flex-wrap gap-12 flex-1  justify-center px-6">
                 <MenuItemList menuItems={menuItems} />
               </div>

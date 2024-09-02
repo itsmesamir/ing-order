@@ -42,7 +42,7 @@ function Input(props: InputProps) {
   return (
     <input
       className={classNames(
-        'h-8 w-full rounded-sm border border-solid border-grey-20 p-2 outline-none placeholder:text-sm placeholder:text-grey-40 focus:border-tertiary-blue-50',
+        'h-8 w-full rounded-sm border border-solid border-grey-20 p-2 outline-none placeholder:text-sm placeholder:text-grey-40 focus:border-tertiary-primary-50',
         {
           'border-error-base': error,
           'rounded-tr-none rounded-br-none': suffixText,

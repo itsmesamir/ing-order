@@ -42,6 +42,15 @@ function UserRoles() {
         data={userRoles}
         getRowCanExpand={() => true}
         emptyMessage=""
+        pagination={{
+          pageCount: 1,
+          pageData: {
+            page: 1,
+            pageSize: 1,
+            total: 1,
+            count: 1,
+          },
+        }}
       />
       <DeleteConfirm
         actionLabel={en.BUTTON.CONFIRM_DELETE}

@@ -61,7 +61,7 @@ function ActionModal(props: ActionModalProps) {
             {cellData.map((data: CellData) => (
               <li
                 className={classNames(
-                  'flex item-center gap-x-2 px-3 py-3 cursor-pointer hover:bg-gray-100',
+                  'flex item-center gap-x-2 px-3 py-3 cursor-pointer hover:bg-grey-100',
                   data.className
                 )}
                 aria-hidden="true"

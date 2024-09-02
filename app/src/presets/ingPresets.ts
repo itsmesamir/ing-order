@@ -34,6 +34,7 @@ export const colors = {
     900: '#6d2913',
     1000: '#501e0e',
   },
+
   secondary: {
     DEFAULT: secondary,
     100: '#e2f8e7',
@@ -46,6 +47,19 @@ export const colors = {
     800: '#22933a',
     900: '#1b732d',
     1000: '#135421',
+  },
+
+  grey: {
+    100: '#f6f6f6',
+    200: '#f2f2f2',
+    300: '#e6e6e6',
+    400: '#d2d2d2',
+    500: '#b3b3b3',
+    600: '#b2b2b2',
+    700: '#999999',
+    800: '#737373',
+    900: '#515151',
+    1000: '#333333',
   },
 
   red: {
@@ -62,11 +76,11 @@ export const colors = {
   },
 
   success: {
-    base: error,
+    base: success,
   },
 
   warning: {
-    base: error,
+    base: warning,
   },
 
   error: {

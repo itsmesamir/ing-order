@@ -3,7 +3,13 @@ export interface PaginationProps {
   limit: number;
 }
 
-export interface PageProps {
+export interface PageParams {
+  page?: number;
+  size?: number;
+}
+
+export interface Meta {
   page: number;
-  size: number;
+  pageSize: number;
+  total: number;
 }
