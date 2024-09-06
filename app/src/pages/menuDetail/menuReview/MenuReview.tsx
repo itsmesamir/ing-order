@@ -46,7 +46,7 @@ function MenuReview(props: MenuReviewProps) {
         <div className="flex justify-between">
           <p className="text-xl font-semibold">
             Reviews{' '}
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-grey-500">
               ({reviewItems?.length} reviews for this food)
             </span>
           </p>

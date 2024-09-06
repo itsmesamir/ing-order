@@ -36,6 +36,10 @@ const en = {
   MODEL: {
     DELETE: 'Are you sure you want to delete :title?',
   },
+
+  TABLE: {
+    VIEWING: 'Viewing :start of :total :title',
+  },
 };
 
 export default en;

@@ -15,14 +15,18 @@ import { FaCaretUp } from 'react-icons/fa';
 
 import Empty from 'components/common/Empty';
 import Loading from 'components/common/Loading';
+import Pagination from 'components/common/pagination';
 
 import { classNames } from 'utils/className';
 import { joinStrings } from 'utils/string';
+import { updateUrl } from 'utils/updateUrl';
+import { parseQuery as parse } from 'utils/queryParams';
 
 import { Any, DefaultObject } from 'types/common';
 
 // import history from '$/utils/history';
 import config from 'config/config';
+import { Meta } from 'interface/common';
 
 export const ACTION_ID = 'action';
 
@@ -46,6 +50,11 @@ interface StyledColumns {
   title: string;
   className: string;
 }
+
+type PaginationType = {
+  pageData: Meta;
+  pageCount: number;
+};
 
 type MyTableProps<T> = {
   columns: Array<ColumnDef<T>>;
@@ -82,6 +91,7 @@ type MyTableProps<T> = {
   fixedColumns?: FixedColumns[];
   styledColumns?: StyledColumns[];
   onSortCallback?: (name: string, sortOrder: string) => void;
+  pagination?: PaginationType;
 };
 
 function Table<T>(props: MyTableProps<T>) {
@@ -111,6 +121,7 @@ function Table<T>(props: MyTableProps<T>) {
     fixedColumns,
     styledColumns,
     onSortCallback,
+    pagination,
   } = props;
 
   const history = useHistory();
@@ -158,6 +169,15 @@ function Table<T>(props: MyTableProps<T>) {
     return selectedRows?.includes(id);
   };
 
+  // Pagination
+  const onPageChange = (selectedPage: number): void => {
+    updateUrl({ ...parse(window.location.search), page: selectedPage });
+  };
+
+  const onPageSizeChange = (selectedSize: number): void => {
+    updateUrl({ ...parse(window.location.search), page: 1, size: selectedSize });
+  };
+
   const showEmptyContent = (!loading && isTableEmpty) || showEmpty;
 
   return (
@@ -168,7 +188,12 @@ function Table<T>(props: MyTableProps<T>) {
         })}
       >
         <table className={classNames('w-full', { 'bg-white': !classes?.table }, classes?.table)}>
-          <thead className={classNames('border-b-2 border-grey-15', classes?.tableHeader)}>
+          <thead
+            className={classNames(
+              'border-b-2 border-grey-200 bg-grey-100/50',
+              classes?.tableHeader
+            )}
+          >
             {table.getHeaderGroups().map(headerGroup => {
               return (
                 <tr className={classNames(classes?.tableHeaderRow)} key={headerGroup.id}>
@@ -176,8 +201,6 @@ function Table<T>(props: MyTableProps<T>) {
                     const width = header.getSize().toString();
 
                     const hasSubHeaders = header.subHeaders?.length > 1;
-
-                    const { accessorKey } = header.column.columnDef as Any;
 
                     return (
                       <th
@@ -188,24 +211,17 @@ function Table<T>(props: MyTableProps<T>) {
                             minWidth: width.concat('px'),
                           },
                         }}
-                        className={classNames(
-                          `px-4 py-[10px] text-left text-xs font-semibold text-grey-80`,
-                          classes?.tableHeaderCell,
-                          // TODO: Need to refactor this code
-                          `${fixedColumns?.find(item => item.title === accessorKey)?.className}`,
-                          `${styledColumns?.find(item => item.title === accessorKey)?.className}`,
-                          {
-                            '!min-w-0': header.isPlaceholder,
-                            'py-0': header.subHeaders.length,
-                          }
-                        )}
+                        className={classNames(`px-4 py-3 text-left`, classes?.tableHeaderCell, {
+                          '!min-w-0': header.isPlaceholder,
+                          'py-0': header.subHeaders.length,
+                        })}
                       >
                         <div
                           role="button"
                           onKeyUp={() => {}}
                           tabIndex={0}
                           className={classNames(
-                            'flex items-center text-gray-800 font-bold',
+                            'flex items-center text-grey-1000 font-semibold text-sm',
                             {
                               'cursor-pointer whitespace-nowrap':
                                 sortable && header.column.getCanSort(),
@@ -276,7 +292,7 @@ function Table<T>(props: MyTableProps<T>) {
                   <>
                     <tr
                       className={classNames(
-                        'lf-table__row hover:bg-gray-100 cursor-pointer border-b border-solid border-grey-10',
+                        'hover:bg-grey-100 cursor-pointer border-b border-solid border-grey-200',
                         {
                           'bg-tertiary-blue-15': isRowSelected(id),
                         },
@@ -307,11 +323,7 @@ function Table<T>(props: MyTableProps<T>) {
                                 : 0
                             }
                             className={classNames(
-                              'px-4 py-3 text-sm text-gray-500',
-                              // TODO: Need to refactor this code
-                              `${
-                                fixedColumns?.find(item => item.title === accessorKey)?.className
-                              }`,
+                              'px-4 py-3 text-sm text-grey-800',
                               {
                                 'pr-4': cell.column.id === ACTION_ID,
                               },
@@ -350,6 +362,15 @@ function Table<T>(props: MyTableProps<T>) {
           />
         )}
       </div>
+
+      {pagination && (
+        <Pagination
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+          pageCount={+pagination.pageCount}
+          pageData={pagination.pageData}
+        />
+      )}
     </div>
   );
 }

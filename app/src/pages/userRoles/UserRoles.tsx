@@ -4,6 +4,7 @@ import { fetchUsers } from 'services/users';
 
 import DeleteConfirm from 'components/common/deleteConfirm';
 import Table from 'components/table/Table';
+import TableTitle from 'components/table/components/TableTitle';
 
 import { interpolate } from 'utils/interpolate';
 
@@ -36,12 +37,23 @@ function UserRoles() {
 
   return (
     <div>
+      <TableTitle tableTitle="User Roles" itemName="Users" start={40} total={150} />
       <Table
         loading={isLoading}
         columns={columns(setDeleteModalOpenFor)}
         data={userRoles}
         getRowCanExpand={() => true}
         emptyMessage=""
+        parentClassName="px-4"
+        pagination={{
+          pageCount: 1,
+          pageData: {
+            page: 1,
+            pageSize: 1,
+            total: 1,
+            count: 1,
+          },
+        }}
       />
       <DeleteConfirm
         actionLabel={en.BUTTON.CONFIRM_DELETE}

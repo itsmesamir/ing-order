@@ -6,6 +6,8 @@ import BaseModel from '@/models/baseModel';
 
 import logger from '@/services/logger';
 
+import { buildPageParams } from '@/utils/pagination';
+
 import { OrderFilter } from '@/types/orders';
 import { Any, Order, OrderStatusEnum } from '@/types/common';
 
@@ -20,6 +22,10 @@ export const fetchOrders = async (
   params: OrderFilter,
   trx?: Knex.Transaction
 ): Promise<Order[]> => {
+  const { size, page } = params;
+
+  const pageParams = buildPageParams(page, size);
+
   log.info('Fetching orders');
 
   const orders = await OrderModel.fetch(params, trx);

@@ -51,7 +51,7 @@ function Header(props: HeaderProps) {
           <MdShoppingCart size={24} />
         </div>
 
-        <div className="flex items-center gap-x-2 rounded-lg bg-gray-200 h-11 px-4">
+        <div className="flex items-center gap-x-2 rounded-lg bg-grey-200 h-11 px-4">
           <Avatar height="32px" width="32px" name="Dan Abrahmov" src={currentUser?.imageUrl} />
           <p>{currentUser?.name}</p>
         </div>

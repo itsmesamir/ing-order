@@ -32,7 +32,7 @@ function InputWrapper(props: InputWrapperProps) {
               html={<div className="w-60 p-3 text-start bg-white text-xs">{labelInfoPrefix}</div>}
               theme="light"
             >
-              <BiCircle className="cursor-pointer text-tertiary-blue-60 ml-1" size={12} />
+              <BiCircle className="cursor-pointer text-tertiary-primary-60 ml-1" size={12} />
             </PopOver>
           )}
         </label>

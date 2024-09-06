@@ -1,5 +1,7 @@
 import Joi from 'joi';
 
+import { paginationSchema } from '@/schemas/pagination';
+
 const commaSeparatedNumbers = (fieldName: string) =>
   Joi.string()
     .pattern(/^[0-9]+(,[0-9]+)*$/, 'comma-separated numbers')
@@ -18,11 +20,14 @@ const commaSeparatedNumbers = (fieldName: string) =>
       'any.invalid': `${fieldName} contains invalid numbers`,
     });
 
-export const fetch = Joi.object({
+export const fetchSchema = Joi.object({
   cafeIds: commaSeparatedNumbers('cafeIds'),
   menuItemIds: commaSeparatedNumbers('menuItemIds'),
   userIds: commaSeparatedNumbers('userIds'),
 });
+
+// Combine pagination schema with fetch schema using Joi.concat
+export const fetch = fetchSchema.concat(paginationSchema);
 
 export default {
   fetch,

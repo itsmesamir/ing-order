@@ -21,7 +21,7 @@ function ExpandButton(props: ExpandButtonProps) {
     >
       <FiChevronRight
         className={classNames(
-          'text-lg text-gray-500 duration-300 group-hover:text-primary-800',
+          'text-lg text-grey-500 duration-300 group-hover:text-primary-800',
           {
             'rotate-90': isExpanded,
           },

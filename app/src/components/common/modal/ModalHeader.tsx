@@ -16,7 +16,7 @@ function ModalHeader(props: ModalHeaderProps) {
     <div className={classNames('flex items-center gap-x-4 p-4', className)}>
       {icon}
 
-      <p className="text-xl text-gray-800 font-semibold">{title}</p>
+      <p className="text-xl text-grey-800 font-semibold">{title}</p>
     </div>
   );
 }

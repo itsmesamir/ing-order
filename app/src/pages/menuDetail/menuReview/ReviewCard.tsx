@@ -14,7 +14,7 @@ function ReviewCard(props: ReviewCardProps) {
   const { review } = props;
 
   return (
-    <div className="flex  border border-gray-100 rounded-lg px-5 py-6">
+    <div className="flex  border border-grey-100 rounded-lg px-5 py-6">
       <Image
         boxSize="40px"
         objectFit="cover"
@@ -25,7 +25,7 @@ function ReviewCard(props: ReviewCardProps) {
       />
 
       <div>
-        <p className="text-sm font-medium text-gray-600">{review.user.name}</p>
+        <p className="text-sm font-medium text-grey-600">{review.user.name}</p>
 
         <div className="flex items-center mt-2 gap-x-4">
           <div className="flex items-center gap-x-1">
@@ -41,10 +41,10 @@ function ReviewCard(props: ReviewCardProps) {
             <Divider orientation="vertical" />
           </Center>
 
-          <p className="text-sm font-normal text-gray-500">{getRelativeTime(review.createdAt)}</p>
+          <p className="text-sm font-normal text-grey-500">{getRelativeTime(review.createdAt)}</p>
         </div>
 
-        <p className="text-sm font-normal text-gray-700 mt-4">{review.comment}</p>
+        <p className="text-sm font-normal text-grey-700 mt-4">{review.comment}</p>
       </div>
     </div>
   );

@@ -27,8 +27,8 @@ function AvatarComponent(item: Any) {
         className="rounded-lg"
       />
       <div className="ml-4">
-        <p className="text-gray-600 font-semibold">{item?.name}</p>
-        <p className="text-sm text-gray-400">{item?.cafe?.name}</p>
+        <p className="text-grey-600 font-semibold">{item?.name}</p>
+        <p className="text-sm text-grey-400">{item?.cafe?.name}</p>
       </div>
     </a>
   );

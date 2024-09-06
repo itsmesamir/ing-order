@@ -18,7 +18,7 @@ function MenuDetail() {
   }
 
   return (
-    <div className="flex bg-gray-100 pt-6 px-6">
+    <div className="flex bg-grey-100 pt-6 px-6">
       <div className="flex flex-1 mr-6">
         <div className="rounded-lg bg-white w-full p-4">
           <div className="flex gap-x-4">
@@ -46,9 +46,9 @@ function MenuDetail() {
 
           <p className="text-3xl font-medium mt-6">{menuItem.name}</p>
 
-          <p className="text-base text-gray-400 mt-3">{menuItem.cafe?.name}</p>
+          <p className="text-base text-grey-400 mt-3">{menuItem.cafe?.name}</p>
 
-          <p className="mt-4 text-xl text-gray-700">{menuItem.description}</p>
+          <p className="mt-4 text-xl text-grey-700">{menuItem.description}</p>
 
           <MenuReview menuId={Number(id)} />
         </div>

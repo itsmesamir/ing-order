@@ -17,7 +17,7 @@ function TableHeader(props: React.PropsWithChildren<TableHeaderProps>) {
     <div
       className={classNames({
         'cursor-pointer': columnToSortBy,
-        'color-tertiary-blue-40 lf-table__col--sortable': highlightColumn,
+        'color-tertiary-primary-40 lf-table__col--sortable': highlightColumn,
       })}
       onClick={onClick}
     >

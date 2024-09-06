@@ -43,11 +43,11 @@ function Search(props: SearchProps) {
         role="button"
         onKeyUp={() => {}}
         onClick={() => setIsOpen(true)}
-        className="flex bg-gray-100 px-4 py-2 items-center gap-x-2 rounded-lg w-96"
+        className="flex bg-grey-100 px-4 py-2 items-center gap-x-2 rounded-lg w-96"
       >
         <FiSearch className="" size={16} />
 
-        <p className="text-gray-300">Search by food name..</p>
+        <p className="text-grey-300">Search by food name..</p>
       </div>
 
       <Modal
@@ -90,8 +90,8 @@ function Search(props: SearchProps) {
                   className="rounded-lg"
                 />
                 <div className="ml-4">
-                  <p className="text-gray-600 font-semibold">{item.name}</p>
-                  <p className="text-sm text-gray-400">{item?.cafe?.name}</p>
+                  <p className="text-grey-600 font-semibold">{item.name}</p>
+                  <p className="text-sm text-grey-400">{item?.cafe?.name}</p>
                 </div>
               </a>
             ))}
