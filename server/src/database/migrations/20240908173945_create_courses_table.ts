@@ -6,7 +6,7 @@ const TABLE_NAME = dbTables.courses;
 const USER_TABLE = dbTables.users;
 
 /**
- * Create table TABLE_NAME.
+ * Create table courses.
  *
  * @param   {Knex} knex
  * @returns {Promise}
@@ -24,7 +24,7 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 /**
- * Drop TABLE_NAME.
+ * Drop courses.
  *
  * @param   {Knex} knex
  * @returns {Promise}
