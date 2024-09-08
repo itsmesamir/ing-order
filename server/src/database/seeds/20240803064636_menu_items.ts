@@ -20,7 +20,7 @@ export async function seed(knex: Knex): Promise<void> {
       is_special: false,
       // attached a expresso image from other source than unsplash
       image_url:
-        'https://images.unsplash.com/photo-1596952954288-16862d37405b?q=80&w=3687&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1596952954288-16862d37405b?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       status: 'Available',
       created_by: 1,
     },
@@ -37,7 +37,7 @@ export async function seed(knex: Knex): Promise<void> {
       discount: 0.1,
       is_special: false,
       image_url:
-        'https://images.unsplash.com/photo-1605116188325-4379d4f5aa2c?q=80&w=3687&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1605116188325-4379d4f5aa2c?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       status: 'Available',
       created_by: 1,
     },
@@ -56,7 +56,7 @@ export async function seed(knex: Knex): Promise<void> {
 
       // chocolate cake image from other source than unsplash'
       image_url:
-        'https://images.unsplash.com/photo-1464941913535-1f37bfb72880?q=80&w=3570&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1464941913535-1f37bfb72880?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       status: 'Available',
       created_by: 2,
     },
@@ -73,7 +73,7 @@ export async function seed(knex: Knex): Promise<void> {
       discount: 0.0,
       is_special: false,
       image_url:
-        'https://images.unsplash.com/photo-1669283714145-f97867f6c238?q=80&w=2848&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1669283714145-f97867f6c238?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       status: 'Available',
       created_by: 2,
     },
@@ -90,7 +90,7 @@ export async function seed(knex: Knex): Promise<void> {
       discount: 0.05,
       is_special: false,
       image_url:
-        'https://images.unsplash.com/photo-1569305917876-70cb998f2a1b?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1569305917876-70cb998f2a1b?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       status: 'Available',
       created_by: 3,
     },
@@ -107,7 +107,7 @@ export async function seed(knex: Knex): Promise<void> {
       discount: 0.0,
       is_special: false,
       image_url:
-        'https://images.unsplash.com/photo-1687068328974-13261a846e58?q=80&w=3687&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1687068328974-13261a846e58?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       status: 'Available',
       created_by: 1,
     },
@@ -124,7 +124,7 @@ export async function seed(knex: Knex): Promise<void> {
       discount: 0.0,
       is_special: false,
       image_url:
-        'https://images.unsplash.com/photo-1604882406195-d94d4888567d?q=80&w=3648&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1604882406195-d94d4888567d?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       status: 'Available',
       created_by: 3,
     },
@@ -141,7 +141,7 @@ export async function seed(knex: Knex): Promise<void> {
       discount: 0.0,
       is_special: false,
       image_url:
-        'https://images.unsplash.com/photo-1722251172750-3fe7ea552a16?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1722251172750-3fe7ea552a16?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       status: 'Available',
       created_by: 3,
     },
@@ -158,7 +158,7 @@ export async function seed(knex: Knex): Promise<void> {
       discount: 0.1,
       is_special: true,
       image_url:
-        'https://images.unsplash.com/photo-1497445702960-c21c96af4c68?q=80&w=3570&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1497445702960-c21c96af4c68?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       status: 'Available',
       created_by: 1,
     },
@@ -175,7 +175,7 @@ export async function seed(knex: Knex): Promise<void> {
       discount: 0.05,
       is_special: false,
       image_url:
-        'https://images.unsplash.com/photo-1519091830432-41608a52904e?q=80&w=3687&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1519091830432-41608a52904e?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       status: 'Available',
       created_by: 2,
     },
@@ -192,7 +192,7 @@ export async function seed(knex: Knex): Promise<void> {
       discount: 0.0,
       is_special: false,
       image_url:
-        'https://images.unsplash.com/photo-1589010588553-46e8e7c21788?q=80&w=3660&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1589010588553-46e8e7c21788?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       status: 'Available',
       created_by: 3,
     },
@@ -209,7 +209,7 @@ export async function seed(knex: Knex): Promise<void> {
       discount: 0.0,
       is_special: false,
       image_url:
-        'https://images.unsplash.com/photo-1589218436045-ee320057f443?q=80&w=3568&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1589218436045-ee320057f443?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       status: 'Available',
       created_by: 1,
     },
@@ -226,7 +226,7 @@ export async function seed(knex: Knex): Promise<void> {
       discount: 0.0,
       is_special: false,
       image_url:
-        'https://images.unsplash.com/photo-1601002177343-070d8f2d3496?q=80&w=3648&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1601002177343-070d8f2d3496?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       status: 'Available',
       created_by: 1,
     },
