@@ -1,0 +1,32 @@
+# Ignore Terraform state files and directories
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+.terraform/
+terraform.tfstate
+terraform.tfstate.*
+terraform.tfvars
+terraform.tfvars.json
+
+# Ignore sensitive files
+*.pem
+*.key
+*.crt
+*.pub
+
+# Ignore Terraform plan files
+*.tfplan
+
+# Ignore editor and IDE-specific files
+.vscode/
+.idea/
+
+# Ignore system files
+.DS_Store
+*.swp
+*.swo
+
+# Ignore environment variables files
+.env
+.env.*
