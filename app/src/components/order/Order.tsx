@@ -54,7 +54,7 @@ function Order() {
   const mapSummaryToPayload = (cart: CartItem[]) => {
     return {
       user: { id: currentUser?.id },
-      menu_items: cart.map(item => ({
+      menuItems: cart.map(item => ({
         id: item?.menu?.id,
         cafeId: item.menu?.cafeId,
         quantity: item.quantity,

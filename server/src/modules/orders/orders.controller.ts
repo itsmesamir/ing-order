@@ -84,6 +84,32 @@ export const updateOrderById = async (req: Request, res: Response) => {
 };
 
 /**
+ * Update an order status by ID.
+ */
+export const updateOrderStatusById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const order = await ordersService.updateOrderStatusById(Number(id), status);
+
+  return res.status(HttpStatus.OK).json({ data: order });
+};
+
+/**
+ * Update an order item status by ID.
+ */
+export const updateOrderItemStatusById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const orderItemId = await ordersService.updateOrderItemStatusById(Number(id), status);
+
+  return res
+    .status(HttpStatus.OK)
+    .json({ data: orderItemId, message: 'Order item status updated' });
+};
+
+/**
  * Delete an order by ID.
  *
  * @param {Request} req

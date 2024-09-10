@@ -166,16 +166,16 @@ export enum PaymentStatusEnum {
 export interface Order {
   id: number;
   user: User;
-  transaction_id?: string;
-  order_date: string;
+  transactionId?: string;
+  orderDate: string;
   status: OrderStatusEnum;
-  created_by: number;
-  created_at: string;
-  updated_by?: number;
-  updated_at?: string;
-  deleted_by?: number;
-  deleted_at?: string;
-  menu_items: MenuItem[];
+  createdBy: number;
+  createdAt: string;
+  updatedBy?: number;
+  updatedAt?: string;
+  deletedBy?: number;
+  deletedAt?: string;
+  menuItems: MenuItem[];
 }
 
 export interface OrderStatus {
@@ -195,6 +195,7 @@ export interface OrderItem {
   quantity: number;
   price: number;
   discount: number;
+  status: OrderStatusEnum;
   createdAt: string;
   createdBy: number;
   updatedAt: string;

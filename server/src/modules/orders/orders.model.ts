@@ -3,13 +3,15 @@ import { Knex } from 'knex';
 import BaseModel from '@/models/baseModel';
 
 import { OrderFilter } from '@/types/orders';
-import { Order, Any, OrderStatus, OrderItem } from '@/types/common';
+import { Order, OrderStatus, OrderItem } from '@/types/common';
 
 import db from '@/db';
 import dbTables from '@/constants/db';
 
 class OrderModel extends BaseModel {
-  static table = dbTables.orders;
+  static orders = dbTables.orders;
+  static orderItems = dbTables.orderItems;
+  static orderStatus = dbTables.orderStatus;
 
   /**
    * baseQuery to fetch orders.
@@ -38,9 +40,11 @@ class OrderModel extends BaseModel {
         db.raw(`
         JSON_ARRAYAGG(
           JSON_OBJECT(
+            'id', oi.id,
             'price', oi.price,
             'discount', oi.discount,
             'quantity', oi.quantity,
+            'status', oi.status,
             'menu', JSON_OBJECT(
               'id', mi.id,
               'name', mi.name,
@@ -56,22 +60,22 @@ class OrderModel extends BaseModel {
         ) as items
       `)
       )
-      .from({ o: 'Orders' })
-      .leftJoin('Users as u', 'o.user_id', 'u.id')
-      .leftJoin('Cafes as c', 'o.cafe_id', 'c.id')
-      .leftJoin('Colleges as cl', 'c.college_id', 'cl.id')
-      .leftJoin('OrderItems as oi', 'o.id', 'oi.order_id')
-      .leftJoin('MenuItems as mi', 'oi.item_id', 'mi.id')
+      .from({ o: this.orders })
+      .leftJoin('users as u', 'o.user_id', 'u.id')
+      .leftJoin('cafes as c', 'o.cafe_id', 'c.id')
+      .leftJoin('colleges as cl', 'c.college_id', 'cl.id')
+      .leftJoin('order_items as oi', 'o.id', 'oi.order_id')
+      .leftJoin('menu_items as mi', 'oi.item_id', 'mi.id')
       .leftJoin(
         db
           .select('order_id', db.raw('MAX(id) as max_id'))
-          .from('OrderStatus')
+          .from('order_status')
           .groupBy('order_id')
           .as('latest_status'),
         'o.id',
         'latest_status.order_id'
       )
-      .leftJoin('OrderStatus as us', function () {
+      .leftJoin('order_status as us', function () {
         this.on('latest_status.max_id', '=', 'us.id');
       })
       .whereNull('o.deleted_at')
@@ -104,9 +108,8 @@ class OrderModel extends BaseModel {
   /**
    * Fetch list of orders.
    *
-   * @param {Any} filters
-   * @param {Knex.Transaction} [trx]
-   * @returns {Knex.QueryBuilder<Order[]>}
+   * @param filters
+   * @param trx
    */
   static fetch(filters: OrderFilter, trx?: Knex.Transaction) {
     const query = this.baseQuery(trx);
@@ -124,19 +127,23 @@ class OrderModel extends BaseModel {
    * @returns {Knex.QueryBuilder<number[]>}
    */
   static insert(data: Partial<Order>, trx?: Knex.Transaction) {
-    return this.queryBuilder(trx).table(this.table).insert(data);
+    return this.queryBuilder(trx).table(this.orders).insert(data);
   }
 
   /**
    * Fetch an order by its ID.
    *
-   * @param {number} id
-   * @param {Any} filters
-   * @param {Knex.Transaction} [trx]
+   * @param orderId
+   * @param filters
+   * @param trx
    * @returns {Knex.QueryBuilder<Order>}
    */
-  static fetchById(orderId: number, filters: Any, trx?: Knex.Transaction) {
-    return this.baseQuery(trx).where('o.id', orderId).first();
+  static fetchById(orderId: number, filters: Partial<Order>, trx?: Knex.Transaction) {
+    return this.baseQuery(trx).where('o.id', orderId).where(filters).first();
+  }
+
+  static fetchOrderItemById(id: number, trx?: Knex.Transaction): Promise<OrderItem> {
+    return this.queryBuilder(trx).select().from(this.orderItems).where({ id }).first();
   }
 
   /**
@@ -148,7 +155,7 @@ class OrderModel extends BaseModel {
    *
    */
   static insertOrderStatus(data: Partial<OrderStatus>, trx?: Knex.Transaction) {
-    return this.queryBuilder(trx).table('OrderStatus').insert(data);
+    return this.queryBuilder(trx).table(this.orderStatus).insert(data);
   }
 
   /**
@@ -159,7 +166,7 @@ class OrderModel extends BaseModel {
    * @returns {Knex.QueryBuilder<number[]>}
    */
   static insertOrderItems(data: Partial<OrderItem>[], trx?: Knex.Transaction) {
-    return this.queryBuilder(trx).table('OrderItems').insert(data);
+    return this.queryBuilder(trx).table(this.orderItems).insert(data);
   }
 
   /**
@@ -182,7 +189,25 @@ class OrderModel extends BaseModel {
    * @returns {Knex.QueryBuilder<number>}
    */
   static updateById(id: number, data: Partial<Order>, trx?: Knex.Transaction) {
-    return this.queryBuilder(trx).table(this.table).where('id', id).update(data);
+    return this.queryBuilder(trx).table(this.orders).where('id', id).update(data);
+  }
+
+  /**
+   * Update order item by its id
+   */
+  static updateOrderItemById(id: number, data: Partial<OrderItem>, trx?: Knex.Transaction) {
+    return this.queryBuilder(trx).update(data).table(this.orderItems).where({ id });
+  }
+
+  /**
+   * Update order item by order id
+   */
+  static updateOrderItemByOrderId(
+    orderId: number,
+    data: Partial<OrderItem>,
+    trx?: Knex.Transaction
+  ) {
+    return this.queryBuilder(trx).update(data).table(this.orderItems).where({ orderId });
   }
 
   /**
@@ -193,7 +218,7 @@ class OrderModel extends BaseModel {
    * @returns {Knex.QueryBuilder<number>}
    */
   static deleteById(id: number, trx?: Knex.Transaction) {
-    return this.queryBuilder(trx).table(this.table).where('id', id).del();
+    return this.queryBuilder(trx).table(this.orders).where('id', id).del();
   }
 }
 
