@@ -7,17 +7,21 @@ import Table from 'components/table/Table';
 import TableTitle from 'components/table/components/TableTitle';
 
 import { interpolate } from 'utils/interpolate';
+import { handleError } from 'utils/handleError';
 
 import { User } from 'types/User';
 
 import en from 'constants/en';
 
 import { columns } from './columns';
+import CreateEditUserRolesModal from './CreateEditUserRolesModal';
 
 function UserRoles() {
   const [userRoles, setUserRoles] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [shouldFetchUserRoles, setShouldFetchUserRoles] = useState(false);
   const [deleteModalOpenFor, setDeleteModalOpenFor] = useState<User | null>(null);
+  const [editModalOpenFor, setEditModalOpenFor] = useState<User | null>(null);
 
   const fetchUserRoles = async () => {
     try {
@@ -25,7 +29,7 @@ function UserRoles() {
       const data = await fetchUsers({});
       setUserRoles(data);
     } catch (error) {
-      console.log(error);
+      handleError(error);
     } finally {
       setIsLoading(false);
     }
@@ -33,14 +37,14 @@ function UserRoles() {
 
   useEffect(() => {
     fetchUserRoles();
-  }, []);
+  }, [shouldFetchUserRoles]);
 
   return (
     <div>
       <TableTitle tableTitle="User Roles" itemName="Users" start={40} total={150} />
       <Table
         loading={isLoading}
-        columns={columns(setDeleteModalOpenFor)}
+        columns={columns(setDeleteModalOpenFor, setEditModalOpenFor)}
         data={userRoles}
         getRowCanExpand={() => true}
         emptyMessage=""
@@ -60,9 +64,17 @@ function UserRoles() {
         title={interpolate(en.MODEL.DELETE, { title: deleteModalOpenFor?.name as string })}
         isModalOpen={!!deleteModalOpenFor}
         onApplyClick={() => {}}
-        // isSubmitting={false}
         closeModal={() => setDeleteModalOpenFor(null)}
         message={`You are about to role of ${deleteModalOpenFor?.name}.`}
+      />
+      <CreateEditUserRolesModal
+        title={editModalOpenFor ? 'Edit User Role' : 'Create User Role'}
+        isEditable={!!editModalOpenFor}
+        isModalOpen={!!editModalOpenFor}
+        closeModal={() => setEditModalOpenFor(null)}
+        isSubmitting={false}
+        rowData={editModalOpenFor}
+        setShouldFetchUserRoles={setShouldFetchUserRoles}
       />
     </div>
   );
