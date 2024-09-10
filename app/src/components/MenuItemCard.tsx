@@ -74,8 +74,8 @@ function MenuItemCard(props: MenuItemCardProps) {
           <Flex justify="space-between" my="2">
             <ItemCounter
               count={count}
-              handleCount={count => {
-                setCount(count);
+              handleCount={(updatedCount: number) => {
+                setCount(updatedCount);
               }}
             />
 

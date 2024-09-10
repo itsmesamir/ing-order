@@ -19,8 +19,6 @@ import {
 import { AiOutlineMenu } from 'react-icons/ai';
 import { BiLogOut } from 'react-icons/bi';
 import { FaComment, FaHistory, FaHome, FaSearch } from 'react-icons/fa';
-import { ChevronDownIcon } from '@chakra-ui/icons'; // Import the ChevronDownIcon
-import { Link as RouterLink } from 'react-router-dom';
 
 import Header from 'pages/header';
 
@@ -57,12 +55,6 @@ const menuItems = [
 ];
 
 function AdminDrawerItems({ onOpen }: DrawerProps) {
-  const [activeItem, setActiveItem] = useState<string | null>(null);
-
-  const toggleSubItems = (itemName: string) => {
-    setActiveItem(prev => (prev === itemName ? null : itemName));
-  };
-
   return (
     <Stack w="100%">
       <Flex p={4} justifyContent="space-between" alignItems="center">

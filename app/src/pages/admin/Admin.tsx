@@ -4,10 +4,9 @@ import AdminOrders from 'pages/adminOrders/AdminOrders';
 import AdminMenuLists from 'pages/adminMenus/AdminMenuLists';
 import AddMenuItems from 'pages/adminMenus/AddMenuItems';
 import AdminCategories from 'pages/adminCategories/AdminCategories';
-import AdminUnits from 'pages/adminUnits/AdminUnits';
+import AdminUnits from 'pages/adminMenuUnits/AdminMenuUnits';
 import AddEditCategories from 'pages/adminCategories/AddEditCategories';
-import AddEditMenuItem from 'pages/adminMenus/AddMenuItems';
-import AddEditUnits from 'pages/adminUnits/AddEditUnits';
+import AddEditUnits from 'pages/adminMenuUnits/AddEditMenuUnits';
 
 import useUserStore from 'stores/useUserStore';
 

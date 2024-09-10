@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import { useHistory } from 'react-router-dom';
 import { FiEdit, FiTrash } from 'react-icons/fi';
+import { Button } from '@chakra-ui/react';
 
 import Table from 'components/table/Table';
 import ActionModal from 'components/common/actionModal';
@@ -113,15 +114,12 @@ function AdminMenuLists() {
 
   return (
     <div className="p-4">
-      <h1 className="font-bold text-2xl">Menu Lists</h1>
-      <div className="flex justify-end mb-4">
-        <button
-          type="button"
-          className="bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600"
-          onClick={handleAddItemClick}
-        >
+      <div className="flex justify-between mb-4">
+        <h1 className="font-bold text-2xl">Menu Lists</h1>
+
+        <Button type="button" colorScheme="primary" onClick={handleAddItemClick}>
           Add Item +
-        </button>
+        </Button>
       </div>
       <Table columns={columns} data={data} loading={isLoading} emptyMessage="No data available" />
     </div>
