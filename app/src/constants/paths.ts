@@ -39,4 +39,5 @@ export default {
   feedbacks: 'feedbacks',
   userOrders: 'user/orders',
   userRoles: 'user/roles',
+  checkout: 'checkout',
 } as const;

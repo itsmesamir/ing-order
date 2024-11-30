@@ -1,8 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import { useHistory } from 'react-router-dom';
 import { FiEdit, FiTrash } from 'react-icons/fi';
-import { Button } from '@chakra-ui/react';
+import { Button, Select } from '@chakra-ui/react';
 
 import Table from 'components/table/Table';
 import ActionModal from 'components/common/actionModal';
@@ -25,10 +25,11 @@ function ActionCell(
 function AdminMenuLists() {
   const history = useHistory();
   const [error, setError] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
   const { data, isLoading } = useMenusQuery({});
 
   const { location } = history;
-
   const queryParams: DefaultObject = parseQuery(location.search);
 
   const handleAddItemClick = () => {
@@ -60,7 +61,6 @@ function AdminMenuLists() {
           state: (rowData: MenuItem) => {
             console.log(rowData);
           },
-          // state: (rowData: Order) => setDeleteModalOpenFor(rowData?.id),
         },
       ],
       []
@@ -118,18 +118,47 @@ function AdminMenuLists() {
     return <div className="p-4 text-red-500">{error}</div>;
   }
 
+  const filteredData = selectedCategory
+    ? data.data.filter(item => item.category?.name === selectedCategory)
+    : data.data;
+
+  const uniqueCategories = Array.from(
+    new Set(data.data.filter(item => item.category).map(item => item.category!.name))
+  ).map(categoryName => ({
+    name: categoryName,
+  }));
+
   return (
     <div className="p-4">
-      <div className="flex justify-between mb-4">
+      <div className="flex justify-between mb-4 items-center">
         <h1 className="font-bold text-2xl">Menu Lists</h1>
 
-        <Button type="button" colorScheme="primary" onClick={handleAddItemClick}>
-          Add Item +
-        </Button>
+        <div className="flex space-x-4">
+          <Select
+            placeholder="Filter by Category"
+            value={selectedCategory || ''}
+            onChange={e => setSelectedCategory(e.target.value)}
+            className="w-30"
+          >
+            <option value="">All</option>
+            {Array.from(
+              new Set(data.data.filter(item => item.category).map(item => item.category!.name))
+            ).map(categoryName => (
+              <option key={categoryName} value={categoryName}>
+                {categoryName}
+              </option>
+            ))}
+          </Select>
+
+          <Button type="button" colorScheme="primary" onClick={handleAddItemClick} className="w-40">
+            Add Item +
+          </Button>
+        </div>
       </div>
+
       <Table
         columns={columns}
-        data={data.data}
+        data={filteredData}
         loading={isLoading}
         emptyMessage="No data available"
         pagination={{ pageData: data.meta, pageCount: queryParams.page }}

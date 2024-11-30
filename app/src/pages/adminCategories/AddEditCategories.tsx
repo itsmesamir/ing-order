@@ -12,13 +12,14 @@ import useUserStore from 'stores/useUserStore';
 
 import Form, { FormInputField } from 'components/Form';
 
-import { useMenuCategoriesQuery } from 'hooks/useMenuCategoriesQuery'; // Adjust or create similar to useMenuUnitsQuery
+import { useMenuCategoriesQuery } from 'hooks/useMenuCategoriesQuery';
 
 import * as toast from 'utils/toast';
 import { handleError } from 'utils/handleError';
 
 interface MenuCategory {
   id?: number;
+  parentId?: number;
   name?: string;
 }
 
@@ -29,20 +30,30 @@ function AddEditCategories() {
   const isEditMode = !!id;
   const { data: currentUser } = useUserStore();
 
-  // Fetch all menu categories
   const { data: menuCategories, isLoading: isMenuCategoriesLoading } = useMenuCategoriesQuery({});
 
-  // If id exists, find the specific category from the menuCategories list
   const category = isEditMode
     ? menuCategories?.find(category => category.id === Number(id))
     : undefined;
 
-  const fields: FormInputField[] = [{ name: 'name', label: 'Name', type: 'text' }];
+  const fields: FormInputField[] = [
+    {
+      name: 'parentId',
+      label: 'Parent Category',
+      type: 'select',
+      options:
+        menuCategories?.map(category => ({
+          value: category.id,
+          label: category.name || `Category ${category.id}`,
+        })) || [],
+    },
+    { name: 'name', label: 'Name', type: 'text' },
+  ];
 
-  // Function to filter and format the category data
   const getInitialValues = (category: MenuCategory = {}): Record<string, string> => {
     return {
-      id: category.id?.toString() || '', // Convert number to string
+      id: category.id?.toString() || '',
+      parentId: category.parentId?.toString() || '',
       name: category.name || '',
     };
   };
@@ -77,13 +88,13 @@ function AddEditCategories() {
   const handleSubmit = (data: Record<string, string | number | boolean>) => {
     const payload = {
       ...data,
-      ...(isEditMode ? {} : { createdBy: currentUser?.id ?? 0 }), // Include createdBy only in create mode
+      ...(isEditMode ? {} : { createdBy: currentUser?.id ?? 0 }),
     };
 
     if (isEditMode) {
-      updateMutation.mutate(payload); // Call update mutation if in edit mode
+      updateMutation.mutate(payload);
     } else {
-      createMutation.mutate(payload); // Call create mutation if not in edit mode
+      createMutation.mutate(payload);
     }
   };
 

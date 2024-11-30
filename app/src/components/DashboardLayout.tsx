@@ -18,7 +18,15 @@ import { BiLogOut } from 'react-icons/bi';
 import { MdPayment } from 'react-icons/md';
 import { HiOutlineCalendar } from 'react-icons/hi';
 import { BsPerson, BsQuestionCircle } from 'react-icons/bs';
-import { FaCalendarMinus, FaComment, FaHistory, FaHome, FaSearch, FaTools } from 'react-icons/fa';
+import {
+  FaCalendarMinus,
+  FaCheckDouble,
+  FaComment,
+  FaHistory,
+  FaHome,
+  FaSearch,
+  FaTools,
+} from 'react-icons/fa';
 
 import useUserStore from 'stores/useUserStore';
 
@@ -49,6 +57,7 @@ const menuItems = [
     path: createRoute([paths.admin]),
   },
   { name: 'User Roles', icon: <FaTools />, path: createRoute([paths.userRoles]) },
+  { name: 'Checkout', icon: <FaCheckDouble />, path: createRoute([paths.checkout]) },
 ];
 
 function DashboardDrawerItems({ onOpen }: DrawerProps) {

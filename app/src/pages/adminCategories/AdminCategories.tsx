@@ -49,7 +49,6 @@ function AdminCategories() {
   };
 
   const handleDelete = (rowData: MenuCategory) => {
-    // Implement your delete logic here
     console.log('Delete item:', rowData);
   };
 
@@ -87,6 +86,16 @@ function AdminCategories() {
       accessorKey: 'name',
       header: 'Name',
       cell: info => info.getValue(),
+    },
+    {
+      accessorKey: 'parentId',
+      header: 'Parent Category',
+      cell: ({ row }: { row: Any }) => {
+        const parentCategory = menuCategories?.find(
+          category => category.id === row.original.parentId
+        );
+        return parentCategory ? parentCategory.name : '';
+      },
     },
     {
       header: 'Actions',
