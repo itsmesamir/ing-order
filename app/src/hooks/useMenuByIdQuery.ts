@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { fetchMenuById, fetchMenus } from 'services/menus';
+import { fetchMenuById } from 'services/menus';
 
 import { Any } from 'types/common';
 

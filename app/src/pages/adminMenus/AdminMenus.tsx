@@ -60,11 +60,13 @@ const renderSubComponent = (props: Any) => {
 function AdminMenus() {
   const [filter, setFilter] = useState(statusTypes[0].id);
 
-  const { data: menus, isLoading } = useQuery({
+  const { data: menusData, isLoading } = useQuery({
     queryKey: [queryKey.orders, filter],
     queryFn: ({ signal }: Any) => fetchMenus(filter ? { status: filter } : {}, signal),
     enabled: true,
   });
+
+  const menus = menusData?.data;
 
   const defaultImageUrl =
     'https://www.shutterstock.com/image-photo/classic-hamburger-stock-photo-isolated-600nw-2282033179.jpg';

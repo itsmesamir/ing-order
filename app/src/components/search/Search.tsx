@@ -25,12 +25,14 @@ function Search(props: SearchProps) {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data: menuItems, isLoading: isMenuItemLoading } = useMenusQuery(
+  const { data: menuData, isLoading: isMenuItemLoading } = useMenusQuery(
     {
       name: searchItem,
     },
     searchItem.length > 0
   );
+
+  const menuItems = menuData?.data;
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchItem(event.target.value);
