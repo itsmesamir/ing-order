@@ -3,6 +3,7 @@ import { Knex } from 'knex';
 import BaseModel from '@/models/baseModel';
 
 import { MenuItem, Any } from '@/types/common';
+import { PageParams } from '@/types/pagination';
 
 import dbTables from '@/constants/db';
 
@@ -74,12 +75,30 @@ class MenuItemModel extends BaseModel {
    * @param {Knex.Transaction} [trx]
    * @returns {Knex.QueryBuilder<MenuItem[]>}
    */
-  static fetch(filters: Any, trx?: Knex.Transaction) {
+  static fetch(filters: Any, pageParams: PageParams, trx?: Knex.Transaction) {
     const query = this.baseQuery(trx);
 
     this.injectFilter(query, filters);
 
+    if (pageParams) {
+      const offset = (pageParams.page - 1) * pageParams.size;
+
+      query.limit(pageParams.size).offset(offset);
+    }
+
     return query.then(data => data.map(this.mapToModel));
+  }
+
+  /**
+   * Count total no of item.
+   *
+   * @param {Knex} [tx]
+   * @returns {Promise<number>}
+   */
+  static count(trx?: Knex.Transaction): Promise<number> {
+    const result = this.baseQuery(trx).count('mi.id as count').first();
+
+    return result.then(({ count }) => count);
   }
 
   /**

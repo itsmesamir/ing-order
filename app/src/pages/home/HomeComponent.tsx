@@ -27,7 +27,9 @@ import RightColumn from './RightColumn';
 function HomeComponent() {
   const { items } = useCartStore();
 
-  const { data: menuItems, isLoading: isMenuItemLoading } = useMenusQuery({});
+  const { data: menuItemData, isLoading: isMenuItemLoading } = useMenusQuery({});
+
+  const menuItems = menuItemData?.data;
 
   if (!menuItems || isMenuItemLoading) {
     return <>Loading...</>;

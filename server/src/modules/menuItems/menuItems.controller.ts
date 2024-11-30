@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 import HttpStatus from 'http-status-codes';
 
+import { buildPageParams, getMeta } from '@/utils/pagination';
+
+import { PageParams } from '@/types/pagination';
+
 import * as menuItemsService from './menuItems.service';
 
 /**
@@ -11,9 +15,15 @@ import * as menuItemsService from './menuItems.service';
  * @returns {Promise<Response>}
  */
 export const fetchMenuItems = async (req: Request, res: Response) => {
-  const menuItems = await menuItemsService.fetchMenuItems(req.query);
+  const { page, size } = req.query;
+  const pageParams: PageParams = buildPageParams(Number(page), Number(size));
 
-  return res.status(HttpStatus.OK).json({ data: menuItems });
+  const menuItems = await menuItemsService.fetchMenuItems(req.query, pageParams);
+  const count = await menuItemsService.countMenuItems();
+
+  const meta = getMeta(pageParams, count);
+
+  return res.status(HttpStatus.OK).json({ data: menuItems, meta });
 };
 
 /**

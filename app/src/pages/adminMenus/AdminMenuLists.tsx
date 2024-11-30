@@ -9,7 +9,9 @@ import ActionModal from 'components/common/actionModal';
 
 import { useMenusQuery } from 'hooks/useMenusQuery';
 
-import { Any, CellData, MenuItem, Order, RowData } from 'types/common';
+import { parseQuery } from 'utils/queryParams';
+
+import { Any, CellData, DefaultObject, MenuItem, Order, RowData } from 'types/common';
 
 function ActionCell(
   { row: { original } }: { row: { original: RowData<Order> } },
@@ -24,6 +26,10 @@ function AdminMenuLists() {
   const history = useHistory();
   const [error, setError] = useState<string | null>(null);
   const { data, isLoading } = useMenusQuery({});
+
+  const { location } = history;
+
+  const queryParams: DefaultObject = parseQuery(location.search);
 
   const handleAddItemClick = () => {
     history.push('/admin/menus/add');
@@ -121,7 +127,13 @@ function AdminMenuLists() {
           Add Item +
         </Button>
       </div>
-      <Table columns={columns} data={data} loading={isLoading} emptyMessage="No data available" />
+      <Table
+        columns={columns}
+        data={data.data}
+        loading={isLoading}
+        emptyMessage="No data available"
+        pagination={{ pageData: data.meta, pageCount: queryParams.page }}
+      />
     </div>
   );
 }

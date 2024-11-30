@@ -1,3 +1,5 @@
+import { AxiosResponse } from 'axios';
+
 import { buildUrl } from 'utils/string';
 import http from 'utils/http';
 import { interpolate } from 'utils/interpolate';
@@ -5,13 +7,24 @@ import { interpolate } from 'utils/interpolate';
 import { Any, MenuCategory, MenuItem, MenuUnit } from 'types/common';
 
 import api from 'constants/api';
+import { WithMeta } from 'interface/common';
 
-export async function fetchMenus(params: Any, signal?: AbortSignal): Promise<MenuItem[]> {
+export async function fetchMenus(params: Any, signal?: AbortSignal): Promise<WithMeta<MenuItem[]>> {
   const url = buildUrl(api.menus);
 
-  const { data } = await http.get(url, { signal, params });
+  const response: AxiosResponse<WithMeta<MenuItem[]>> = await http.get(url, {
+    signal,
+    params,
+  });
 
-  return data;
+  // TODO: fix this
+  const { data, meta } = response as Any;
+
+  if (!data || !meta) {
+    throw new Error('Invalid response structure: Missing data or meta.');
+  }
+
+  return { data, meta };
 }
 
 export async function fetchMenuById(id: number, signal?: AbortSignal): Promise<MenuItem> {

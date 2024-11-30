@@ -66,7 +66,9 @@ function UserOrders() {
 
   const { data: cafes, isLoading: isCafesLoading } = useCafesQuery({});
 
-  const { data: menuItems, isLoading: isMenuItemLoading } = useMenusQuery();
+  const { data: menuItemsData, isLoading: isMenuItemLoading } = useMenusQuery();
+
+  const menuItems = menuItemsData?.data;
 
   const cafeOptions = mapAndSortSelectOptions(cafes || [], 'name', 'id');
 

@@ -5,6 +5,7 @@ import MenuItemModel from '@/modules/menuItems/menuItems.model';
 import logger from '@/services/logger';
 
 import { Any, MenuItem } from '@/types/common';
+import { PageParams } from '@/types/pagination';
 
 const log = logger.withNamespace('modules/menuItems.service');
 
@@ -13,13 +14,29 @@ const log = logger.withNamespace('modules/menuItems.service');
  *
  * @returns A promise that resolves to an array of menu items objects.
  */
-export const fetchMenuItems = async (params: Any, trx?: Knex.Transaction): Promise<MenuItem[]> => {
+export const fetchMenuItems = async (
+  params: Any,
+  pageParams: PageParams,
+  trx?: Knex.Transaction
+): Promise<MenuItem[]> => {
   log.info('Fetching menu items');
 
-  const menuItems = await MenuItemModel.fetch(params, trx);
+  const menuItems = await MenuItemModel.fetch(params, pageParams, trx);
 
   return menuItems;
 };
+
+/**
+ * Service to fetch total count.
+ *
+ * @returns {number}
+ */
+export async function countMenuItems() {
+  logger.info(`Counting the total number of menu items`);
+  const count = await MenuItemModel.count();
+
+  return count;
+}
 
 /**
  * Fetch a menu item by its ID.
