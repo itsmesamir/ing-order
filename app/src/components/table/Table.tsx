@@ -10,23 +10,20 @@ import {
   InitialTableState,
   getExpandedRowModel,
 } from '@tanstack/react-table';
-import { useHistory } from 'react-router-dom';
-import { FaCaretUp } from 'react-icons/fa';
+import { FaChevronUp } from 'react-icons/fa';
+import { useSearchParams } from 'react-router-dom';
 
-import Empty from 'components/common/Empty';
-import Loading from 'components/common/Loading';
 import Pagination from 'components/common/pagination';
+import Loading from 'components/common/Loading';
+import Empty from 'components/common/Empty';
 
-import { classNames } from 'utils/className';
 import { joinStrings } from 'utils/string';
-import { updateUrl } from 'utils/updateUrl';
+import { classNames } from 'utils/className';
 import { parseQuery as parse } from 'utils/queryParams';
+import { setSearchParamsFromObject } from 'utils/updateUrl';
 
+import { Meta } from 'types/pagination';
 import { Any, DefaultObject } from 'types/common';
-
-// import history from '$/utils/history';
-import config from 'config/config';
-import { Meta } from 'interface/common';
 
 export const ACTION_ID = 'action';
 
@@ -124,8 +121,6 @@ function Table<T>(props: MyTableProps<T>) {
     pagination,
   } = props;
 
-  const history = useHistory();
-
   const sortable = sorting && !loading;
   const isTableEmpty = !data?.length;
 
@@ -158,24 +153,33 @@ function Table<T>(props: MyTableProps<T>) {
   const onLinkRowClick = (e: React.MouseEvent<HTMLTableRowElement>, link: string) => {
     if (e.ctrlKey || e.metaKey) {
       //   window.open(`${window.location.origin}${config.endpoints.vyaguta.okr}${link}`, '_blank');
-
-      return;
     }
 
-    history.push(link);
+    // history.push(link);
   };
 
   const isRowSelected = (id: number) => {
     return selectedRows?.includes(id);
   };
 
+  // Get current search parameters and the function to update them
+  const [searchParams, setSearchParams] = useSearchParams();
+
   // Pagination
   const onPageChange = (selectedPage: number): void => {
-    updateUrl({ ...parse(window.location.search), page: selectedPage });
+    const data = { ...parse(window.location.search), page: selectedPage };
+
+    setSearchParamsFromObject(searchParams, setSearchParams, data);
   };
 
   const onPageSizeChange = (selectedSize: number): void => {
-    updateUrl({ ...parse(window.location.search), page: 1, size: selectedSize });
+    const data = {
+      ...parse(window.location.search),
+      page: 1,
+      size: selectedSize,
+    };
+
+    setSearchParamsFromObject(searchParams, setSearchParams, data);
   };
 
   const showEmptyContent = (!loading && isTableEmpty) || showEmpty;
@@ -188,12 +192,7 @@ function Table<T>(props: MyTableProps<T>) {
         })}
       >
         <table className={classNames('w-full', { 'bg-white': !classes?.table }, classes?.table)}>
-          <thead
-            className={classNames(
-              'border-b-2 border-grey-200 bg-grey-100/50',
-              classes?.tableHeader
-            )}
-          >
+          <thead className={classNames('bg-gray-100/70', classes?.tableHeader)}>
             {table.getHeaderGroups().map(headerGroup => {
               return (
                 <tr className={classNames(classes?.tableHeaderRow)} key={headerGroup.id}>
@@ -221,7 +220,7 @@ function Table<T>(props: MyTableProps<T>) {
                           onKeyUp={() => {}}
                           tabIndex={0}
                           className={classNames(
-                            'flex items-center text-grey-1000 font-semibold text-sm',
+                            'flex items-center text-gray-1000 font-semibold text-sm',
                             {
                               'cursor-pointer whitespace-nowrap':
                                 sortable && header.column.getCanSort(),
@@ -264,7 +263,7 @@ function Table<T>(props: MyTableProps<T>) {
                             header.column.getIsSorted() &&
                             !loading &&
                             !header.isPlaceholder && (
-                              <FaCaretUp
+                              <FaChevronUp
                                 size={12}
                                 className={classNames('ml-[2px]', {
                                   'rotate-0': header.column.getIsSorted() === 'asc',
@@ -292,7 +291,7 @@ function Table<T>(props: MyTableProps<T>) {
                   <>
                     <tr
                       className={classNames(
-                        'hover:bg-grey-100 cursor-pointer border-b border-solid border-grey-200',
+                        'hover:bg-gray-100 cursor-pointer border-b border-solid border-gray-100',
                         {
                           'bg-tertiary-blue-15': isRowSelected(id),
                         },
@@ -323,7 +322,7 @@ function Table<T>(props: MyTableProps<T>) {
                                 : 0
                             }
                             className={classNames(
-                              'px-4 py-3 text-sm text-grey-800',
+                              'px-4 py-3 text-sm text-gray-500',
                               {
                                 'pr-4': cell.column.id === ACTION_ID,
                               },
@@ -354,13 +353,7 @@ function Table<T>(props: MyTableProps<T>) {
 
         {loading && <Loading hasBackground className={classNames('h-80', loadingClassName)} />}
 
-        {showEmptyContent && (
-          <Empty
-            message={emptyMessage}
-            className={classNames('!h-80 ', emptyClassName)}
-            trailing={emptyTrailing}
-          />
-        )}
+        {showEmptyContent && <Empty message={emptyMessage} />}
       </div>
 
       {pagination && (
