@@ -1,5 +1,6 @@
 import { buildUrl } from 'utils/string';
 import http from 'utils/http';
+import { interpolate } from 'utils/interpolate';
 
 import { Any, Order } from 'types/common';
 
@@ -25,12 +26,20 @@ export async function fetchOrderById(
   return data;
 }
 
-export async function updateOrderById(
-  id: number,
-  body: Any,
-  signal?: AbortSignal
-): Promise<Order[]> {
+export async function updateOrderById(id: number, body: Any, signal?: AbortSignal) {
+  // ): Promise<Order[]> {
   const url = buildUrl(api.order.orders, id);
+
+  const { data } = await http.put(url, body, { signal });
+
+  return data;
+}
+
+export async function updateOrderStatusById(id: number, body: Any, signal?: AbortSignal) {
+  // ): Promise<Order[]> {
+  const url = buildUrl(interpolate(api.order.orderStatusById, { id }));
+
+  console.log('urls updateOrderStatusById', url);
 
   const { data } = await http.put(url, body, { signal });
 

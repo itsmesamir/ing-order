@@ -7,9 +7,9 @@ import BaseModel from '@/models/baseModel';
 import logger from '@/services/logger';
 import { getFromStore } from '@/services/store';
 
-import { BadRequestError, NotFoundError } from '@/errors/errors';
-
 import { buildPageParams } from '@/utils/pagination';
+
+import { BadRequestError, NotFoundError } from '@/errors/errors';
 
 import { OrderFilter } from '@/types/orders';
 import { Order, OrderStatusEnum } from '@/types/common';
@@ -146,13 +146,11 @@ export const createOrder = async (data: Partial<Order>): Promise<Order> => {
  * @param {Knex.Transaction} [trx]
  * @returns {Promise<Order | null>}
  */
-export const updateOrderById = async (
-  id: number,
-  data: Partial<Order>,
-  trx?: Knex.Transaction
-): Promise<Order | null> => {
+export const updateOrderById = async (id: number, data: Partial<Order>, trx?: Knex.Transaction) => {
+  // ): Promise<Order | null> => {
   log.info(`Updating order with ID ${id}`);
 
+  console.log('data', data);
   await OrderModel.updateById(id, data, trx);
 
   const updatedOrder = await OrderModel.fetchById(id, {}, trx);

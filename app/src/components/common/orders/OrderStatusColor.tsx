@@ -6,11 +6,17 @@ import { colors } from 'presets/ingPresets';
 
 // Color mapping for order statuses
 const statusColors: Record<OrderStatusEnum, string> = {
-  [OrderStatusEnum.Pending]: colors.warning.base, // Warning color
-  [OrderStatusEnum.Preparing]: colors.primary.DEFAULT, // Primary color
-  [OrderStatusEnum.Ready]: colors.secondary.DEFAULT, // Secondary color
-  [OrderStatusEnum.Completed]: colors.success.base, // Success color
-  [OrderStatusEnum.Cancelled]: colors.error.base, // Error color
+  // [OrderStatusEnum.Pending]: colors.warning.base, // Warning color
+  // [OrderStatusEnum.Preparing]: colors.primary[600], // Primary color
+  // [OrderStatusEnum.Ready]: colors.secondary.DEFAULT, // Secondary color
+  // [OrderStatusEnum.Completed]: colors.success.base, // Success color
+  // [OrderStatusEnum.Cancelled]: colors.error.base, // Error color
+
+  [OrderStatusEnum.Pending]: '#FFA500', // Orange
+  [OrderStatusEnum.Preparing]: '#1E90FF', // Dodger Blue
+  [OrderStatusEnum.Ready]: '#32CD32', // Lime Green
+  [OrderStatusEnum.Completed]: '#008000', // Green
+  [OrderStatusEnum.Cancelled]: '#FF0000', // Red
 };
 
 // Props for the component
