@@ -1,9 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 
-const vyagutaPresets = require('./src/presets/ingPresets.ts');
+const ingPresets = require('./src/presets/ingPresets.ts');
 
 module.exports = {
-  presets: [vyagutaPresets],
+  presets: [ingPresets],
   content: ['./src/components/**/*.{js,jsx,ts,tsx}', './src/pages/**/*.{js,jsx,ts,tsx}'],
   plugins: [],
 };

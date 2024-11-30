@@ -26,6 +26,7 @@ import ExpandButton from 'components/common/button/ExpandButton';
 import { DivWrapper } from 'components/table/tableCells';
 import MyOverlay from 'components/common/myOverlay';
 import Modal from 'components/common/modal';
+import OrderStatusColor from 'components/common/orders/OrderStatusColor';
 
 import useOpen from 'hooks/useOpen';
 
@@ -217,18 +218,69 @@ function AdminOrders() {
           tableBodyCell:
             '[&:nth-child(1)]:px-0 [&:nth-child(2)]:px-0 [&:nth-child(3)]:pl-0 [&:nth-child(4)]:pl-0 [&:nth-child(5)]:pl-0 [&:nth-child(6)]:px-0',
         }}
-        // onRowClick={row => row.toggleExpanded()}
         onRowClick={row => open(row)}
       />
-
       <MyOverlay
         showCloseIcon
-        title="ddd"
+        title={`${state?.original?.name}'s Order`}
         isOpen={isOpen}
-        body={<div>Hell world</div>}
+        body={
+          state?.original ? (
+            <div className="overflow-y-auto flex gap-y-4 flex-col p-4">
+              <div className="flex flex-col gap-y-6">
+                <div className="flex flex-col gap-y-1">
+                  <div>
+                    <p className="text-xl text-grey-900 font-medium">{state?.original?.cafeName}</p>
+
+                    <p className="text-base text-grey-800">{state?.original?.cafeLocation}</p>
+                  </div>
+
+                  <OrderStatusColor status={state?.original?.status} />
+
+                  <p className="text-base text-grey-800">
+                    Total Price: {state?.original?.totalPrice}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-lg text-grey-900 font-medium mb-2">Menu Items</p>
+
+                  {state?.original?.items?.length > 0 ? (
+                    <div className="flex flex-col gap-y-4">
+                      {state?.original?.items?.map(item => (
+                        <div className="flex gap-x-2">
+                          <div className="w-16 h-16 overflow-hidden">
+                            <img
+                              src={item?.menu?.imageUrl || defaultImageUrl}
+                              alt="menu"
+                              className="h-16 w-full object-cover"
+                            />
+                          </div>
+
+                          <div>
+                            <p className="text-sm text-grey-900 font-medium">{item?.menu?.name}</p>
+
+                            <span>
+                              <p className="text-sm text-grey-900">
+                                Quantity:{' '}
+                                <span className="text-grey-900 font-medium">{item?.quantity}</span>
+                              </p>
+                              <p className="text-sm text-grey-900 font-medium">$ {item?.price}</p>
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p>No Item Added</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          ) : null
+        }
         onClose={close}
       />
-
       {/* <Modal isOpen={isOpen} onClose={close} header={{ title: 'Are you sure?' }}>
         <h1>hello world {state?.original?.name}</h1>
       </Modal> */}

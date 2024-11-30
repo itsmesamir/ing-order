@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactModal from 'react-modal';
-import { FaCross } from 'react-icons/fa';
+import { IoMdAdd } from 'react-icons/io';
 
 import { useHandleKey } from 'hooks/useHandleKey';
 
@@ -11,7 +11,7 @@ import { keyCode } from 'constants/keycodes';
 interface OverlayProps {
   title: string;
   isOpen: boolean;
-  body: JSX.Element;
+  body: JSX.Element | null;
   onClose: () => void;
   className?: string;
   classes?: {
@@ -74,7 +74,7 @@ function MyOverlay(props: OverlayProps) {
           className="w-8 h-8 rounded-full center hover:bg-primary-100 absolute right-4 top-4 cursor-pointer group"
           onClick={onClose}
         >
-          <FaCross size={20} className="group-hover:text-primary-800" />
+          <IoMdAdd size={20} className="group-hover:text-primary-800 rotate-45 cursor-pointer" />
         </div>
       )}
 
