@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import { useHistory } from 'react-router-dom';
 import { FiEdit, FiTrash } from 'react-icons/fi';
@@ -98,16 +98,18 @@ function AdminCategories() {
 
   return (
     <div className="p-4">
-      <h1 className="font-bold text-2xl">Category Lists</h1>
-      <div className="flex justify-end mb-4">
-        <Button
-          type="button"
-          colorScheme="primary"
-          onClick={handleAddItemClick}
-          aria-label="Add new category"
-        >
-          Add Item +
-        </Button>
+      <div className="flex justify-between mb-4">
+        <h1 className="font-bold text-2xl">Menu Categories</h1>
+        <div className="flex justify-end mb-4">
+          <Button
+            type="button"
+            colorScheme="primary"
+            onClick={handleAddItemClick}
+            aria-label="Add new category"
+          >
+            Add Item +
+          </Button>
+        </div>
       </div>
       <Table
         columns={columns}

@@ -12,16 +12,33 @@ type NavItemData = {
   link: string;
   classes?: {
     link?: string;
+    item?: string;
   };
   onClick?: () => void;
+  as?: string;
+  isLink?: boolean;
 };
 
-function NavItem({ icon, label, link, classes, onClick }: NavItemData) {
+function NavItem({ icon, label, link, classes, onClick, as, isLink = true }: NavItemData) {
   const location = useLocation();
   const isActive = location.pathname === link;
 
+  const innerItem = (
+    <Flex align="center" as={!isLink ? 'span' : 'div'} className={classes?.item}>
+      {React.cloneElement(icon, { size: '24px' })}
+      <Box ml={3} fontWeight="500">
+        {label}
+      </Box>
+    </Flex>
+  );
+
+  if (!isLink) {
+    return innerItem;
+  }
+
   return (
     <Link
+      as={as}
       to={link}
       onClick={onClick}
       display="flex"
@@ -37,12 +54,7 @@ function NavItem({ icon, label, link, classes, onClick }: NavItemData) {
       }}
       className={classes?.link}
     >
-      <Flex align="center">
-        {React.cloneElement(icon, { size: '24px' })}
-        <Box ml={3} fontWeight="500">
-          {label}
-        </Box>
-      </Flex>
+      {innerItem}
     </Link>
   );
 }

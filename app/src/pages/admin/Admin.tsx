@@ -7,6 +7,7 @@ import AdminCategories from 'pages/adminCategories/AdminCategories';
 import AdminUnits from 'pages/adminMenuUnits/AdminMenuUnits';
 import AddEditCategories from 'pages/adminCategories/AddEditCategories';
 import AddEditUnits from 'pages/adminMenuUnits/AddEditMenuUnits';
+import AdminDashboard from 'pages/adminDashboard/AdminDashboard';
 
 import useUserStore from 'stores/useUserStore';
 
@@ -26,6 +27,8 @@ function Admin() {
   return (
     <AdminLayout bgColor="white">
       <Switch>
+        <Route exact path={createRoute([paths.admin])} component={AdminDashboard} />
+
         <Route exact path={createRoute([paths.adminOrders])} component={AdminOrders} />
 
         <Route exact path={createRoute([paths.addMenuItems])} component={AddMenuItems} />

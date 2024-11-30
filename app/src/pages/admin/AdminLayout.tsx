@@ -16,15 +16,19 @@ import {
   Accordion,
   AccordionItem,
 } from '@chakra-ui/react';
+import { HiTemplate } from 'react-icons/hi';
 import { AiOutlineMenu } from 'react-icons/ai';
-import { BiLogOut } from 'react-icons/bi';
-import { FaComment, FaHistory, FaHome, FaSearch } from 'react-icons/fa';
+import { BiLogOut, BiCategory, BiUnite } from 'react-icons/bi';
+import { FaCalendarMinus, FaComment, FaHistory, FaHome } from 'react-icons/fa';
+
+import { logout } from 'services/auth';
 
 import Header from 'pages/header';
 
 import useUserStore from 'stores/useUserStore';
 
 import NavItem from 'components/NavItem';
+import Link from 'components/Link';
 
 import { createRoute } from 'utils/route';
 
@@ -43,15 +47,16 @@ const menuItems = [
   { name: 'Dashboard', icon: <FaHome />, path: paths.dashboard },
   {
     name: 'Menu',
-    icon: <FaSearch />,
+    icon: <BiCategory />,
     subItems: [
-      { name: 'Menu Item', path: paths.adminMenusLink, icon: <FaSearch /> },
-      { name: 'Menu Category', path: paths.categoriesLink, icon: <FaSearch /> },
-      { name: 'Menu Units', path: paths.unitsLink, icon: <FaSearch /> },
+      { name: 'Menu Item', path: paths.adminMenusLink, icon: <HiTemplate /> },
+      { name: 'Menu Category', path: paths.categoriesLink, icon: <BiCategory /> },
+      { name: 'Menu Units', path: paths.unitsLink, icon: <BiUnite /> },
     ],
   },
   { name: 'Order', icon: <FaHistory />, path: paths.orders },
   { name: 'Feedback', icon: <FaComment />, path: paths.feedbacks },
+  { name: 'User Page', icon: <FaCalendarMinus />, path: paths.menus, isAdminRoute: false },
 ];
 
 function AdminDrawerItems({ onOpen }: DrawerProps) {
@@ -59,25 +64,27 @@ function AdminDrawerItems({ onOpen }: DrawerProps) {
     <Stack w="100%">
       <Flex p={4} justifyContent="space-between" alignItems="center">
         <Flex flexDir="column">
-          <Heading size="md">Ing Order</Heading>
+          <Link to={createRoute([paths.menus])}>
+            <Heading size="md">Ing Order</Heading>
+          </Link>
           <Text>Admin App</Text>
         </Flex>
       </Flex>
 
       <Accordion allowToggle>
         {menuItems.map(item => {
-          if (item.subItems) {
+          const { subItems, name, path, isAdminRoute = true, icon } = item;
+
+          if (subItems) {
             return (
               <AccordionItem>
                 <AccordionButton>
-                  {/* <Box as="span" flex="1" textAlign="left">
-                    Menu
-                  </Box> */}
                   <NavItem
                     icon={item.icon}
                     label={item.name}
                     link="#"
-                    classes={{ link: 'w-full' }}
+                    isLink={false}
+                    classes={{ item: 'flex-1' }}
                   />
                   <AccordionIcon />
                 </AccordionButton>
@@ -95,19 +102,19 @@ function AdminDrawerItems({ onOpen }: DrawerProps) {
             );
           }
 
+          const itemPaths = isAdminRoute ? [paths.admin, path] : [path];
+
           return (
-            <NavItem
-              key={item.name}
-              icon={item.icon}
-              label={item.name}
-              link={createRoute([paths.admin, item.path])}
-            />
+            <>
+              <NavItem key={name} icon={icon} label={name} link={createRoute(itemPaths)} />
+              <Divider color="gray.300" />
+            </>
           );
         })}
       </Accordion>
 
-      <Divider color="gray.300" />
-      <NavItem icon={<BiLogOut />} label="Log Out" link="/#" />
+      {/* TODO: Fix login */}
+      <NavItem icon={<BiLogOut />} label="Log Out" link="#" onClick={logout} as="button" />
       <Divider color="gray.300" />
     </Stack>
   );

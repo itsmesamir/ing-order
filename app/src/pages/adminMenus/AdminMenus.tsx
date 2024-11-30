@@ -164,7 +164,7 @@ function AdminMenus() {
         header: 'Actions',
         accessorKey: 'actions',
         cell: ({ row }: { row: Any }) => ActionCell({ row }, ActionOption as () => CellData[]),
-        size: 160,
+        size: 60,
       },
     ];
   };
