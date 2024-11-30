@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { CellData, DefaultObject } from 'types/common';
 
-import { tertiaryBlue60, tertiaryOrange80 } from 'constants/color';
+import { tertiaryOrange80 } from 'constants/color';
 
 import PopOver from '../popOver';
 

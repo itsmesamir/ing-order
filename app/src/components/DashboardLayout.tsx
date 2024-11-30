@@ -44,9 +44,9 @@ const menuItems = [
   { name: 'Order History', icon: <FaHistory />, path: createRoute([paths.user, paths.orders]) },
   { name: 'Feedback', icon: <FaComment />, path: paths.feedbacks },
   {
-    name: 'Admin Orders',
+    name: 'Admin Page',
     icon: <FaCalendarMinus />,
-    path: createRoute([paths.adminOrders]),
+    path: createRoute([paths.admin]),
   },
   { name: 'User Roles', icon: <FaTools />, path: createRoute([paths.userRoles]) },
 ];

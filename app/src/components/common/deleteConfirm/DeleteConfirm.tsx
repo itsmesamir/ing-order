@@ -1,6 +1,5 @@
 import React from 'react';
 import classnames from 'classnames';
-import { icons } from 'react-icons';
 import { AiFillExclamationCircle } from 'react-icons/ai';
 
 import Modal from '../modal';

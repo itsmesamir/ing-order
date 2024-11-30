@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import { useHistory } from 'react-router-dom';
 import { FiEdit, FiTrash } from 'react-icons/fi';
+import { Button } from '@chakra-ui/react';
 
 import Table from 'components/table/Table';
 import ActionModal from 'components/common/actionModal/ActionModal';
@@ -90,22 +91,24 @@ function AdminUnits() {
       header: 'Actions',
       accessorKey: 'actions',
       cell: ({ row }: { row: Any }) => ActionCell({ row }, ActionOption as () => CellData[]),
-      size: 160,
+      size: 60,
     },
   ];
 
   return (
     <div className="p-4">
-      <h1 className="font-bold text-2xl">Unit Lists</h1>
-      <div className="flex justify-end mb-4">
-        <button
-          type="button"
-          className="bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600"
-          onClick={handleAddItemClick}
-          aria-label="Add new unit"
-        >
-          Add Item +
-        </button>
+      <div className="flex justify-between">
+        <h1 className="font-bold text-2xl">Menu Units</h1>
+        <div className="flex justify-end mb-4">
+          <Button
+            type="button"
+            colorScheme="primary"
+            onClick={handleAddItemClick}
+            aria-label="Add new category"
+          >
+            Add Item +
+          </Button>
+        </div>
       </div>
       <Table
         columns={columns}
