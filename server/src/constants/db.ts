@@ -22,6 +22,8 @@ const dbTables = {
   colleges: 'colleges',
   groups: 'groups',
   userGroups: 'user_groups',
+  departments: 'departments',
+  courses: 'courses',
 } as const;
 
 export default dbTables;
