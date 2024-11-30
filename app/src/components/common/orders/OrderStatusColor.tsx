@@ -24,7 +24,7 @@ function OrderStatusColor(props: OrderStatusProps) {
   return (
     <span className="flex items-center text-base">
       <span
-        className="h-3 w-3 rounded-full inline-block mr-1"
+        className="h-3 w-3 rounded-full inline-block mr-2"
         style={{
           backgroundColor: statusColors[status],
           color: colors.white.DEFAULT,

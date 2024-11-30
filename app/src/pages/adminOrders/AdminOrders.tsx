@@ -27,6 +27,7 @@ import { DivWrapper } from 'components/table/tableCells';
 import MyOverlay from 'components/common/myOverlay';
 import Modal from 'components/common/modal';
 import OrderStatusColor from 'components/common/orders/OrderStatusColor';
+import Form, { FormInputField } from 'components/Form';
 
 import useOpen from 'hooks/useOpen';
 
@@ -122,25 +123,25 @@ function AdminOrders() {
 
   const getOrderColumns = (): Array<ColumnDef<Order>> => {
     return [
-      {
-        header: ' ',
-        size: 40,
-        cell: ({ row }) => {
-          const expand = row.getCanExpand()
-            ? ExpandButton({
-                onExpand: () => {
-                  row.getToggleExpandedHandler();
-                },
-                isExpanded: row.getIsExpanded(),
-              })
-            : '';
+      // {
+      //   header: ' ',
+      //   size: 40,
+      //   cell: ({ row }) => {
+      //     const expand = row.getCanExpand()
+      //       ? ExpandButton({
+      //           onExpand: () => {
+      //             row.getToggleExpandedHandler();
+      //           },
+      //           isExpanded: row.getIsExpanded(),
+      //         })
+      //       : '';
 
-          return DivWrapper({
-            items: [expand],
-            className: 'flex items-center',
-          });
-        },
-      },
+      //     return DivWrapper({
+      //       items: [expand],
+      //       className: 'flex items-center',
+      //     });
+      //   },
+      // },
       // {
       //   header: 'Order ID',
       //   cell: ({ row }) => row.original.id,
@@ -182,7 +183,7 @@ function AdminOrders() {
         // cell: ({ row }) => row.original.cafe.name,
       },
       {
-        header: 'Actions',
+        header: '',
         accessorKey: 'actions',
         cell: ({ row }: { row: Any }) => ActionCell({ row }, ActionOption as () => CellData[]),
         size: 60,
@@ -197,6 +198,34 @@ function AdminOrders() {
   if (isOrderLoading) {
     return <Loading />;
   }
+
+  const fields: FormInputField[] = [
+    { name: 'name', label: 'Name', type: 'text' },
+    {
+      name: 'status',
+      label: 'status',
+      type: 'select',
+      options: Object.values(OrderStatusEnum).map(item => ({ label: item, value: item })),
+    },
+  ];
+
+  const handleSubmit = (data: Record<string, string | number | boolean>) => {
+    // const payload = {
+    //   ...data,
+    //   createdBy: currentUser?.id,
+    // };
+    // if (isEditMode) {
+    //   updateMutation.mutate(payload);
+    // } else {
+    //   createMutation.mutate(payload);
+    // }
+  };
+
+  const getInitialValues = (item?: Order): Record<string, string | number | boolean> => {
+    return {
+      status: item?.status || '',
+    };
+  };
 
   return (
     <>
@@ -216,71 +245,81 @@ function AdminOrders() {
           tableHeaderCell:
             '[&:nth-child(1)]:pr-0 [&:nth-child(2)]:px-0 [&:nth-child(3)]:pl-0 [&:nth-child(4)]:pl-0 [&:nth-child(5)]:pl-0 [&:nth-child(6)]:px-0',
           tableBodyCell:
-            '[&:nth-child(1)]:px-0 [&:nth-child(2)]:px-0 [&:nth-child(3)]:pl-0 [&:nth-child(4)]:pl-0 [&:nth-child(5)]:pl-0 [&:nth-child(6)]:px-0',
+            '[&:nth-child(2)]:px-0 [&:nth-child(3)]:pl-0 [&:nth-child(4)]:pl-0 [&:nth-child(5)]:pl-0 [&:nth-child(6)]:px-0',
         }}
         onRowClick={row => open(row)}
       />
+
       <MyOverlay
         showCloseIcon
         title={`${state?.original?.name}'s Order`}
         isOpen={isOpen}
         body={
-          state?.original ? (
-            <div className="overflow-y-auto flex gap-y-4 flex-col p-4">
-              <div className="flex flex-col gap-y-6">
-                <div className="flex flex-col gap-y-1">
-                  <div>
-                    <p className="text-xl text-grey-900 font-medium">{state?.original?.cafeName}</p>
+          <div>
+            dd
+            <Form
+              fields={fields}
+              defaultValues={getInitialValues(state?.original as Any)}
+              onSubmit={handleSubmit}
+            />
+          </div>
+          // state?.original ? (
+          //   <div className="overflow-y-auto flex gap-y-4 flex-col p-4">
+          //     <div className="flex flex-col gap-y-6">
+          //       <div className="flex flex-col gap-y-1">
+          //         <div>
+          //           <p className="text-xl text-grey-900 font-medium">{state?.original?.cafeName}</p>
 
-                    <p className="text-base text-grey-800">{state?.original?.cafeLocation}</p>
-                  </div>
+          //           <p className="text-base text-grey-800">{state?.original?.cafeLocation}</p>
+          //         </div>
 
-                  <OrderStatusColor status={state?.original?.status} />
+          //         <OrderStatusColor status={state?.original?.status} />
 
-                  <p className="text-base text-grey-800">
-                    Total Price: {state?.original?.totalPrice}
-                  </p>
-                </div>
+          //         <p className="text-base text-grey-800">
+          //           Total Price: {state?.original?.totalPrice}
+          //         </p>
+          //       </div>
 
-                <div>
-                  <p className="text-lg text-grey-900 font-medium mb-2">Menu Items</p>
+          //       <div>
+          //         <p className="text-lg text-grey-900 font-medium mb-2">Menu Items</p>
 
-                  {state?.original?.items?.length > 0 ? (
-                    <div className="flex flex-col gap-y-4">
-                      {state?.original?.items?.map(item => (
-                        <div className="flex gap-x-2">
-                          <div className="w-16 h-16 overflow-hidden">
-                            <img
-                              src={item?.menu?.imageUrl || defaultImageUrl}
-                              alt="menu"
-                              className="h-16 w-full object-cover"
-                            />
-                          </div>
+          //         {state?.original?.items?.length > 0 ? (
+          //           <div className="flex flex-col gap-y-4">
+          //             {state?.original?.items?.map(item => (
+          //               <div className="flex gap-x-2">
+          //                 <div className="w-16 h-16 overflow-hidden">
+          //                   <img
+          //                     src={item?.menu?.imageUrl || defaultImageUrl}
+          //                     alt="menu"
+          //                     className="h-16 w-full object-cover"
+          //                   />
+          //                 </div>
 
-                          <div>
-                            <p className="text-sm text-grey-900 font-medium">{item?.menu?.name}</p>
+          //                 <div>
+          //                   <p className="text-sm text-grey-900 font-medium">{item?.menu?.name}</p>
 
-                            <span>
-                              <p className="text-sm text-grey-900">
-                                Quantity:{' '}
-                                <span className="text-grey-900 font-medium">{item?.quantity}</span>
-                              </p>
-                              <p className="text-sm text-grey-900 font-medium">$ {item?.price}</p>
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p>No Item Added</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          ) : null
+          //                   <span>
+          //                     <p className="text-sm text-grey-900">
+          //                       Quantity:{' '}
+          //                       <span className="text-grey-900 font-medium">{item?.quantity}</span>
+          //                     </p>
+          //                     <p className="text-sm text-grey-900 font-medium">$ {item?.price}</p>
+          //                   </span>
+          //                 </div>
+          //               </div>
+          //             ))}
+          //           </div>
+          //         ) : (
+          //           <p>No Item Added</p>
+          //         )}
+          //       </div>
+          //     </div>
+          //   </div>
+          // ) : null
         }
         onClose={close}
       />
+
       {/* <Modal isOpen={isOpen} onClose={close} header={{ title: 'Are you sure?' }}>
         <h1>hello world {state?.original?.name}</h1>
       </Modal> */}

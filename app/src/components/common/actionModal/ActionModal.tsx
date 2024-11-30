@@ -42,7 +42,7 @@ function ActionModal(props: ActionModalProps) {
     <div
       ref={cellRef}
       role="button"
-      className={classNames('menu-container', {
+      className={classNames('menu-container center', {
         'menu-container--active': openMenu,
       })}
       onClick={toggleMenu}
@@ -50,6 +50,7 @@ function ActionModal(props: ActionModalProps) {
       tabIndex={0}
     >
       <PopOver
+        // distance={-10}
         interactive
         position="left"
         trigger="click"
@@ -77,7 +78,10 @@ function ActionModal(props: ActionModalProps) {
           </ul>
         }
       >
-        <div className="menu-button-icon flex justify-center" aria-label="Menu Button">
+        <div
+          className="menu-button-icon flex justify-center w-5 overflow-hidden"
+          aria-label="Menu Button"
+        >
           <FiMoreVertical size={24} color={openMenu ? tertiaryOrange80 : 'inherit'} />
         </div>
       </PopOver>
