@@ -24,6 +24,12 @@ const dbTables = {
   userGroups: 'user_groups',
   departments: 'departments',
   courses: 'courses',
+  events: 'events',
+  eventManagers: 'event_managers',
+  eventOrders: 'event_orders',
+  cafeManagers: 'cafe_managers',
+  interCafeOrders: 'inter_cafe_orders',
+  eventOrganizations: 'event_organizations',
 } as const;
 
 export default dbTables;

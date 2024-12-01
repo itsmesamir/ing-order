@@ -1,22 +1,17 @@
+// create order items status table
+
 import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-  await knex.schema.createTable('orders', table => {
+  await knex.schema.createTable('order_items_status', table => {
     table.bigIncrements('id').primary().unsigned();
     table
-      .specificType('user_id', 'bigint(19)')
+      .bigInteger('order_item_id')
       .unsigned()
       .references('id')
-      .inTable('users')
-      .nullable();
-    table
-      .specificType('cafe_id', 'bigint(19)')
-      .unsigned()
-      .references('id')
-      .inTable('cafes')
-      .nullable();
-    table.enu('order_type', ['Normal', 'InterCafe', 'Event']).notNullable().defaultTo('Normal');
-    table.decimal('total_price', 10, 2).notNullable();
+      .inTable('order_items')
+      .onDelete('CASCADE');
+    table.enu('status', ['Pending', 'Preparing', 'Ready', 'Completed', 'Cancelled']).notNullable();
     table
       .specificType('created_by', 'bigint(19)')
       .unsigned()
@@ -47,5 +42,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema.dropTableIfExists('orders');
+  await knex.schema.dropTableIfExists('order_items_status');
 }

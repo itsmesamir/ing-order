@@ -1,22 +1,19 @@
 import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-  await knex.schema.createTable('orders', table => {
+  await knex.schema.createTable('events', table => {
     table.bigIncrements('id').primary().unsigned();
+    table.string('name', 255).notNullable();
+    table.string('location', 255).nullable();
+    table.string('description', 255).nullable();
+    table.date('start_date').notNullable();
+    table.date('end_date').notNullable();
     table
-      .specificType('user_id', 'bigint(19)')
+      .specificType('organizer_id', 'bigint(19)')
       .unsigned()
       .references('id')
-      .inTable('users')
-      .nullable();
-    table
-      .specificType('cafe_id', 'bigint(19)')
-      .unsigned()
-      .references('id')
-      .inTable('cafes')
-      .nullable();
-    table.enu('order_type', ['Normal', 'InterCafe', 'Event']).notNullable().defaultTo('Normal');
-    table.decimal('total_price', 10, 2).notNullable();
+      .inTable('event_organizations')
+      .notNullable();
     table
       .specificType('created_by', 'bigint(19)')
       .unsigned()
@@ -47,5 +44,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema.dropTableIfExists('orders');
+  await knex.schema.dropTableIfExists('events');
 }
