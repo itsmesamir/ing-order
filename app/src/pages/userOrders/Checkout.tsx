@@ -13,9 +13,7 @@ import {
   RadioGroup,
   Stack,
   Radio,
-  Flex,
   SimpleGrid,
-  Spacer,
   Grid,
 } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
@@ -227,7 +225,7 @@ function Checkout() {
           </Box>
         </SimpleGrid>
 
-        <div className="bg-white p-4 rounded-lg">
+        <div className="p-4 bg-white rounded-lg ">
           <Text fontSize="lg" fontWeight="semibold">
             {en.ORDER.PAYMENT_SUMMARY}
           </Text>

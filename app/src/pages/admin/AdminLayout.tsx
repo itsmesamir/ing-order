@@ -21,8 +21,6 @@ import { AiOutlineMenu } from 'react-icons/ai';
 import { BiLogOut, BiCategory, BiUnite } from 'react-icons/bi';
 import { FaCalendarMinus, FaComment, FaHistory, FaHome } from 'react-icons/fa';
 
-import { logout } from 'services/auth';
-
 import Header from 'pages/header';
 
 import useUserStore from 'stores/useUserStore';
@@ -31,16 +29,13 @@ import NavItem from 'components/NavItem';
 import Link from 'components/Link';
 
 import { createRoute } from 'utils/route';
+import history from 'utils/history';
 
 import paths from 'constants/paths';
 
-interface DashboardProps {
-  children: React.ReactNode | React.ReactNode[];
-  bgColor?: string;
-}
-
 interface DrawerProps {
   onOpen: () => void;
+  logOut: () => void;
 }
 
 const menuItems = [
@@ -59,7 +54,7 @@ const menuItems = [
   { name: 'User Page', icon: <FaCalendarMinus />, path: paths.menus, isAdminRoute: false },
 ];
 
-function AdminDrawerItems({ onOpen }: DrawerProps) {
+function AdminDrawerItems({ onOpen, logOut }: DrawerProps) {
   return (
     <Stack w="100%">
       <Flex p={4} justifyContent="space-between" alignItems="center">
@@ -113,18 +108,26 @@ function AdminDrawerItems({ onOpen }: DrawerProps) {
         })}
       </Accordion>
 
-      {/* TODO: Fix login */}
-      <NavItem icon={<BiLogOut />} label="Log Out" link="#" onClick={logout} as="button" />
+      <NavItem
+        icon={<BiLogOut />}
+        label="Log Out"
+        link="#"
+        onClick={() => {
+          logOut();
+          history.push('/login');
+        }}
+        as="button"
+      />
       <Divider color="gray.300" />
     </Stack>
   );
 }
 
-function AdminDrawerContent({ onOpen }: DrawerProps) {
+function AdminDrawerContent({ onOpen, logOut }: DrawerProps) {
   return (
     <DrawerContent>
       <DrawerCloseButton />
-      <AdminDrawerItems onOpen={onOpen} />
+      <AdminDrawerItems onOpen={onOpen} logOut={logOut} />
     </DrawerContent>
   );
 }
@@ -137,7 +140,8 @@ interface AdminLayoutProps {
 function AdminLayout({ children, bgColor }: AdminLayoutProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const user = useUserStore(state => state.data);
+  const { data: user, logOut } = useUserStore(state => state);
+
   const width = isSidebarOpen ? 300 : 0;
 
   return (
@@ -164,7 +168,7 @@ function AdminLayout({ children, bgColor }: AdminLayoutProps) {
             top={0}
             overflow="hidden"
           >
-            <AdminDrawerItems onOpen={onOpen} />
+            <AdminDrawerItems onOpen={onOpen} logOut={logOut} />
           </Box>
           <Box maxH="100vh" overflowY="scroll">
             <Flex bg="white" justifyContent="space-between" height="95px" alignItems="center">
@@ -197,7 +201,7 @@ function AdminLayout({ children, bgColor }: AdminLayoutProps) {
 
       <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
         <DrawerOverlay />
-        <AdminDrawerContent onOpen={onOpen} />
+        <AdminDrawerContent onOpen={onOpen} logOut={logOut} />
       </Drawer>
     </Box>
   );

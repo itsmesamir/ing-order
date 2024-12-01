@@ -17,6 +17,7 @@ interface TUserStore extends TUserState {
   updateUser: (user: User) => void;
   fetchUser: () => void;
   removeUser: () => void;
+  logOut: () => Any;
 }
 
 const initialState: TUserState = {
@@ -49,6 +50,11 @@ const useUserStore = create<TUserStore>()(set => ({
     }));
   },
   removeUser: () => set({ data: null }),
+  logOut: () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    set({ data: null });
+  },
 }));
 
 export default useUserStore;
