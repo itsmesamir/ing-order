@@ -124,9 +124,7 @@ function AdminMenuLists() {
 
   const uniqueCategories = Array.from(
     new Set(data.data.filter(item => item.category).map(item => item.category!.name))
-  ).map(categoryName => ({
-    name: categoryName,
-  }));
+  );
 
   return (
     <div className="p-4">
@@ -135,7 +133,6 @@ function AdminMenuLists() {
 
         <div className="flex space-x-4">
           <Select
-            placeholder="Filter by Category"
             value={selectedCategory || ''}
             onChange={e => setSelectedCategory(e.target.value)}
             className="w-30"

@@ -12,21 +12,21 @@ import {
   MenuDivider,
   Spinner,
 } from '@chakra-ui/react';
+import {
+  FaHome,
+  FaTools,
+  FaSearch,
+  FaHistory,
+  FaComment,
+  FaCheckDouble,
+  FaCalendarMinus,
+} from 'react-icons/fa';
 import { Divider, Stack, Box, Grid, Flex, Heading, Text } from '@chakra-ui/layout';
 import { AiOutlineMenu, AiOutlineMessage, AiOutlineSetting } from 'react-icons/ai';
 import { BiLogOut } from 'react-icons/bi';
 import { MdPayment } from 'react-icons/md';
 import { HiOutlineCalendar } from 'react-icons/hi';
 import { BsPerson, BsQuestionCircle } from 'react-icons/bs';
-import {
-  FaCalendarMinus,
-  FaCheckDouble,
-  FaComment,
-  FaHistory,
-  FaHome,
-  FaSearch,
-  FaTools,
-} from 'react-icons/fa';
 
 import useUserStore from 'stores/useUserStore';
 
