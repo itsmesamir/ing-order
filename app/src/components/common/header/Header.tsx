@@ -5,8 +5,13 @@ import { MdSettings, MdShoppingCart } from 'react-icons/md';
 import useCartStore from 'stores/useCartStore';
 
 import Search from 'components/search/Search';
+import Link from 'components/Link';
+
+import { createRoute } from 'utils/route';
 
 import { User } from 'types/User';
+
+import paths from 'constants/paths';
 
 type HeaderProps = {
   currentUser: User | null;
@@ -29,27 +34,31 @@ function Header(props: HeaderProps) {
         </Button>
       </div>
 
-      <div className="flex items-center gap-x-6">
-        <div className="relative">
-          <Badge
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            rounded={{ base: 'full' }}
-            variant="solid"
-            bgColor="orange.500"
-            width="20px"
-            height="20px"
-            fontSize="12px"
-            fontWeight="medium"
-            textAlign="center"
-            className="absolute -top-2 -right-2"
-          >
-            {summary.quantity}
-          </Badge>
+      <div className="flex items-center gap-x-4">
+        <Link to={createRoute([paths.checkout])}>
+          <div className="flex">
+            <div className="relative">
+              <Badge
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                rounded={{ base: 'full' }}
+                variant="solid"
+                bgColor="orange.500"
+                width="20px"
+                height="20px"
+                fontSize="12px"
+                fontWeight="medium"
+                textAlign="center"
+                className="absolute -top-2 -right-2"
+              >
+                {summary.quantity}
+              </Badge>
 
-          <MdShoppingCart size={24} />
-        </div>
+              <MdShoppingCart size={24} />
+            </div>
+          </div>
+        </Link>
 
         <div className="flex items-center gap-x-2 rounded-lg bg-grey-200 h-11 px-4">
           <Avatar height="32px" width="32px" name="Dan Abrahmov" src={currentUser?.imageUrl} />

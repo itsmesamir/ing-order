@@ -1,66 +1,59 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { IconButton } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { Drawer, DrawerContent, DrawerOverlay, DrawerCloseButton } from '@chakra-ui/modal';
-import {
-  Avatar,
-  Button,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-  Spinner,
-} from '@chakra-ui/react';
 import { Divider, Stack, Box, Grid, Flex, Heading, Text } from '@chakra-ui/layout';
-import { AiOutlineMenu, AiOutlineMessage, AiOutlineSetting } from 'react-icons/ai';
-import { BiLogOut } from 'react-icons/bi';
-import { MdPayment } from 'react-icons/md';
-import { HiOutlineCalendar } from 'react-icons/hi';
-import { BsPerson, BsQuestionCircle } from 'react-icons/bs';
 import {
-  FaCalendarMinus,
-  FaCheckDouble,
-  FaComment,
-  FaHistory,
   FaHome,
   FaSearch,
-  FaTools,
+  FaComment,
+  FaHistory,
+  FaCheckDouble,
+  FaCalendarMinus,
 } from 'react-icons/fa';
+import { AiOutlineMenu } from 'react-icons/ai';
+import { BiLogOut } from 'react-icons/bi';
 
 import useUserStore from 'stores/useUserStore';
 
 import { createRoute } from 'utils/route';
+import history from 'utils/history';
+
+import { Any, Roles } from 'types/common';
 
 import paths from 'constants/paths';
 
 import NavItem from './NavItem';
 import Header from './common/header/Header';
 
-interface DashboardProps {
-  children: React.ReactNode | React.ReactNode[];
-  bgColor?: string;
+function getMenuItems({ isAdmin = false }: { isAdmin?: boolean }) {
+  return [
+    { name: 'Dashboard', icon: <FaHome />, path: paths.dashboard },
+    { name: 'Menu', icon: <FaSearch />, path: createRoute([paths.menus, paths.list]) },
+    { name: 'Order History', icon: <FaHistory />, path: createRoute([paths.user, paths.orders]) },
+    { name: 'Feedback', icon: <FaComment />, path: paths.feedbacks },
+    { name: 'Checkout', icon: <FaCheckDouble />, path: createRoute([paths.checkout]) },
+    ...(isAdmin
+      ? [
+          {
+            name: 'Admin Page',
+            icon: <FaCalendarMinus />,
+            path: createRoute([paths.admin]),
+          },
+        ]
+      : []),
+  ];
 }
 
-interface DrawerProps {
+interface DrawerItemsProps {
+  isAdmin?: boolean;
   onOpen: () => void;
+  logOut: () => Any;
 }
 
-const menuItems = [
-  { name: 'Dashboard', icon: <FaHome />, path: paths.dashboard },
-  { name: 'Menu', icon: <FaSearch />, path: createRoute([paths.menus, paths.list]) },
-  { name: 'Order History', icon: <FaHistory />, path: createRoute([paths.user, paths.orders]) },
-  { name: 'Feedback', icon: <FaComment />, path: paths.feedbacks },
-  {
-    name: 'Admin Page',
-    icon: <FaCalendarMinus />,
-    path: createRoute([paths.admin]),
-  },
-  { name: 'User Roles', icon: <FaTools />, path: createRoute([paths.userRoles]) },
-  { name: 'Checkout', icon: <FaCheckDouble />, path: createRoute([paths.checkout]) },
-];
+function DashboardDrawerItems({ isAdmin, onOpen, logOut }: DrawerItemsProps) {
+  const menuItems = getMenuItems({ isAdmin });
 
-function DashboardDrawerItems({ onOpen }: DrawerProps) {
   return (
     <Stack w="100%">
       <Flex p={4} justifyContent="space-between" alignItems="center">
@@ -68,11 +61,6 @@ function DashboardDrawerItems({ onOpen }: DrawerProps) {
           <Heading size="md">Ing Order</Heading>
           <Text>Food App</Text>
         </Flex>
-        {/* <IconButton
-          aria-label="Main Drawer"
-          onClick={onOpen}
-          icon={<AiOutlineMenu />}
-        /> */}
       </Flex>
 
       {menuItems.map(item => (
@@ -82,10 +70,10 @@ function DashboardDrawerItems({ onOpen }: DrawerProps) {
       <Divider color="gray.300" />
       <NavItem
         icon={<BiLogOut />}
-        // onClick={e => {
-        //   e.preventDefault();
-        //   dispatch(logout()).then(data => router.push('/login'));
-        // }}
+        onClick={() => {
+          logOut();
+          history.push('/login');
+        }}
         label="Log Out"
         link="/#"
       />
@@ -94,34 +82,11 @@ function DashboardDrawerItems({ onOpen }: DrawerProps) {
   );
 }
 
-interface DashboardRouteProps {
-  children: React.ReactNode | React.ReactNode[];
-}
-
-function DashboardRoute({ children }: DashboardRouteProps) {
-  return children;
-  // const { user, initialLoading } = ;
-
-  // useEffect(() => {
-  //   if (!initialLoading && !user) {
-  //     // Router.replace('/signin');
-  //   }
-  // }, [user, initialLoading]);
-
-  // if (initialLoading) {
-  //   return <Spinner />;
-  // }
-  // if (!initialLoading && user) {
-  //   return <>{children}</>;
-  // }
-  // return null;
-}
-
-function DashboardDrawerContent({ onOpen }: DrawerProps) {
+function DashboardDrawerContent({ onOpen, isAdmin, logOut }: DrawerItemsProps) {
   return (
     <DrawerContent>
       <DrawerCloseButton />
-      <DashboardDrawerItems onOpen={onOpen} />
+      <DashboardDrawerItems onOpen={onOpen} isAdmin={isAdmin} logOut={logOut} />
     </DrawerContent>
   );
 }
@@ -136,7 +101,9 @@ function DashboardLayout({ children, bgColor }: DashboardLayoutProps) {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const user = useUserStore(state => state.data);
+  const { data: user, logOut } = useUserStore(state => state);
+
+  const isAdmin = user?.roles.some(role => role?.name === Roles.ADMIN);
 
   const width = isSidebarOpen ? 300 : 0;
 
@@ -165,7 +132,7 @@ function DashboardLayout({ children, bgColor }: DashboardLayoutProps) {
               top={0}
               overflow="hidden"
             >
-              <DashboardDrawerItems onOpen={onOpen} />
+              <DashboardDrawerItems onOpen={onOpen} isAdmin={isAdmin} logOut={logOut} />
             </Box>
             <Box maxH="100vh" overflowY="scroll">
               <Flex bg="white" justifyContent="space-between" height="95px" alignItems="center">
@@ -190,21 +157,6 @@ function DashboardLayout({ children, bgColor }: DashboardLayoutProps) {
                 </div>
 
                 <Header currentUser={user} />
-                {/* 
-                <Menu>
-                  <MenuButton as={Button} rounded="full" variant="link" cursor="pointer" minW={0}>
-                    <Avatar
-                      size="sm"
-                      src="https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                    />
-                  </MenuButton>
-                  <MenuList>
-                    <MenuItem>Profile</MenuItem>
-                    <MenuItem>Setting</MenuItem>
-                    <MenuDivider />
-                    <MenuItem>Link 3</MenuItem>
-                  </MenuList>
-                </Menu> */}
               </Flex>
               {children}
             </Box>
@@ -213,7 +165,7 @@ function DashboardLayout({ children, bgColor }: DashboardLayoutProps) {
 
         <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
           <DrawerOverlay />
-          <DashboardDrawerContent onOpen={onOpen} />
+          <DashboardDrawerContent onOpen={onOpen} logOut={logOut} />
         </Drawer>
       </Box>
     </Box>
