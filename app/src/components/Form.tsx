@@ -21,9 +21,11 @@ type FormProps = {
   fields: FormInputField[];
   defaultValues?: Record<string, string | number | boolean>;
   onSubmit: (formData: Record<string, string | number | boolean>) => void;
+  isSubmitting?: boolean;
+  onCancel?: () => void;
 };
 
-function Form({ fields, defaultValues = {}, onSubmit }: FormProps) {
+function Form({ fields, defaultValues = {}, onSubmit, isSubmitting, onCancel }: FormProps) {
   const history = useHistory();
   const { control, handleSubmit } = useForm<Record<string, string | number | boolean>>({
     defaultValues,
@@ -43,11 +45,12 @@ function Form({ fields, defaultValues = {}, onSubmit }: FormProps) {
 
   const onSubmitHandler = (data: Record<string, string | number | boolean>) => {
     onSubmit(data);
-    history.goBack();
   };
 
   const handleCancel = () => {
-    history.goBack();
+    // history.goBack();
+
+    onCancel?.();
   };
 
   return (
@@ -134,10 +137,16 @@ function Form({ fields, defaultValues = {}, onSubmit }: FormProps) {
           </FormControl>
         );
       })}
-      <Button type="submit" colorScheme="primary">
+      <Button type="submit" colorScheme="primary" isLoading={isSubmitting} disabled={isSubmitting}>
         Submit
       </Button>
-      <Button type="button" colorScheme="red" ml={4} onClick={handleCancel}>
+      <Button
+        type="button"
+        colorScheme="gray"
+        ml={4}
+        onClick={handleCancel}
+        disabled={isSubmitting}
+      >
         Cancel
       </Button>
     </Box>

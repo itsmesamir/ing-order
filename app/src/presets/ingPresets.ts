@@ -75,6 +75,15 @@ export const colors = {
     950: '#450a0a',
   },
 
+  yellow: {
+    800: '#f5af00',
+    700: '#e9ae21',
+    600: '#ffc107',
+    400: '#ffca28',
+    200: '#ffd54f',
+    100: '#fff3cd',
+  },
+
   success: {
     base: success,
   },

@@ -36,9 +36,10 @@ function CustomToast({ statusType, toastMessage, toastClassName }: CustomToastPr
       {toastType && toastType !== undefined && (
         <div
           className={classNames(
-            'flex items-center bg-success-base py-4 px-4 text-white',
+            'flex items-center  py-4 px-4 text-white',
             {
-              'bg-red-700': toastType.className === 'danger',
+              'bg-success-base': toastType.className === 'success',
+              'bg-red-500': toastType.className === 'danger',
               'bg-yellow-700': toastType.className === 'warning',
             },
             toastClassName
@@ -64,7 +65,7 @@ interface NotifyProps {
 }
 
 export const notify = (props: NotifyProps) => {
-  const { autoClose = 2000, data, draggable = false, type } = props;
+  const { autoClose = 1000, data, draggable = false, type } = props;
 
   toast(<CustomToast statusType={type} toastMessage={data} />, {
     autoClose,
@@ -72,6 +73,7 @@ export const notify = (props: NotifyProps) => {
     draggable,
     hideProgressBar: true,
     progressClassName: 'bg-white',
+    closeOnClick: true,
   });
 };
 

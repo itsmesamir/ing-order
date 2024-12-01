@@ -192,6 +192,8 @@ export interface Order {
   userId: number;
   name?: string;
   cafeId: number;
+  cafeName: string;
+  cafeLocation: string;
   totalPrice: number;
   status: OrderStatusEnum;
   items: OrderItem[];
