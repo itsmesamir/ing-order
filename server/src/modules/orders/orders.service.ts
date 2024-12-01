@@ -12,7 +12,7 @@ import { buildPageParams } from '@/utils/pagination';
 import { BadRequestError, NotFoundError } from '@/errors/errors';
 
 import { OrderFilter } from '@/types/orders';
-import { Order, OrderStatusEnum } from '@/types/common';
+import { Order, OrderStatusEnum, OrderTypeEnum } from '@/types/common';
 
 import { VALID_ORDER_STATUS_UPDATE } from '@/constants/orders';
 
@@ -91,6 +91,10 @@ export const createOrder = async (data: Partial<Order>): Promise<Order> => {
   const {
     user: { id: userId },
     menuItems,
+    orderType = OrderTypeEnum.Normal,
+    eventId,
+    orderFromCafeId,
+    orderToCafeId: toCafeId,
   } = data;
 
   const totalPrice = menuItems.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -99,6 +103,7 @@ export const createOrder = async (data: Partial<Order>): Promise<Order> => {
     userId,
     cafeId: menuItems[0].cafeId,
     totalPrice: totalPrice,
+    orderType,
     createdBy: userId,
   };
 
@@ -128,6 +133,29 @@ export const createOrder = async (data: Partial<Order>): Promise<Order> => {
       }));
       await OrderModel.insertOrderItems(orderItems, trx);
 
+      if (orderType === OrderTypeEnum.Event) {
+        if (!eventId) {
+          throw new BadRequestError('Event ID is required for event orders.');
+        }
+        const eventOrderData = {
+          orderId,
+          eventId,
+          createdBy: userId,
+        };
+        await OrderModel.insertEventOrders(eventOrderData, trx);
+      } else if (orderType === OrderTypeEnum.InterCafe) {
+        if (!orderFromCafeId) {
+          throw new BadRequestError('orderFromCafeId is required for inter-cafe orders.');
+        }
+        const interCafeOrderData = {
+          orderId,
+          fromCafeId: orderFromCafeId,
+          ...(toCafeId ? { toCafeId } : {}),
+          createdBy: userId,
+        };
+        await OrderModel.insertInterCafeOrder(interCafeOrderData, trx);
+      }
+
       return OrderModel.fetchById(orderId, {}, trx);
     });
 
@@ -136,6 +164,24 @@ export const createOrder = async (data: Partial<Order>): Promise<Order> => {
     log.error('Failed to create order:', error);
     throw error;
   }
+};
+
+/**
+ * Fetch list of orders by event ID.
+ *
+ * @param {number} eventId
+ * @param {Knex.Transaction} [trx]
+ * @returns {Promise<Order[]>}
+ * */
+export const fetchOrdersByEventId = async (
+  eventId: number,
+  trx?: Knex.Transaction
+): Promise<Order[]> => {
+  log.info(`Fetching orders for event with ID ${eventId}`);
+
+  const orders = await OrderModel.fetchOrdersByEventId(eventId, trx);
+
+  return orders;
 };
 
 /**

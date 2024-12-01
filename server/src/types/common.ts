@@ -84,8 +84,10 @@ export interface College {
 
 export interface Cafe {
   id: number;
-  collegeId: number;
+  collegeId?: number;
+  managerIds?: number[];
   name: string;
+  imageUrl?: string;
   location: string;
   createdAt: string;
   createdBy: number;
@@ -152,6 +154,12 @@ export enum OrderStatusEnum {
   Cancelled = 'Cancelled',
 }
 
+export enum OrderTypeEnum {
+  Normal = 'Normal',
+  Event = 'Event',
+  InterCafe = 'InterCafe',
+}
+
 export enum PaymentMethodEnum {
   CreditCard = 'CreditCard',
   DigitalWallet = 'DigitalWallet',
@@ -166,6 +174,10 @@ export enum PaymentStatusEnum {
 export interface Order {
   id: number;
   user: User;
+  orderType?: OrderTypeEnum;
+  orderFromCafeId?: number;
+  orderToCafeId?: number;
+  eventId?: number;
   transactionId?: string;
   orderDate: string;
   status: OrderStatusEnum;
@@ -243,6 +255,85 @@ export interface MenuReview {
   comment: string;
   createdBy: number;
   createdAt: string; // or Date if you are handling it as a Date object
+  updatedBy: number | null;
+  updatedAt: string | null; // or Date if you are handling it as a Date object
+  deletedBy: number | null;
+  deletedAt: string | null; // or Date if you are handling it as a Date object
+}
+
+export interface Organization {
+  id: number;
+  name: string;
+  description: string;
+  createdAt: string;
+  createdBy: number;
+  updatedBy: number | null;
+  updatedAt: string | null; // or Date if you are handling it as a Date object
+  deletedBy: number | null;
+  deletedAt: string | null; // or Date if you are handling it as a Date object
+}
+
+export interface EventManager {
+  id: number;
+  userId: number;
+  eventId: number;
+  createdAt: string;
+  createdBy: number;
+  updatedBy: number | null;
+  updatedAt: string | null; // or Date if you are handling it as a Date object
+  deletedBy: number | null;
+  deletedAt: string | null; // or Date if you are handling it as a Date object
+}
+
+export interface EventOrder {
+  id: number;
+  orderId: number;
+  eventId: number;
+  remarks: string;
+  createdAt: string;
+  createdBy: number;
+  updatedBy: number | null;
+  updatedAt: string | null; // or Date if you are handling it as a Date object
+  deletedBy: number | null;
+  deletedAt: string | null; // or Date if you are handling it as a Date object
+}
+
+export interface Event {
+  id: number;
+  name: string;
+  location: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  organizerId: number;
+  managerIds: number[];
+  createdAt: string;
+  updatedBy: number | null;
+  updatedAt: string | null; // or Date if you are handling it as a Date object
+  deletedBy: number | null;
+  deletedAt: string | null; // or Date if you are handling it as a Date object
+}
+
+export interface InterCafeOrder {
+  id: number;
+  orderId: number;
+  fromCafeId: number;
+  toCafeId: number | null;
+  remarks: string;
+  createdAt: string;
+  createdBy: number;
+  updatedBy: number | null;
+  updatedAt: string | null; // or Date if you are handling it as a Date object
+  deletedBy: number | null;
+  deletedAt: string | null; // or Date if you are handling it as a Date object
+}
+
+export interface CafeManager {
+  id: number;
+  userId: number;
+  cafeId: number;
+  createdAt: string;
+  createdBy: number;
   updatedBy: number | null;
   updatedAt: string | null; // or Date if you are handling it as a Date object
   deletedBy: number | null;

@@ -3,7 +3,7 @@ import { Knex } from 'knex';
 import BaseModel from '@/models/baseModel';
 
 import { OrderFilter } from '@/types/orders';
-import { Order, OrderStatus, OrderItem } from '@/types/common';
+import { Order, OrderStatus, OrderItem, EventOrder, InterCafeOrder } from '@/types/common';
 
 import db from '@/db';
 import dbTables from '@/constants/db';
@@ -12,6 +12,8 @@ class OrderModel extends BaseModel {
   static orders = dbTables.orders;
   static orderItems = dbTables.orderItems;
   static orderStatus = dbTables.orderStatus;
+  static eventOrders = dbTables.eventOrders;
+  static interCafeOrders = dbTables.interCafeOrders;
 
   /**
    * baseQuery to fetch orders.
@@ -20,11 +22,70 @@ class OrderModel extends BaseModel {
    * @returns {Knex.QueryBuilder<Order[]>}
    */
   static baseQuery(trx?: Knex.Transaction) {
+    const eventOrderDetails = db
+      .select(
+        'e.id as id',
+        'e.name as name',
+        'e.location as location',
+        'e.description as description',
+        'e.start_date as startDate',
+        'e.end_date as endDate',
+        db.raw(`
+        JSON_OBJECT(
+          'id', o.id,
+          'name', o.name,
+          'description', o.description
+        ) as organizer
+      `),
+        db.raw(`
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            'id', em.manager_id,
+            'name', u.name,
+            'email', u.email,
+            'phone', u.phone
+          )
+        ) as managers
+      `)
+      )
+      .from(`${dbTables.events} as e`)
+      .leftJoin(`${dbTables.eventOrganizations} as o`, 'e.organizer_id', 'o.id')
+      .leftJoin(`${dbTables.eventManagers} as em`, 'e.id', 'em.event_id')
+      .leftJoin(`${dbTables.users} as u`, 'em.manager_id', 'u.id')
+      .groupBy('e.id', 'o.id')
+      .as('eventOrderDetails');
+
+    const interCafeOrderDetails = db
+      .select(
+        'ico.id as id',
+        db.raw(`
+        JSON_OBJECT(
+          'id', from_cafe.id,
+          'name', from_cafe.name,
+          'location', from_cafe.location,
+          'imageUrl', from_cafe.image_url
+        ) as fromCafe
+      `),
+        db.raw(`
+        JSON_OBJECT(
+          'id', to_cafe.id,
+          'name', to_cafe.name,
+          'location', to_cafe.location,
+          'imageUrl', to_cafe.image_url
+        ) as toCafe
+      `)
+      )
+      .from(`${dbTables.interCafeOrders} as ico`)
+      .leftJoin(`${dbTables.cafes} as from_cafe`, 'ico.from_cafe_id', 'from_cafe.id')
+      .leftJoin(`${dbTables.cafes} as to_cafe`, 'ico.to_cafe_id', 'to_cafe.id')
+      .as('interCafeOrderDetails');
+
     return this.queryBuilder(trx)
       .select(
         'o.id as id',
         'o.user_id as userId',
         'o.cafe_id as cafeId',
+        'o.order_type as orderType',
         'o.total_price as totalPrice',
         'o.created_at',
         'o.updated_at',
@@ -78,6 +139,7 @@ class OrderModel extends BaseModel {
       .leftJoin('order_status as us', function () {
         this.on('latest_status.max_id', '=', 'us.id');
       })
+      .leftJoin('event_orders as eo', 'o.id', 'eo.order_id')
       .whereNull('o.deleted_at')
       .groupBy('o.id', 'u.id', 'c.id', 'cl.id', 'us.id')
       .orderBy('o.id', 'desc');
@@ -147,6 +209,17 @@ class OrderModel extends BaseModel {
   }
 
   /**
+   * Fetch list of orders by event ID.
+   *
+   * @param {number} eventId
+   * @param {Knex.Transaction} [trx]
+   * @returns {Knex.QueryBuilder<Order[]>}
+   */
+  static fetchOrdersByEventId(eventId: number, trx?: Knex.Transaction) {
+    return this.baseQuery(trx).where('eo.event_id', eventId);
+  }
+
+  /**
    * Insert data into order_status table.
    *
    * @param {Partial<OrderStatus>} data
@@ -156,6 +229,28 @@ class OrderModel extends BaseModel {
    */
   static insertOrderStatus(data: Partial<OrderStatus>, trx?: Knex.Transaction) {
     return this.queryBuilder(trx).table(this.orderStatus).insert(data);
+  }
+
+  /**
+   * Insert data into event_orders table.
+   *
+   * @param {Partial<Order>} data
+   * @param {Knex.Transaction} [trx]
+   * @returns {Knex.QueryBuilder<number[]>}
+   * */
+  static insertEventOrders(data: Partial<EventOrder>, trx?: Knex.Transaction) {
+    return this.queryBuilder(trx).table(this.eventOrders).insert(data);
+  }
+
+  /**
+   * Insert data into inter_cafe_orders table.
+   *
+   * @param {Partial<Order>} data
+   * @param {Knex.Transaction} [trx]
+   * @returns {Knex.QueryBuilder<number[]>}
+   * */
+  static insertInterCafeOrder(data: Partial<InterCafeOrder>, trx?: Knex.Transaction) {
+    return this.queryBuilder(trx).table(this.interCafeOrders).insert(data);
   }
 
   /**
