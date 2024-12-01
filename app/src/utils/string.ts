@@ -54,3 +54,31 @@ export const debounceInput = (
 ): ((...args: Any[]) => void) => {
   return debounce(callback, delay);
 };
+
+/**
+ * Capitalize first letter.
+ *
+ * @param {String} string
+ * @returns {String}
+ */
+export const capitalizeFirstLetter = (string: string): string =>
+  string.charAt(0).toUpperCase() + string.slice(1);
+
+/**
+ * turns a string with spaces into a idenfier that follows the camelcase format
+ *
+ * camelCasify("show update risk notification")
+ * -> 'showUpdateRiskNotification'
+ *
+ * @param {string} text
+ * @returns {string}
+ */
+export const camelCasify = (text: string): string => {
+  return text
+    .trim()
+    .split(' ')
+    .map((str, index) => {
+      return index ? capitalizeFirstLetter(str.toLowerCase()) : str.toLowerCase();
+    })
+    .join('');
+};
