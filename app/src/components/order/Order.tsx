@@ -13,6 +13,7 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import * as orderServices from 'services/oders';
 
@@ -175,7 +176,7 @@ function Order() {
         </TableContainer>
 
         <div className="w-100 mt-6 center">
-          <Button colorScheme="orange" className="w-100" onClick={handlePlaceOrder}>
+          <Button as={Link} to="/checkout" colorScheme="orange" className="w-100">
             {submitting ? <Loading /> : 'Place Order'}
           </Button>
         </div>

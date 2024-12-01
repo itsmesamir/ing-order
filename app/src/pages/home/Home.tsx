@@ -5,6 +5,7 @@ import Dashboard from 'pages/dashboard/Dashboard';
 import UserRoles from 'pages/userRoles/UserRoles';
 import UserOrders from 'pages/userOrders/UserOrders';
 import OrderHistory from 'pages/orderHistory/OrderHistory';
+import Checkout from 'pages/userOrders/Checkout';
 
 import useUserStore from 'stores/useUserStore';
 
@@ -37,6 +38,8 @@ function Home() {
         <Route exact path={createRoute([paths.feedbacks])} component={Feedback} />
 
         <Route exact path={createRoute([paths.userRoles])} component={UserRoles} />
+
+        <Route exact path={createRoute([paths.checkout])} component={Checkout} />
 
         <Redirect to={createRoute([paths.menus])} />
       </Switch>
