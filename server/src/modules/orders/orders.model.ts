@@ -22,65 +22,72 @@ class OrderModel extends BaseModel {
    * @returns {Knex.QueryBuilder<Order[]>}
    */
   static baseQuery(trx?: Knex.Transaction) {
-    const eventOrderDetails = db
-      .select(
-        'e.id as id',
-        'e.name as name',
-        'e.location as location',
-        'e.description as description',
-        'e.start_date as startDate',
-        'e.end_date as endDate',
-        db.raw(`
+    const interCafeDetailsCTE = db.raw(`
+    SELECT
+      ico.order_id as order_id,
+      JSON_ARRAYAGG(
         JSON_OBJECT(
-          'id', o.id,
-          'name', o.name,
-          'description', o.description
-        ) as organizer
-      `),
-        db.raw(`
-        JSON_ARRAYAGG(
-          JSON_OBJECT(
-            'id', em.manager_id,
-            'name', u.name,
-            'email', u.email,
-            'phone', u.phone
+          'id', ico.id,
+          'fromCafe', JSON_OBJECT(
+            'id', from_cafe.id,
+            'name', from_cafe.name,
+            'location', from_cafe.location,
+            'imageUrl', from_cafe.image_url
+          ),
+          'toCafe', JSON_OBJECT(
+            'id', to_cafe.id,
+            'name', to_cafe.name,
+            'location', to_cafe.location,
+            'imageUrl', to_cafe.image_url
           )
-        ) as managers
-      `)
-      )
-      .from(`${dbTables.events} as e`)
-      .leftJoin(`${dbTables.eventOrganizations} as o`, 'e.organizer_id', 'o.id')
-      .leftJoin(`${dbTables.eventManagers} as em`, 'e.id', 'em.event_id')
-      .leftJoin(`${dbTables.users} as u`, 'em.manager_id', 'u.id')
-      .groupBy('e.id', 'o.id')
-      .as('eventOrderDetails');
+        )
+      ) as interCafeDetails
+    FROM ${dbTables.interCafeOrders} as ico
+    LEFT JOIN ${dbTables.cafes} as from_cafe ON ico.from_cafe_id = from_cafe.id
+    LEFT JOIN ${dbTables.cafes} as to_cafe ON ico.to_cafe_id = to_cafe.id
+    GROUP BY ico.order_id
+  `);
 
-    const interCafeOrderDetails = db
-      .select(
-        'ico.id as id',
-        db.raw(`
+    const eventDetailsCTE = db.raw(`
+    SELECT
+      eo.order_id as order_id,
+      JSON_ARRAYAGG(
         JSON_OBJECT(
-          'id', from_cafe.id,
-          'name', from_cafe.name,
-          'location', from_cafe.location,
-          'imageUrl', from_cafe.image_url
-        ) as fromCafe
-      `),
-        db.raw(`
-        JSON_OBJECT(
-          'id', to_cafe.id,
-          'name', to_cafe.name,
-          'location', to_cafe.location,
-          'imageUrl', to_cafe.image_url
-        ) as toCafe
-      `)
-      )
-      .from(`${dbTables.interCafeOrders} as ico`)
-      .leftJoin(`${dbTables.cafes} as from_cafe`, 'ico.from_cafe_id', 'from_cafe.id')
-      .leftJoin(`${dbTables.cafes} as to_cafe`, 'ico.to_cafe_id', 'to_cafe.id')
-      .as('interCafeOrderDetails');
+          'id', e.id,
+          'name', e.name,
+          'location', e.location,
+          'description', e.description,
+          'startDate', e.start_date,
+          'endDate', e.end_date,
+          'organizer', JSON_OBJECT(
+            'id', o.id,
+            'name', o.name,
+            'description', o.description
+          ),
+          'managers', (
+            SELECT JSON_ARRAYAGG(
+              JSON_OBJECT(
+                'id', em.manager_id,
+                'name', u.name,
+                'email', u.email,
+                'phone', u.phone
+              )
+            )
+            FROM ${dbTables.eventManagers} as em
+            LEFT JOIN ${dbTables.users} as u ON em.manager_id = u.id
+            WHERE em.event_id = e.id
+          )
+        )
+      ) as eventDetails
+    FROM ${dbTables.events} as e
+    LEFT JOIN ${dbTables.eventOrganizations} as o ON e.organizer_id = o.id
+    LEFT JOIN ${dbTables.eventOrders} as eo ON e.id = eo.event_id
+    GROUP BY eo.order_id
+  `);
 
     return this.queryBuilder(trx)
+      .with('interCafeDetailsCTE', interCafeDetailsCTE)
+      .with('eventDetailsCTE', eventDetailsCTE)
       .select(
         'o.id as id',
         'o.user_id as userId',
@@ -119,7 +126,9 @@ class OrderModel extends BaseModel {
             )
           )
         ) as items
-      `)
+      `),
+        db.raw(`icd.interCafeDetails`),
+        db.raw(`ed.eventDetails`)
       )
       .from({ o: this.orders })
       .leftJoin('users as u', 'o.user_id', 'u.id')
@@ -136,12 +145,19 @@ class OrderModel extends BaseModel {
         'o.id',
         'latest_status.order_id'
       )
-      .leftJoin('order_status as us', function () {
-        this.on('latest_status.max_id', '=', 'us.id');
-      })
-      .leftJoin('event_orders as eo', 'o.id', 'eo.order_id')
+      .leftJoin('order_status as us', 'latest_status.max_id', 'us.id')
+      .leftJoin('interCafeDetailsCTE as icd', 'o.id', 'icd.order_id')
+      .leftJoin('eventDetailsCTE as ed', 'o.id', 'ed.order_id')
       .whereNull('o.deleted_at')
-      .groupBy('o.id', 'u.id', 'c.id', 'cl.id', 'us.id')
+      .groupBy(
+        'o.id',
+        'u.id',
+        'c.id',
+        'cl.id',
+        'us.id',
+        db.raw(`icd.interCafeDetails`),
+        db.raw(`ed.eventDetails`)
+      )
       .orderBy('o.id', 'desc');
   }
 
