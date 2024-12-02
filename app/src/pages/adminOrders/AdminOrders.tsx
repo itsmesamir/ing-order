@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { FiEdit, FiTrash } from 'react-icons/fi';
+import { useFieldArray, useForm } from 'react-hook-form';
 
 import { fetchOrders, updateOrderById, updateOrderStatusById } from 'services/oders';
 
@@ -28,6 +29,7 @@ import MyOverlay from 'components/common/myOverlay';
 import Modal from 'components/common/modal';
 import OrderStatusColor from 'components/common/orders/OrderStatusColor';
 import Form, { FormInputField } from 'components/Form';
+import Dropdown from 'components/common/dropdown';
 
 import useOpen from 'hooks/useOpen';
 
@@ -35,7 +37,15 @@ import { getFormattedDate } from 'utils/date';
 import { handleError } from 'utils/handleError';
 import { success } from 'utils/toast';
 
-import { Any, CellData, MenuItem, Order, OrderStatusEnum, RowData } from 'types/common';
+import {
+  Any,
+  CellData,
+  MenuItem,
+  Order,
+  OrderItemStatusEnum,
+  OrderStatusEnum,
+  RowData,
+} from 'types/common';
 
 import paths from 'constants/paths';
 import queryKey from 'constants/queryKey';
@@ -253,6 +263,20 @@ function AdminOrders() {
     };
   };
 
+  const [menuStatus, setMenuStatus] = useState();
+
+  const { register, control, reset, trigger, setError } = useForm({
+    // defaultValues: {}; you can populate the fields by this attribute
+  });
+  const {
+    fields: orderItemFields,
+    append,
+    remove,
+  } = useFieldArray({
+    control,
+    name: 'orderItems',
+  });
+
   return (
     <>
       <Text fontSize="2xl" fontWeight="bold" color="gray.10">
@@ -320,6 +344,20 @@ function AdminOrders() {
                               <p className="text-sm text-grey-900 font-medium">$ {item?.price}</p>
                             </span>
                           </div>
+                          <div>
+                            {orderItemFields.map((field, index) => (
+                              <div>d</div>
+                            ))}
+                          </div>{' '}
+                          <Dropdown
+                            onDropDownChange={e => {
+                              console.log(e);
+                            }}
+                            options={Object.values(OrderItemStatusEnum).map(item => ({
+                              label: item,
+                              value: item,
+                            }))}
+                          />
                         </div>
                       ))}
                     </div>

@@ -1,5 +1,7 @@
 import Joi from 'joi';
 
+import { OrderItemStatusEnum, OrderStatusEnum } from '@/types/common';
+
 import { paginationSchema } from '@/schemas/pagination';
 
 const commaSeparatedNumbers = (fieldName: string) =>
@@ -29,6 +31,18 @@ export const fetchSchema = Joi.object({
 // Combine pagination schema with fetch schema using Joi.concat
 export const fetch = fetchSchema.concat(paginationSchema);
 
-export default {
-  fetch,
-};
+// Define the Joi schema for a single order item
+const orderItemSchema = Joi.object({
+  id: Joi.number().required(), // Validate id as a number
+  status: Joi.string()
+    .valid(...Object.values(OrderItemStatusEnum)) // Use spread operator to pass enum values individually
+    .required(), // Ensure status is one of the defined enum values
+});
+
+// Joi schema for validating the order data
+export const orderValidationSchema = Joi.object({
+  orderStatus: Joi.string()
+    .valid(...Object.values(OrderStatusEnum)) // Use spread operator to pass enum values individually
+    .optional(), // Ensure orderStatus is one of the defined enum values
+  orderItems: Joi.array().items(orderItemSchema).optional(), // Validate the orderItem array
+});

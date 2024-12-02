@@ -43,7 +43,7 @@ class UserModel extends BaseModel {
         'u.id as id',
         'u.name as name',
         'u.email as email',
-        'u.department as department',
+        // 'u.department as department',
         'u.phone as phone',
         'u.designation_id as designationId',
         'd.id as designation_id',
