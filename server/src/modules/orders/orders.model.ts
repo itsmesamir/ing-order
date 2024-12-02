@@ -3,7 +3,7 @@ import { Knex } from 'knex';
 import BaseModel from '@/models/baseModel';
 
 import { OrderFilter } from '@/types/orders';
-import { Order, OrderStatus, OrderItem } from '@/types/common';
+import { Order, OrderStatus, OrderItem, EventOrder, InterCafeOrder } from '@/types/common';
 
 import db from '@/db';
 import dbTables from '@/constants/db';
@@ -12,6 +12,8 @@ class OrderModel extends BaseModel {
   static orders = dbTables.orders;
   static orderItems = dbTables.orderItems;
   static orderStatus = dbTables.orderStatus;
+  static eventOrders = dbTables.eventOrders;
+  static interCafeOrders = dbTables.interCafeOrders;
 
   /**
    * baseQuery to fetch orders.
@@ -20,11 +22,77 @@ class OrderModel extends BaseModel {
    * @returns {Knex.QueryBuilder<Order[]>}
    */
   static baseQuery(trx?: Knex.Transaction) {
+    const interCafeDetailsCTE = db.raw(`
+    SELECT
+      ico.order_id as order_id,
+      JSON_ARRAYAGG(
+        JSON_OBJECT(
+          'id', ico.id,
+          'fromCafe', JSON_OBJECT(
+            'id', from_cafe.id,
+            'name', from_cafe.name,
+            'location', from_cafe.location,
+            'imageUrl', from_cafe.image_url
+          ),
+          'toCafe', JSON_OBJECT(
+            'id', to_cafe.id,
+            'name', to_cafe.name,
+            'location', to_cafe.location,
+            'imageUrl', to_cafe.image_url
+          )
+        )
+      ) as interCafeDetails
+    FROM ${dbTables.interCafeOrders} as ico
+    LEFT JOIN ${dbTables.cafes} as from_cafe ON ico.from_cafe_id = from_cafe.id
+    LEFT JOIN ${dbTables.cafes} as to_cafe ON ico.to_cafe_id = to_cafe.id
+    GROUP BY ico.order_id
+  `);
+
+    const eventDetailsCTE = db.raw(`
+    SELECT
+      eo.order_id as order_id,
+      JSON_ARRAYAGG(
+        JSON_OBJECT(
+          'id', e.id,
+          'name', e.name,
+          'location', e.location,
+          'description', e.description,
+          'startDate', e.start_date,
+          'endDate', e.end_date,
+          'organizer', JSON_OBJECT(
+            'id', o.id,
+            'name', o.name,
+            'description', o.description
+          ),
+          'managers', (
+            SELECT JSON_ARRAYAGG(
+              JSON_OBJECT(
+                'id', em.manager_id,
+                'name', u.name,
+                'email', u.email,
+                'phone', u.phone
+              )
+            )
+            FROM ${dbTables.eventManagers} as em
+            LEFT JOIN ${dbTables.users} as u ON em.manager_id = u.id
+            WHERE em.event_id = e.id
+          )
+        )
+      ) as eventDetails
+    FROM ${dbTables.events} as e
+    LEFT JOIN ${dbTables.eventOrganizations} as o ON e.organizer_id = o.id
+    LEFT JOIN ${dbTables.eventOrders} as eo ON e.id = eo.event_id
+    GROUP BY eo.order_id
+  `);
+
     return this.queryBuilder(trx)
+      .with('interCafeDetailsCTE', interCafeDetailsCTE)
+      .with('eventDetailsCTE', eventDetailsCTE)
       .select(
         'o.id as id',
         'o.user_id as userId',
         'o.cafe_id as cafeId',
+        'o.order_type as orderType',
         'o.total_price as totalPrice',
         'o.created_at',
         'o.updated_at',
@@ -58,7 +126,9 @@ class OrderModel extends BaseModel {
             )
           )
         ) as items
-      `)
+      `),
+        db.raw(`icd.interCafeDetails`),
+        db.raw(`ed.eventDetails`)
       )
       .from({ o: this.orders })
       .leftJoin('users as u', 'o.user_id', 'u.id')
@@ -75,11 +145,19 @@ class OrderModel extends BaseModel {
         'o.id',
         'latest_status.order_id'
       )
-      .leftJoin('order_status as us', function () {
-        this.on('latest_status.max_id', '=', 'us.id');
-      })
+      .leftJoin('order_status as us', 'latest_status.max_id', 'us.id')
+      .leftJoin('interCafeDetailsCTE as icd', 'o.id', 'icd.order_id')
+      .leftJoin('eventDetailsCTE as ed', 'o.id', 'ed.order_id')
       .whereNull('o.deleted_at')
-      .groupBy('o.id', 'u.id', 'c.id', 'cl.id', 'us.id')
+      .groupBy(
+        'o.id',
+        'u.id',
+        'c.id',
+        'cl.id',
+        'us.id',
+        db.raw(`icd.interCafeDetails`),
+        db.raw(`ed.eventDetails`)
+      )
       .orderBy('o.id', 'desc');
   }
 
@@ -147,6 +225,17 @@ class OrderModel extends BaseModel {
   }
 
   /**
+   * Fetch list of orders by event ID.
+   *
+   * @param {number} eventId
+   * @param {Knex.Transaction} [trx]
+   * @returns {Knex.QueryBuilder<Order[]>}
+   */
+  static fetchOrdersByEventId(eventId: number, trx?: Knex.Transaction) {
+    return this.baseQuery(trx).where('eo.event_id', eventId);
+  }
+
+  /**
    * Insert data into order_status table.
    *
    * @param {Partial<OrderStatus>} data
@@ -156,6 +245,28 @@ class OrderModel extends BaseModel {
    */
   static insertOrderStatus(data: Partial<OrderStatus>, trx?: Knex.Transaction) {
     return this.queryBuilder(trx).table(this.orderStatus).insert(data);
+  }
+
+  /**
+   * Insert data into event_orders table.
+   *
+   * @param {Partial<Order>} data
+   * @param {Knex.Transaction} [trx]
+   * @returns {Knex.QueryBuilder<number[]>}
+   * */
+  static insertEventOrders(data: Partial<EventOrder>, trx?: Knex.Transaction) {
+    return this.queryBuilder(trx).table(this.eventOrders).insert(data);
+  }
+
+  /**
+   * Insert data into inter_cafe_orders table.
+   *
+   * @param {Partial<Order>} data
+   * @param {Knex.Transaction} [trx]
+   * @returns {Knex.QueryBuilder<number[]>}
+   * */
+  static insertInterCafeOrder(data: Partial<InterCafeOrder>, trx?: Knex.Transaction) {
+    return this.queryBuilder(trx).table(this.interCafeOrders).insert(data);
   }
 
   /**

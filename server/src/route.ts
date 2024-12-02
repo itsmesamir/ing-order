@@ -11,6 +11,8 @@ import menuUnitsRoute from '@/modules/menuUnits/menuUnits.route';
 import cafesRoute from '@/modules/cafes/cafes.route';
 import ordersRoute from '@/modules/orders/orders.route';
 import menuItemsRoute from '@/modules/menuItems/menuItems.route';
+import eventsRoute from '@/modules/events/events.route';
+import eventOrganizationsRoute from '@/modules/eventOrganizations/organizations.route';
 
 import { addToStore } from '@/services/store';
 
@@ -54,6 +56,8 @@ router.use('/menus/units', menuUnitsRoute);
 router.use('/cafes', cafesRoute);
 router.use('/menus', menuItemsRoute);
 router.use('/orders', ordersRoute);
+router.use('/events', eventsRoute);
+router.use('/events-organizations', eventOrganizationsRoute);
 
 router.use(requireAuth);
 router.use('/api-docs', swaggerRoute);
