@@ -30,6 +30,7 @@ const api = {
   cafes: '/cafes',
   order: {
     orders: '/orders',
+    ordersById: '/orders/:id',
     orderStatusById: '/orders/status/:id',
   },
 };

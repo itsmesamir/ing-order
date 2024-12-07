@@ -1,4 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import { stat } from 'fs';
+
+import React, { useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { IoIosArrowForward, IoIosArrowDown } from 'react-icons/io';
 import { Flex } from '@chakra-ui/layout';
@@ -15,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { FiEdit, FiTrash } from 'react-icons/fi';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { Controller, FieldValues, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 
 import { fetchOrders, updateOrderById, updateOrderStatusById } from 'services/oders';
 
@@ -29,19 +31,21 @@ import MyOverlay from 'components/common/myOverlay';
 import Modal from 'components/common/modal';
 import OrderStatusColor from 'components/common/orders/OrderStatusColor';
 import Form, { FormInputField } from 'components/Form';
-import Dropdown from 'components/common/dropdown';
+import Dropdown from 'components/common/dropdown/Dropdown';
 
 import useOpen from 'hooks/useOpen';
 
 import { getFormattedDate } from 'utils/date';
 import { handleError } from 'utils/handleError';
 import { success } from 'utils/toast';
+import { getNameAndValue } from 'utils/object';
 
 import {
   Any,
   CellData,
   MenuItem,
   Order,
+  OrderItem,
   OrderItemStatusEnum,
   OrderStatusEnum,
   RowData,
@@ -50,6 +54,7 @@ import {
 import paths from 'constants/paths';
 import queryKey from 'constants/queryKey';
 import { MMMM_DD_YYYY_H_MM_A } from 'constants/date';
+import { DropdownOption } from 'interface/dropdown';
 
 import SubRowComponent from './SubRowComponent';
 
@@ -91,6 +96,102 @@ const renderSubComponent = (props: Any) => {
   return <SubRowComponent data={row.original} isLoading={isLoading} />;
 };
 
+const ActionOption = () => [
+  {
+    name: 'Edit',
+    icon: <FiEdit />,
+    state: (rowData: Order) => {
+      console.log(rowData);
+    },
+  },
+
+  {
+    name: 'Delete',
+    className: 'text-red-500',
+    icon: <FiTrash />,
+    state: (rowData: Order) => {
+      console.log(rowData);
+    },
+    // state: (rowData: Order) => setDeleteModalOpenFor(rowData?.id),
+  },
+];
+
+const getOrderColumns = (): Array<ColumnDef<Order>> => {
+  return [
+    // {
+    //   header: ' ',
+    //   size: 40,
+    //   cell: ({ row }) => {
+    //     const expand = row.getCanExpand()
+    //       ? ExpandButton({
+    //           onExpand: () => {
+    //             row.getToggleExpandedHandler();
+    //           },
+    //           isExpanded: row.getIsExpanded(),
+    //         })
+    //       : '';
+
+    //     return DivWrapper({
+    //       items: [expand],
+    //       className: 'flex items-center',
+    //     });
+    //   },
+    // },
+    // {
+    //   header: 'Order ID',
+    //   cell: ({ row }) => row.original.id,
+    //   size: 60,
+    // },
+    {
+      header: "Employee's Name",
+      accessorKey: 'name',
+      cell: ({ row }) => row.original.name,
+      size: 200,
+      enableSorting: true,
+    },
+    {
+      header: 'Status',
+      accessorKey: 'status',
+      size: 100,
+    },
+    {
+      header: 'Order Date',
+      accessorKey: 'createdAt',
+      size: 100,
+      cell: ({ row }) => getFormattedDate(row.original.createdAt),
+    },
+    {
+      header: 'Total Amount',
+      accessorKey: 'totalPrice',
+      size: 100,
+    },
+    {
+      header: 'Cafe Name',
+      accessorKey: 'cafeName',
+      size: 180,
+      // cell: ({ row }) => row.original.cafe.name,
+    },
+    {
+      header: 'College Name',
+      accessorKey: 'collegeName',
+      size: 180,
+      // cell: ({ row }) => row.original.cafe.name,
+    },
+    {
+      header: '',
+      accessorKey: 'actions',
+      cell: ({ row }: { row: Any }) => ActionCell({ row }, ActionOption as () => CellData[]),
+      size: 60,
+    },
+  ];
+};
+
+interface FormValues {
+  // orderStatus: { label: OrderStatusEnum; value: OrderStatusEnum }[];
+  itemOrderStatus: Any[];
+  orderStatus: { label: string; value: string };
+}
+
 function AdminOrders() {
   const [filter, setFilter] = useState(statusTypes[0].id);
 
@@ -102,6 +203,20 @@ function AdminOrders() {
     enabled: true,
   });
 
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    getValues,
+    formState: { errors },
+    watch,
+  } = useForm<FormValues | FieldValues>();
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'itemOrderStatus',
+  });
+
   const queryClient = useQueryClient();
 
   const defaultImageUrl =
@@ -109,134 +224,52 @@ function AdminOrders() {
 
   const isOrderLoading = !orders || isLoading;
 
-  const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilter(event.target.value);
-  };
-
-  const ActionOption = () =>
-    useMemo(
-      () => [
-        {
-          name: 'Edit',
-          icon: <FiEdit />,
-          state: (rowData: Order) => {
-            console.log(rowData);
-          },
-        },
-
-        {
-          name: 'Delete',
-          className: 'text-red-500',
-          icon: <FiTrash />,
-          state: (rowData: Order) => {
-            console.log(rowData);
-          },
-          // state: (rowData: Order) => setDeleteModalOpenFor(rowData?.id),
-        },
-      ],
-      []
-    );
-
-  const getOrderColumns = (): Array<ColumnDef<Order>> => {
-    return [
-      // {
-      //   header: ' ',
-      //   size: 40,
-      //   cell: ({ row }) => {
-      //     const expand = row.getCanExpand()
-      //       ? ExpandButton({
-      //           onExpand: () => {
-      //             row.getToggleExpandedHandler();
-      //           },
-      //           isExpanded: row.getIsExpanded(),
-      //         })
-      //       : '';
-
-      //     return DivWrapper({
-      //       items: [expand],
-      //       className: 'flex items-center',
-      //     });
-      //   },
-      // },
-      // {
-      //   header: 'Order ID',
-      //   cell: ({ row }) => row.original.id,
-      //   size: 60,
-      // },
-      {
-        header: "Employee's Name",
-        accessorKey: 'name',
-        cell: ({ row }) => row.original.name,
-        size: 200,
-        enableSorting: true,
-      },
-      {
-        header: 'Status',
-        accessorKey: 'status',
-        size: 100,
-      },
-      {
-        header: 'Order Date',
-        accessorKey: 'createdAt',
-        size: 100,
-        cell: ({ row }) => getFormattedDate(row.original.createdAt),
-      },
-      {
-        header: 'Total Amount',
-        accessorKey: 'totalPrice',
-        size: 100,
-      },
-      {
-        header: 'Cafe Name',
-        accessorKey: 'cafeName',
-        size: 180,
-        // cell: ({ row }) => row.original.cafe.name,
-      },
-      {
-        header: 'College Name',
-        accessorKey: 'collegeName',
-        size: 180,
-        // cell: ({ row }) => row.original.cafe.name,
-      },
-      {
-        header: '',
-        accessorKey: 'actions',
-        cell: ({ row }: { row: Any }) => ActionCell({ row }, ActionOption as () => CellData[]),
-        size: 60,
-      },
-    ];
-  };
-
   const { close, isOpen, open, state } = useOpen<Row<Order>>();
 
-  // if order empty show skeleton
+  const orderStatusOption = Object.values(OrderStatusEnum).map(item => ({
+    label: item,
+    value: item,
+  }));
 
-  if (isOrderLoading) {
-    return <Loading />;
-  }
-
-  const fields: FormInputField[] = [
-    {
-      name: 'status',
-      label: 'Status',
-      type: 'select',
-      options: Object.values(OrderStatusEnum).map(item => ({ label: item, value: item })),
-    },
-  ];
-
-  const handleSubmit = async (data: Record<string, string | number | boolean>) => {
+  useEffect(() => {
     if (!state?.original) {
       return;
     }
 
+    const editValues: FormValues = {
+      orderStatus: orderStatusOption?.find(item => item?.value === state?.original?.status) as Any,
+      itemOrderStatus:
+        state?.original?.items?.map((item: Any) => ({
+          ...item,
+          value: item?.status,
+          label: item?.status,
+          name: {
+            value: item?.status,
+            label: item?.status,
+          },
+        })) || [],
+    };
+
+    getNameAndValue(editValues, setValue);
+  }, [state]);
+
+  const onSubmit: SubmitHandler<FormValues | FieldValues> = async formData => {
+    if (!formData) {
+      return;
+    }
+
     const payload = {
-      ...data,
+      orderStatus: formData?.orderStatus?.value,
+      orderItems: formData.itemOrderStatus?.map((item: Any) => ({
+        id: item.id,
+        status: item.name.value,
+      })),
     };
 
     try {
       setIsUpdating(true);
 
-      await updateOrderStatusById(state?.original.id, payload);
+      await updateOrderStatusById(state?.original.id as number, payload);
 
       queryClient.invalidateQueries({ queryKey: [queryKey.orders, filter] });
 
@@ -257,25 +290,9 @@ function AdminOrders() {
     // }
   };
 
-  const getInitialValues = (item?: Order): Record<string, string | number | boolean> => {
-    return {
-      status: item?.status || '',
-    };
-  };
-
-  const [menuStatus, setMenuStatus] = useState();
-
-  const { register, control, reset, trigger, setError } = useForm({
-    // defaultValues: {}; you can populate the fields by this attribute
-  });
-  const {
-    fields: orderItemFields,
-    append,
-    remove,
-  } = useFieldArray({
-    control,
-    name: 'orderItems',
-  });
+  if (isOrderLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -307,8 +324,11 @@ function AdminOrders() {
         isOpen={isOpen}
         body={
           state?.original ? (
-            <div className="overflow-y-auto flex gap-y-4 flex-col p-4">
-              <div className="flex flex-col gap-y-6">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col overflow-hidden flex-1"
+            >
+              <div className="flex flex-col overflow-y-auto p-4 flex-1">
                 <div className="flex flex-col gap-y-1">
                   <div>
                     <p className="text-xl text-grey-900 font-medium">{state?.original?.cafeName}</p>
@@ -321,12 +341,16 @@ function AdminOrders() {
                     Total Price: {state?.original?.totalPrice}
                   </p>
                 </div>
-                <div>
+                <div className="flex-1">
                   <p className="text-lg text-grey-900 font-medium mb-2">Menu Items</p>
-                  {state?.original?.items?.length > 0 ? (
-                    <div className="flex flex-col gap-y-4">
-                      {state?.original?.items?.map(item => (
-                        <div className="flex gap-x-2">
+
+                  <div className="flex flex-col gap-y-4">
+                    {fields.map((item: Any, index) => (
+                      <div
+                        key={item.id}
+                        className="flex gap-x-2 basis-1/3 flex-1 justify-between items-center"
+                      >
+                        <div className="flex items-center gap-4">
                           <div className="w-16 h-16 overflow-hidden">
                             <img
                               src={item?.menu?.imageUrl || defaultImageUrl}
@@ -344,45 +368,90 @@ function AdminOrders() {
                               <p className="text-sm text-grey-900 font-medium">$ {item?.price}</p>
                             </span>
                           </div>
-                          <div>
-                            {orderItemFields.map((field, index) => (
-                              <div>d</div>
-                            ))}
-                          </div>{' '}
-                          <Dropdown
-                            onDropDownChange={e => {
-                              console.log(e);
-                            }}
-                            options={Object.values(OrderItemStatusEnum).map(item => ({
-                              label: item,
-                              value: item,
-                            }))}
-                          />
                         </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p>No Item Added</p>
-                  )}
-                </div>
 
-                <Form
-                  fields={fields}
-                  defaultValues={getInitialValues(state?.original as Any)}
-                  onSubmit={handleSubmit}
-                  isSubmitting={isUpdating}
-                  onCancel={close}
-                />
+                        <div className="flex items-center gap-x-4">
+                          <Controller
+                            name={`itemOrderStatus.${index}.name`}
+                            control={control}
+                            render={({ field: { ref, onChange, value, name } }) => {
+                              return (
+                                <Dropdown<DropdownOption>
+                                  name={name}
+                                  menuPlacement="auto"
+                                  isRequired
+                                  value={value}
+                                  options={orderStatusOption}
+                                  onDropDownChange={e => {
+                                    onChange(e);
+                                  }}
+                                  menuPosition="fixed"
+                                />
+                              );
+                            }}
+                          />
+
+                          <button
+                            aria-label="Delete item"
+                            className="text-red-400 cursor-pointer hover:text-red-600"
+                            onClick={() => remove(index)}
+                            type="button"
+                          >
+                            <FiTrash size={18} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
+
+              <div className="p-4">
+                <Controller
+                  control={control}
+                  name="orderStatus"
+                  render={({ field: { ref, onChange, value, name } }) => {
+                    return (
+                      <Dropdown<DropdownOption>
+                        name={name}
+                        label="Order Status"
+                        menuPlacement="auto"
+                        error={errors.root?.orderStatus?.message}
+                        isRequired
+                        value={value}
+                        options={orderStatusOption}
+                        onDropDownChange={onChange}
+                        menuPosition="fixed"
+                      />
+                    );
+                  }}
+                />
+
+                <div className="mt-4">
+                  <Button
+                    type="submit"
+                    colorScheme="primary"
+                    // isLoading={isSubmitting}
+                    // disabled={isSubmitting}
+                  >
+                    Submit
+                  </Button>
+                  <Button
+                    type="button"
+                    colorScheme="gray"
+                    ml={4}
+                    // onClick={handleCancel}
+                    // disabled={isSubmitting}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            </form>
           ) : null
         }
         onClose={close}
       />
-
-      {/* <Modal isOpen={isOpen} onClose={close} header={{ title: 'Are you sure?' }}>
-        <h1>hello world {state?.original?.name}</h1>
-      </Modal> */}
     </>
   );
 }

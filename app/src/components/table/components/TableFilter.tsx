@@ -1,10 +1,19 @@
 import _ from 'lodash';
 import classNames from 'classnames';
 import React, { useCallback, useEffect, useState } from 'react';
-import { components, GroupBase, MenuListProps, StylesConfig } from 'react-select';
+import {
+  components,
+  GroupBase,
+  StylesConfig,
+  MenuListProps,
+  CSSObjectWithLabel,
+  ClearIndicatorProps,
+} from 'react-select';
+import { FiSliders } from 'react-icons/fi';
 
 import Dropdown from 'components/common/dropdown';
 import DatePicker from 'components/common/datePicker';
+import Modal from 'components/common/modal';
 
 import { getDate, getFormattedDate } from 'utils/date';
 
@@ -102,14 +111,14 @@ function ActionContent(props: ActionContentProps) {
 
   return (
     <>
-      <div className={classNames('table__buttons mr-0x', classes?.container)}>
+      <div className={classNames('flex gap-x-4', classes?.container)}>
         <button
           type="button"
           className={classNames(
-            'btn',
+            'btn-primary',
             {
-              'btn--outlined-grey': !isFilterChanged,
-              'btn--primary': isFilterChanged,
+              'border-grey-300': !isFilterChanged,
+              '': isFilterChanged,
             },
             classes?.primary
           )}
@@ -120,7 +129,7 @@ function ActionContent(props: ActionContentProps) {
         </button>
         <button
           type="button"
-          className={classNames(classes?.secondary, 'btn btn-text no-border')}
+          className={classNames(classes?.secondary, 'btn-secondary')}
           onClick={() => handleResetFilter()}
           disabled={!canResetFilters}
         >
@@ -343,9 +352,9 @@ export default function TableFilters<T>(props: TableFilterProps<T>) {
             <DatePicker
               key={filter.key}
               name={filter.key}
-              label={filter.name}
+              // label="Select Date"
               value={(activeFilters && activeFilters[filter.key]) || getDate()}
-              onChange={e =>
+              onChange={(e: Any) =>
                 setSelectedFilters(previousFilters => ({
                   ...previousFilters,
                   [filter.key]: getFormattedDate(e, YYYY_MM_DD),
@@ -369,7 +378,9 @@ export default function TableFilters<T>(props: TableFilterProps<T>) {
               activeFilters &&
               findDefaultFilters(filter.options as FilterData[], activeFilters[filter.key])
             }
-            onDropDownChange={selectedValue => handleDropdownChange(selectedValue, filter.key)}
+            onDropDownChange={(selectedValue: Any) =>
+              handleDropdownChange(selectedValue, filter.key)
+            }
             placeholder={`Choose ${filter.name}`}
             options={filter.options}
             isMulti={filter.isMulti}
@@ -377,75 +388,104 @@ export default function TableFilters<T>(props: TableFilterProps<T>) {
             isLoading={isFiltersLoading}
             name={filter.name}
             customStyles={{
-              menuList: base => ({
+              menuList: (base: CSSObjectWithLabel) => ({
                 ...base,
-                width: '204px',
+                width: '180px',
+                flex: 1,
               }),
-              control: (base, { isFocused }) => ({
+              control: (base: CSSObjectWithLabel, { isFocused }: { isFocused: boolean }) => ({
                 ...base,
-                width: '204px',
+                width: '180px',
+                flex: 1,
+                height: '40px',
                 border: isFocused ? 'none' : 'none',
                 outline: isFocused ? 'none' : 'none',
                 boxShadow: isFocused ? 'none' : 'none',
                 position: 'relative',
               }),
-              multiValue: base => ({
+              multiValue: (base: CSSObjectWithLabel) => ({
                 ...base,
                 borderRadius: '4px',
               }),
-              menu: base => ({
+              menu: (base: CSSObjectWithLabel) => ({
                 ...base,
                 marginTop: '0px',
+                display: 'flex',
                 border: 'none',
-                boxShadow: '0px 22px 33px 4px #00000010',
+                // boxShadow: "0px 22px 33px 4px #00000010",
                 borderTop: '1px solid #e6e6e6',
               }),
-              valueContainer: base => ({
+              indicatorSeparator: (base: CSSObjectWithLabel) => ({
+                ...base,
+                display: 'none',
+                // Adjust indicator separator height
+              }),
+
+              singleValue: (base: CSSObjectWithLabel) => ({
+                ...base,
+                lineHeight: '40px', // Align single value vertically
+              }),
+              valueContainer: (base: CSSObjectWithLabel) => ({
                 ...base,
                 padding: '4px 28px 4px 8px',
                 position: 'static',
-                fontSize: '16px',
+                fontSize: '14px',
                 fontWeight: 'normal',
                 borderRadius: '4px',
                 color: black,
-                maxHeight: '90px',
+                maxHeight: '200px',
                 overflowY: 'auto',
+                backgroundColor: 'white',
+                height: 'auto', // Adjust value container height
+                // boxShadow: '0px 3px 33px 0px #00000024',
+                boxShadow: 'rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px',
               }),
-              indicatorsContainer(base) {
+              indicatorsContainer(base: CSSObjectWithLabel) {
                 return {
                   ...base,
                   position: 'absolute',
                   right: '0px',
                 };
               },
-              container(base) {
+              container(base: CSSObjectWithLabel) {
                 return {
                   ...base,
-                  boxShadow: '0px 3px 33px 0px #00000024;',
+                  display: 'flex',
+                  border: '1px solid #e6e6e6',
+                  borderRadius: '4px',
+                  minHeight: '40px',
+                  // boxShadow: "0px 3px 33px 0px #00000024;",
                 };
               },
-              multiValueRemove(base, state) {
+              multiValueRemove(
+                base: CSSObjectWithLabel,
+                state: ClearIndicatorProps<Any, boolean, GroupBase<Any>>
+              ) {
                 return {
                   ...base,
                   color: neutrals900,
                   cursor: state.isFocused ? 'pointer' : 'default',
                 };
               },
-              clearIndicator(base, state) {
+              clearIndicator(
+                base: CSSObjectWithLabel,
+                state: ClearIndicatorProps<Any, boolean, GroupBase<Any>>
+              ) {
                 return {
                   ...base,
                   color: neutrals900,
                   cursor: state.isFocused ? 'pointer' : 'default',
                 };
               },
-              option(base) {
+              option(base: CSSObjectWithLabel) {
                 return {
                   ...base,
+                  height: '40px',
                   color: neutrals900,
-                  fontSize: '16px',
+                  fontSize: '14px',
                 };
               },
-              dropdownIndicator(base) {
+              dropdownIndicator(base: CSSObjectWithLabel) {
                 return {
                   ...base,
                   display: 'none',
@@ -460,23 +500,37 @@ export default function TableFilters<T>(props: TableFilterProps<T>) {
   );
 
   return (
-    <div className={classNames('table-filters', className)}>
-      <div className={classNames('table__header d-flex', classes?.header)}>
-        <div
-          className={classNames('table__filters table-filters__content right', classes?.content)}
-        >
-          <div className={classNames('flex items-center flex-wrap gap-4', classes?.filterList)}>
-            {fixedFilters.map((filter, idx) => (
-              <div className={classNames(classes?.filterItem)}>
-                <FilterElement
-                  filter={filter}
-                  activeFilters={selectedFilters}
-                  key={idx}
-                  isFiltersLoading={isLoading}
-                />
-              </div>
-            ))}
-          </div>
+    <>
+      <Modal
+        // headerIcon={<UiSlidersVAlt size={20} className="color-gray-50" />}
+        // title="Filters"
+        isOpen={openModal}
+        className="table-filters__modal"
+        onClose={() => setOpenModal(false)}
+      >
+        <div className="flex flex-col gap-y-4">
+          {fixedFilters.map((filter, idx) => (
+            <FilterElement
+              filter={filter}
+              activeFilters={selectedFilters}
+              key={idx}
+              isFiltersLoading={isLoading}
+            />
+          ))}
+
+          {/* <ActionContent
+            isFilterChanged={isFilterChanged}
+            onFilterApply={onFilterApply}
+            selectedFilters={selectedFilters}
+            setAddedFilters={setAddedFilters}
+            onFilterReset={onFilterReset}
+            canResetFilters={canResetFilters}
+            trailing={trailing}
+            action={{
+              primaryTitle: action?.primaryTitle,
+              secondaryTitle: action?.secondaryTitle,
+            }}
+          /> */}
 
           <ActionContent
             isFilterChanged={isFilterChanged}
@@ -497,8 +551,50 @@ export default function TableFilters<T>(props: TableFilterProps<T>) {
             }}
           />
         </div>
-        {actionButton}
+      </Modal>
+
+      <div className={classNames('table-filters', className)}>
+        <div className="lg:hidden">
+          <FiSliders size={24} onClick={onOpenModal} />
+        </div>
+
+        <div className={classNames('max-lg:hidden table__header d-flex', classes?.header)}>
+          <div className={classNames('flex flex-wrap gap-4', classes?.content)}>
+            <div className={classNames('flex items-center flex-wrap gap-4', classes?.filterList)}>
+              {fixedFilters.map((filter, idx) => (
+                <div className={classNames(classes?.filterItem)}>
+                  <FilterElement
+                    filter={filter}
+                    activeFilters={selectedFilters}
+                    key={idx}
+                    isFiltersLoading={isLoading}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <ActionContent
+              isFilterChanged={isFilterChanged}
+              onFilterApply={onFilterApply}
+              selectedFilters={selectedFilters as FilterData}
+              setAddedFilters={setAddedFilters}
+              onFilterReset={onFilterReset}
+              canResetFilters={canResetFilters}
+              trailing={trailing}
+              classes={{
+                container: classes?.actionContainer,
+                primary: classes?.actionPrimary,
+                secondary: classes?.actionSecondary,
+              }}
+              action={{
+                primaryTitle: action?.primaryTitle,
+                secondaryTitle: action?.secondaryTitle,
+              }}
+            />
+          </div>
+          {actionButton}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
