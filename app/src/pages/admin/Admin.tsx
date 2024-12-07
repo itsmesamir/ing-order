@@ -8,6 +8,8 @@ import AdminUnits from 'pages/adminMenuUnits/AdminMenuUnits';
 import AddEditCategories from 'pages/adminCategories/AddEditCategories';
 import AddEditUnits from 'pages/adminMenuUnits/AddEditMenuUnits';
 import AdminDashboard from 'pages/adminDashboard/AdminDashboard';
+import CafeLists from 'pages/cafes/CafeLists';
+import Events from 'pages/cafes/Events';
 
 import useUserStore from 'stores/useUserStore';
 
@@ -43,7 +45,10 @@ function Admin() {
         <Route exact path={createRoute([paths.addUnits])} component={AddEditUnits} />
         <Route exact path={createRoute([paths.editUnits])} component={AddEditUnits} />
 
-        <Redirect to={createRoute([paths.adminMenus])} />
+        <Route exact path={createRoute([paths.cafes])} component={CafeLists} />
+        <Route exact path={createRoute([paths.events])} component={Events} />
+
+        <Redirect to={createRoute([paths.cafes])} />
       </Switch>
     </AdminLayout>
   );

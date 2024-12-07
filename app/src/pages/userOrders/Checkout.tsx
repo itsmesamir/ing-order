@@ -2,19 +2,19 @@ import {
   Td,
   Tr,
   Box,
+  Grid,
   Text,
   Image,
   Table,
   Tbody,
-  Button,
-  IconButton,
-  TableContainer,
-  Heading,
-  RadioGroup,
   Stack,
   Radio,
+  Button,
+  Heading,
+  IconButton,
   SimpleGrid,
-  Grid,
+  RadioGroup,
+  TableContainer,
 } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
 import { FiX } from 'react-icons/fi';
@@ -52,17 +52,45 @@ function Checkout() {
   const { items: carts, summary, updateItemCount, clearCart, removeItem } = useCartStore();
 
   const mapSummaryToPayload = (cart: CartItem[]) => {
-    return {
-      user: { id: currentUser?.id },
-      menuItems: cart.map(item => ({
-        id: item?.menu?.id,
-        cafeId: item.menu?.cafeId,
+    const categorizedItems = cart.reduce((acc, item) => {
+      const menu = item.menu as MenuItem;
+      const category = menu?.category;
+
+      if (!category) {
+        return acc;
+      }
+
+      const parentCategory =
+        category.parentId === null || category.parentId === undefined
+          ? category.name
+          : 'Uncategorized';
+
+      if (!acc[parentCategory]) {
+        acc[parentCategory] = [];
+      }
+
+      acc[parentCategory].push({
+        id: menu.id,
+        name: menu.name,
+        cafeId: menu.cafeId,
         quantity: item.quantity,
         price: Number(item.price),
         discount: Number(item.discount),
+      });
+
+      return acc;
+    }, {} as Record<string, unknown[]>);
+
+    return {
+      user: { id: currentUser?.id },
+      categories: Object.entries(categorizedItems).map(([parentCategory, items]) => ({
+        parentCategory,
+        itemCount: items.length,
+        items,
       })),
     };
   };
+
   const payload = useMemo(() => mapSummaryToPayload(carts), [carts]);
 
   const orderTypeOptions = [
@@ -112,7 +140,6 @@ function Checkout() {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        position="sticky"
         top="0"
         zIndex="1"
       >
@@ -121,9 +148,6 @@ function Checkout() {
         </Text>
       </Box>
 
-      <Text size="sm" fontSize={24} fontWeight={500} my={2}>
-        My Orders
-      </Text>
       <Grid
         templateColumns={['1fr', '1fr', '1fr 300px']}
         autoRows="minmax(min-content, max-content)"
@@ -131,6 +155,9 @@ function Checkout() {
       >
         <SimpleGrid className="flex-1 overflow-auto flex-col h-100" spacing={4}>
           <div className="flex bg-white  rounded-lg p-4 flex-col">
+            <Text size="sm" fontSize={24} fontWeight={500} my={2}>
+              My Orders
+            </Text>
             {carts.map((cart: CartItem) => {
               const menu = cart.menu as MenuItem;
               const itemTotal = cart.quantity * cart.price;
@@ -225,42 +252,77 @@ function Checkout() {
           </Box>
         </SimpleGrid>
 
-        <div className="p-4 bg-white rounded-lg ">
-          <Text fontSize="lg" fontWeight="semibold">
+        <Box
+          className="p-4 bg-white rounded-lg"
+          position="absolute"
+          right="9"
+          width="300px"
+          height="65vh"
+          boxShadow="md"
+          border="1px solid"
+          borderColor="gray.200"
+        >
+          <Box className="p-4 bg-white rounded-lg">
+            <Heading size="md" mb={4}>
+              Categories Summary
+            </Heading>
+            {payload.categories.map((category, index) => (
+              <Box key={index} borderBottom="1px solid" borderColor="gray.200" py={2}>
+                <Text fontSize="lg" fontWeight="bold">
+                  {category.parentCategory}
+                </Text>
+                <Text fontSize="sm" color="gray.600">
+                  Items: {category.itemCount}
+                </Text>
+                <Box pl={4} mt={2} />
+              </Box>
+            ))}
+          </Box>
+          <Text fontSize="xl" fontWeight="bold" mb={4} textAlign="center" color="gray.600">
             {en.ORDER.PAYMENT_SUMMARY}
           </Text>
-
           <TableContainer>
-            <Table size="sm">
+            <Table size="sm" variant="simple">
               <Tbody>
                 <Tr>
-                  <Td fontSize="lg" fontWeight="semibold" className="py-4">
+                  <Td fontSize="lg" fontWeight="medium" py={2} color="gray.500">
                     Sub Total
                   </Td>
-                  <Td fontSize="lg">{summary.subTotal}</Td>
+                  <Td fontSize="lg" textAlign="right" py={2} color="gray.700">
+                    {summary.subTotal}
+                  </Td>
                 </Tr>
                 <Tr>
-                  <Td fontSize="lg" fontWeight="semibold" className="py-4">
+                  <Td fontSize="lg" fontWeight="medium" py={2} color="gray.500">
                     Tax
                   </Td>
-                  <Td fontSize="lg">{summary.tax}</Td>
+                  <Td fontSize="lg" textAlign="right" py={2} color="gray.700">
+                    {summary.tax}
+                  </Td>
                 </Tr>
-                <Tr>
-                  <Td fontSize="lg" fontWeight="semibold" className="py-4">
+                <Tr borderTop="2px solid" borderColor="gray.200">
+                  <Td fontSize="lg" fontWeight="bold" py={2} color="gray.700">
                     Total
                   </Td>
-                  <Td fontSize="lg">{summary.total}</Td>
+                  <Td fontSize="lg" textAlign="right" py={2} color="orange.500">
+                    {summary.total}
+                  </Td>
                 </Tr>
               </Tbody>
             </Table>
           </TableContainer>
-
-          <div className="mt-6 flex justify-center">
-            <Button colorScheme="orange" onClick={handleSubmit(handlePlaceOrder)}>
-              {submitting ? <Loading /> : 'Confirm Order'}
+          <Box mt={6} display="flex" justifyContent="center">
+            <Button
+              colorScheme="orange"
+              width="full"
+              size="lg"
+              isLoading={submitting}
+              onClick={handleSubmit(handlePlaceOrder)}
+            >
+              Confirm Order
             </Button>
-          </div>
-        </div>
+          </Box>
+        </Box>
       </Grid>
     </Box>
   );

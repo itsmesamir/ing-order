@@ -19,9 +19,18 @@ interface MenuItemCardProps {
 function MenuItemCard(props: MenuItemCardProps) {
   const { item, addItem } = props;
 
-  const { name, price, imageUrl, cafe, rating } = item;
+  const { name, price, imageUrl, cafe, rating, maxOrder } = item;
 
   const [count, setCount] = useState(1);
+
+  const handleCountChange = (updatedCount: number) => {
+    if (updatedCount > maxOrder) {
+      return;
+    }
+    setCount(updatedCount);
+  };
+
+  const isMaxReached = count >= maxOrder;
 
   return (
     <Link
@@ -70,21 +79,20 @@ function MenuItemCard(props: MenuItemCardProps) {
                 </Text>
               </HStack>
             </Flex>
+            <Text fontSize="xs" color="gray.500" mt="2">
+              Max order limit: {maxOrder}
+            </Text>
           </VStack>
           <Flex justify="space-between" my="2">
-            <ItemCounter
-              count={count}
-              handleCount={(updatedCount: number) => {
-                setCount(updatedCount);
-              }}
-            />
+            <ItemCounter count={count} handleCount={handleCountChange} />
 
             <Button
-              background="#EE5733"
+              background={isMaxReached ? 'gray.400' : '#EE5733'}
               color="#FFFFFF"
               fontSize="xs"
               onClick={e => {
                 e.preventDefault();
+                if (isMaxReached) return;
                 addItem({
                   menu: item,
                   quantity: count,
@@ -92,8 +100,9 @@ function MenuItemCard(props: MenuItemCardProps) {
                   discount: item.discount,
                 });
               }}
+              isDisabled={isMaxReached}
             >
-              Add to Cart
+              {isMaxReached ? 'Max Reached' : 'Add to Cart'}
             </Button>
           </Flex>
         </CardBody>
