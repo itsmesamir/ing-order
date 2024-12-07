@@ -230,8 +230,20 @@ class OrderModel extends BaseModel {
     return this.baseQuery(trx).where('o.id', orderId).where(filters).first();
   }
 
-  static fetchOrderItemById(id: number, trx?: Knex.Transaction): Promise<OrderItem> {
-    return this.queryBuilder(trx).select().from(this.orderItems).where({ id }).first();
+  static fetchOrderItemById(
+    ids: number | number[],
+    trx?: Knex.Transaction
+  ): Promise<OrderItem | OrderItem[]> {
+    // return this.queryBuilder(trx).select().from(this.orderItems).where({ id }).first();
+
+    const idArray = Array.isArray(ids) ? ids : [ids];
+    const query = this.queryBuilder(trx).select().from(this.orderItems).whereIn('id', idArray);
+
+    if (!Array.isArray(ids)) {
+      return query.first(); // Knex `first()` returns a single row
+    }
+
+    return query;
   }
 
   /**
@@ -323,24 +335,25 @@ class OrderModel extends BaseModel {
   /**
    * Bulk update order items by their ids
    */
-  static updateOrderItemsStatusByIds(
-    items: { id: number; status: OrderItemStatusEnum }[], // Accept an array of objects with id and status
+  static async updateOrderItemsStatusByIds(
+    items: { id: number; status: OrderItemStatusEnum; previousStatus: OrderItemStatusEnum }[], // Accept an array of objects with id and status
     trx?: Knex.Transaction
   ) {
-    if (!items || items.length === 0) {
-      throw new Error('No items to update.');
-    }
-
     // Extract the IDs and statuses from the items
     const ids = items.map(item => item.id);
 
-    // const isValidUpdate = VALID_ORDER_STATUS_UPDATE[existingStatus].includes(status);
+    // Filter out items with the same previous and current status
+    const filteredItems = items.filter(item => item.status !== item.previousStatus) || [];
 
-    const isValidUpdate = items.every(item => {
+    if (filteredItems.length === 0) {
+      throw new BadRequestError(`No order items to update.`);
+    }
+
+    const isValidUpdate = filteredItems.every(item => {
       const existingStatus = item.status;
-      const status = item.status; // Assuming status is what you're updating to
+      const previousStatus = item.previousStatus;
 
-      return VALID_ORDER_ITEM_STATUS_UPDATE[existingStatus]?.includes(status);
+      return VALID_ORDER_ITEM_STATUS_UPDATE[previousStatus]?.includes(existingStatus);
     });
 
     if (!isValidUpdate) {
@@ -349,12 +362,12 @@ class OrderModel extends BaseModel {
 
     // Construct the CASE statement for bulk update, using parameterized placeholders `?`
 
-    const caseStatement = items
+    const caseStatement = filteredItems
       .map(() => `WHEN id = ? THEN ?`) // Each WHEN condition uses parameterized placeholders
       .join(' ');
 
     // Construct the values to be passed to the query (id, status pairs)
-    const values = items.flatMap(item => [item.id, item.status]);
+    const values = filteredItems.flatMap(item => [item.id, item.status]);
 
     // Build the update query using Knex
     const query = this.queryBuilder(trx)
@@ -363,8 +376,6 @@ class OrderModel extends BaseModel {
         status: trx.raw(`CASE ${caseStatement} ELSE status END`, values), // Use safe parameterized values
       })
       .whereIn('id', ids); // Only update the order items with the specified ids
-
-    console.log('update', query.toString());
 
     return query;
   }

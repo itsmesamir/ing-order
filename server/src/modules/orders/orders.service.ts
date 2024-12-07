@@ -12,7 +12,7 @@ import { buildPageParams } from '@/utils/pagination';
 import { BadRequestError, NotFoundError } from '@/errors/errors';
 
 import { OrderFilter } from '@/types/orders';
-import { Order, OrderTypeEnum, OrderStatusEnum, OrderItemStatusEnum } from '@/types/common';
+import { Order, OrderTypeEnum, OrderStatusEnum, OrderItemStatusEnum, Any } from '@/types/common';
 
 import db from '@/db';
 import { VALID_ORDER_STATUS_UPDATE } from '@/constants/orders';
@@ -201,16 +201,27 @@ export const updateOrderById = async (
   // ): Promise<Order | null> => {
   log.info(`Updating order with ID ${id}`);
 
-  console.log('data', data);
-
   await db.transaction(async trx => {
-    // const orderId = await OrderModel.updateById(id, data.order, trx);
-
+    // Update the order status and item status
     const order = await updateOrderStatusById(Number(id), data.orderStatus);
 
     // If order items with specific statuses are provided, update their statuses
-    if (data.orderItems && data.orderItems.length > 0) {
-      await OrderModel.updateOrderItemsStatusByIds(data.orderItems, trx); // Call the bulk update function
+    // If order is not present then update the status of the order items
+    if (!order && data.orderItems && data.orderItems.length > 0) {
+      const menuItems = (await OrderModel.fetchOrderItemById(
+        data.orderItems?.map(item => item.id),
+        trx
+      )) as Any[];
+
+      const updatedOrderItems = data.orderItems.map(orderItem => {
+        const matchingMenuItem = menuItems?.find(menuItem => menuItem.id === orderItem.id);
+        return {
+          ...orderItem,
+          previousStatus: matchingMenuItem ? matchingMenuItem.status : null, // Update status if match found
+        };
+      });
+
+      await OrderModel.updateOrderItemsStatusByIds(updatedOrderItems, trx); // Call the bulk update function
     }
 
     return {};

@@ -217,8 +217,6 @@ function AdminOrders() {
     name: 'itemOrderStatus',
   });
 
-  console.log('getValues', getValues());
-
   const queryClient = useQueryClient();
 
   const defaultImageUrl =
@@ -378,22 +376,17 @@ function AdminOrders() {
                             control={control}
                             render={({ field: { ref, onChange, value, name } }) => {
                               return (
-                                <div>
-                                  {JSON.stringify(value)}
-                                  <Dropdown<DropdownOption>
-                                    name={name}
-                                    menuPlacement="auto"
-                                    // error={errors.root?.orderStatus?.message}
-                                    isRequired
-                                    value={value}
-                                    options={orderStatusOption}
-                                    onDropDownChange={e => {
-                                      console.log('e', e);
-                                      onChange(e);
-                                    }}
-                                    menuPosition="fixed"
-                                  />
-                                </div>
+                                <Dropdown<DropdownOption>
+                                  name={name}
+                                  menuPlacement="auto"
+                                  isRequired
+                                  value={value}
+                                  options={orderStatusOption}
+                                  onDropDownChange={e => {
+                                    onChange(e);
+                                  }}
+                                  menuPosition="fixed"
+                                />
                               );
                             }}
                           />

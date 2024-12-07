@@ -37,7 +37,7 @@ export async function updateOrderById(id: number, body: Any, signal?: AbortSigna
 
 export async function updateOrderStatusById(id: number, body: Any, signal?: AbortSignal) {
   // ): Promise<Order[]> {
-  const url = buildUrl(interpolate(api.order.orderStatusById, { id }));
+  const url = buildUrl(interpolate(api.order.ordersById, { id }));
 
   const { data } = await http.put(url, body, { signal });
 
