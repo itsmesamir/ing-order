@@ -233,6 +233,7 @@ export interface OrderItem {
   createdBy?: number;
   updatedAt?: string;
   updatedBy?: number;
+  status?: OrderStatusEnum;
 }
 
 export type CartItem = Omit<OrderItem, 'id'>;

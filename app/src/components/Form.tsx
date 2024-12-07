@@ -1,6 +1,7 @@
 import { useHistory } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Select, Button, FormControl, FormLabel, Box } from '@chakra-ui/react';
+import classNames from 'classnames';
 
 type Option = {
   label: string;
@@ -23,9 +24,17 @@ type FormProps = {
   onSubmit: (formData: Record<string, string | number | boolean>) => void;
   isSubmitting?: boolean;
   onCancel?: () => void;
+  className?: string;
 };
 
-function Form({ fields, defaultValues = {}, onSubmit, isSubmitting, onCancel }: FormProps) {
+function Form({
+  fields,
+  defaultValues = {},
+  onSubmit,
+  isSubmitting,
+  onCancel,
+  className,
+}: FormProps) {
   const history = useHistory();
   const { control, handleSubmit } = useForm<Record<string, string | number | boolean>>({
     defaultValues,
@@ -54,7 +63,11 @@ function Form({ fields, defaultValues = {}, onSubmit, isSubmitting, onCancel }: 
   };
 
   return (
-    <Box as="form" onSubmit={handleSubmit(onSubmitHandler)} className="space-y-4">
+    <Box
+      as="form"
+      onSubmit={handleSubmit(onSubmitHandler)}
+      className={classNames('space-y-4', className)}
+    >
       {fields.map(field => {
         const fieldName = field.name || field.label;
 
