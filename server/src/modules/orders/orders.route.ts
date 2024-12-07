@@ -3,7 +3,7 @@ import { Router } from 'express';
 import { validateReqQuery } from '@/middlewares/validator';
 import { requireAuth } from '@/middlewares/auth';
 
-import { fetch } from './orders.validator';
+import { fetch, orderValidationSchema } from './orders.validator';
 import * as ordersController from './orders.controller';
 
 const router = Router();
@@ -17,7 +17,7 @@ router.get('/user/:userId', ordersController.fetchOrdersByUserId);
 router.post('/', requireAuth, ordersController.createOrder);
 router.put('/status/:id', requireAuth, ordersController.updateOrderStatusById);
 router.put('/item/status/:id', requireAuth, ordersController.updateOrderItemStatusById);
-router.put('/:id', requireAuth, ordersController.updateOrderById);
+router.put('/:id', validateReqQuery(orderValidationSchema), ordersController.updateOrderById);
 router.delete('/:id', requireAuth, ordersController.deleteOrderById);
 
 export default router;

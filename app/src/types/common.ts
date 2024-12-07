@@ -176,6 +176,14 @@ export enum OrderStatusEnum {
   Cancelled = 'Cancelled',
 }
 
+export enum OrderItemStatusEnum {
+  Pending = 'Pending',
+  Preparing = 'Preparing',
+  Ready = 'Ready',
+  Completed = 'Completed',
+  Cancelled = 'Cancelled',
+}
+
 export enum PaymentMethodEnum {
   CreditCard = 'CreditCard',
   DigitalWallet = 'DigitalWallet',

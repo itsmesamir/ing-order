@@ -12,8 +12,9 @@ import { buildPageParams } from '@/utils/pagination';
 import { BadRequestError, NotFoundError } from '@/errors/errors';
 
 import { OrderFilter } from '@/types/orders';
-import { Order, OrderStatusEnum, OrderTypeEnum } from '@/types/common';
+import { Order, OrderTypeEnum, OrderStatusEnum, OrderItemStatusEnum } from '@/types/common';
 
+import db from '@/db';
 import { VALID_ORDER_STATUS_UPDATE } from '@/constants/orders';
 
 const log = logger.withNamespace('modules/orders.service');
@@ -192,12 +193,28 @@ export const fetchOrdersByEventId = async (
  * @param {Knex.Transaction} [trx]
  * @returns {Promise<Order | null>}
  */
-export const updateOrderById = async (id: number, data: Partial<Order>, trx?: Knex.Transaction) => {
+export const updateOrderById = async (
+  id: number,
+  data: { orderStatus: OrderStatusEnum; orderItems: { id: number; status: OrderItemStatusEnum }[] },
+  trx?: Knex.Transaction
+) => {
   // ): Promise<Order | null> => {
   log.info(`Updating order with ID ${id}`);
 
   console.log('data', data);
-  await OrderModel.updateById(id, data, trx);
+
+  await db.transaction(async trx => {
+    // const orderId = await OrderModel.updateById(id, data.order, trx);
+
+    const order = await updateOrderStatusById(Number(id), data.orderStatus);
+
+    // If order items with specific statuses are provided, update their statuses
+    if (data.orderItems && data.orderItems.length > 0) {
+      await OrderModel.updateOrderItemsStatusByIds(data.orderItems, trx); // Call the bulk update function
+    }
+
+    return {};
+  });
 
   const updatedOrder = await OrderModel.fetchById(id, {}, trx);
 
@@ -212,7 +229,7 @@ export async function updateOrderStatusById(id: number, status: OrderStatusEnum)
   const isValidUpdate = VALID_ORDER_STATUS_UPDATE[existingStatus].includes(status);
 
   if (!isValidUpdate) {
-    throw new BadRequestError(`Cannot update status from ${existingStatus} to ${status}.`);
+    throw new BadRequestError(`Cannot update order status from ${existingStatus} to ${status}.`);
   }
 
   const currentUser = getFromStore('currentUser');
