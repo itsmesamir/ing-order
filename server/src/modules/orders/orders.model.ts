@@ -2,7 +2,7 @@ import { Knex } from 'knex';
 
 import BaseModel from '@/models/baseModel';
 
-import { BadRequestError } from '@/errors/errors';
+import { BadRequestError, NotFoundError } from '@/errors/errors';
 
 import { OrderFilter } from '@/types/orders';
 import {
@@ -328,7 +328,7 @@ class OrderModel extends BaseModel {
     trx?: Knex.Transaction
   ) {
     if (!items || items.length === 0) {
-      throw new Error('No items to update.');
+      throw new NotFoundError('No items to update.');
     }
 
     // Extract the IDs and statuses from the items
@@ -363,8 +363,6 @@ class OrderModel extends BaseModel {
         status: trx.raw(`CASE ${caseStatement} ELSE status END`, values), // Use safe parameterized values
       })
       .whereIn('id', ids); // Only update the order items with the specified ids
-
-    console.log('update', query.toString());
 
     return query;
   }

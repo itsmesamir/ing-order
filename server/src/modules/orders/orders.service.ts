@@ -201,8 +201,6 @@ export const updateOrderById = async (
   // ): Promise<Order | null> => {
   log.info(`Updating order with ID ${id}`);
 
-  console.log('data', data);
-
   await db.transaction(async trx => {
     // const orderId = await OrderModel.updateById(id, data.order, trx);
 
