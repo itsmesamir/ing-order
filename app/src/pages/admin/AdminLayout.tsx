@@ -50,6 +50,14 @@ const menuItems = [
     ],
   },
   { name: 'Order', icon: <FaHistory />, path: paths.orders },
+  {
+    name: 'Cafe & Events',
+    icon: <BiCategory />,
+    subItems: [
+      { name: 'Cafe Lists', path: paths.cafeMenusLink, icon: <HiTemplate /> },
+      { name: 'Events', path: paths.eventMenusLink, icon: <HiTemplate /> },
+    ],
+  },
   { name: 'Feedback', icon: <FaComment />, path: paths.feedbacks },
   { name: 'User Page', icon: <FaCalendarMinus />, path: paths.menus, isAdminRoute: false },
 ];
